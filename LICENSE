@@ -192,7 +192,11 @@ Apache License
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
+<<<<<<< HEAD
    Copyright {Zhijian Mei Yijie Gu} {name of copyright owner}
+=======
+   Copyright {Zhijian Mei} {Zheqi Lv} {Kaixuan Hu}
+>>>>>>> ed8ec7995453d1f256fd32b1e2ed389a84878809
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
