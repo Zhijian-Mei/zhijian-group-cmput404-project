@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # class AuthorModel(models.Model):
 #     # type = models.CharField(max_length=200, default='author')
 #     id = models.CharField(max_length=200, primary_key=True)
@@ -75,4 +76,15 @@ from django.db import models
 #     author = models.CharField(max_length=200)
 #     models.ForeignKey(PostModel, verbose_name=("inbox"), on_delete=models.CASCADE)
 
+class LoginInformationModel(models.Model):
+    username = models.CharField(max_length=30, verbose_name='username')
+    password = models.CharField(max_length=30, verbose_name='password')
 
+    class Meta:
+        db_table = 'LoginInformation'
+
+    def get_username(self):
+        return self.username
+
+    def get_password(self):
+        return self.password
