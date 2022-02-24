@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('login/',views.login),
     path('myPostPage/',views.myPostPage),
-    path('myProfile/',views.myProfile)
+    path('myProfile/',views.myProfile),
+    path('createPost/',views.create_post),
 ]
