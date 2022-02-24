@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <title>Profile Page</title>
+
 </head>
 <body>
 This is Profile Page for ID: <span style="color: red;">{{id}}</span><br>
-user: <span style="color: red;">{{displayName}}</span>
+user: <span style="color: red;">{{displayName}}</span><br>
+
+<input type="button" value="My Posts" onclick="location.href='../myPostPage/?id={{id}}'">
 </body>
 </html>

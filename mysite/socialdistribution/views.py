@@ -29,7 +29,9 @@ def login(request):
 
 
 def myPostPage(request):
-    return render(request,"service/myPostPage.html")
+    id = request.GET.get('id')
+    displayName = AuthorModel.objects.get(id=id).displayName
+    return render(request,"service/myPostPage.html",{'id':id,'displayName':displayName})
 
 
 def myProfile(request):
