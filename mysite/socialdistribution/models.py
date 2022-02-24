@@ -1,14 +1,18 @@
 from django.db import models
 
 
-# class AuthorModel(models.Model):
-#     # type = models.CharField(max_length=200, default='author')
-#     id = models.CharField(max_length=200, primary_key=True)
-#     host = models.CharField(max_length=200)
-#     displayName = models.CharField(max_length=200)
-#     url = models.CharField(max_length=200)
-#     github = models.CharField(max_length=200)
-#     profileImage = models.CharField(max_length=200)
+class AuthorModel(models.Model):
+    # type = models.CharField(max_length=200, default='author')
+    username = models.CharField(max_length=200)
+    id = models.CharField(max_length=200, primary_key=True)
+    host = models.CharField(max_length=200)
+    displayName = models.CharField(max_length=200)
+    url = models.CharField(max_length=200)
+    github = models.CharField(max_length=200)
+    profileImage = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = 'Author'
 #
 # class FollowersModel(models.Model):
 #     # type = models.CharField(max_length=200, default='followers')
@@ -79,12 +83,9 @@ from django.db import models
 class LoginInformationModel(models.Model):
     username = models.CharField(max_length=30, verbose_name='username')
     password = models.CharField(max_length=30, verbose_name='password')
+    id = models.CharField(max_length=300,verbose_name='id',primary_key=True)
 
     class Meta:
         db_table = 'LoginInformation'
 
-    def get_username(self):
-        return self.username
 
-    def get_password(self):
-        return self.password

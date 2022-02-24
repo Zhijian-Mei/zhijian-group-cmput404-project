@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
-from .models import LoginInformationModel
+from .models import LoginInformationModel,AuthorModel
 
 
 def index(request):
@@ -20,10 +20,19 @@ def login(request):
     if record is None:
         return render(request,"service/login.html",{'error_msg' : 'Incorrect Username or Password!'})
     if password == record.password:
-        return redirect('http://127.0.0.1:8000/service/myPostPage')
+        id = record.id
+
+
+        return redirect('http://127.0.0.1:8000/service/myProfile/?id={}'.format(id))
     else:
         return render(request, "service/login.html", {'error_msg': 'Incorrect Username or Password!'})
 
 
 def myPostPage(request):
     return render(request,"service/myPostPage.html")
+
+
+def myProfile(request):
+    id = request.GET.get('id')
+    displayName = AuthorModel.objects.get(id = id).displayName
+    return render(request,"service/myProfile.html", {'id':id,'displayName':displayName})
