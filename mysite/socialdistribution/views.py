@@ -20,6 +20,10 @@ def login(request):
     if record is None:
         return render(request,"service/login.html",{'error_msg' : 'Incorrect Username or Password!'})
     if password == record.password:
-        return redirect('http://www.baidu.com')
+        return redirect('http://127.0.0.1:8000/service/myPostPage')
     else:
         return render(request, "service/login.html", {'error_msg': 'Incorrect Username or Password!'})
+
+
+def myPostPage(request):
+    return render(request,"service/myPostPage.html")
