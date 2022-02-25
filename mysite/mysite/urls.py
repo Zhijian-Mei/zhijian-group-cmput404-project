@@ -20,5 +20,7 @@ from . import views
 urlpatterns = [
     path('service/', include('socialdistribution.urls')),
     path('',views.index),
+    path('myprofile/',views.my_profile),
+    path('mypost/',views.my_post),
     path('admin/', admin.site.urls),
 ]
