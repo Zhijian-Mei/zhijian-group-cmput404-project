@@ -11,7 +11,7 @@ from rest_framework.response import Response
 @api_view(['GET', 'POST'])
 def post_list(request):
     """
-    List all code snippets, or create a new snippet.
+    List all Posts
     """
     if request.method == 'GET':
         posts = PostModel.objects.all()
@@ -19,12 +19,24 @@ def post_list(request):
         return Response(serializer.data)
 
     # elif request.method == 'POST':
-    #     serializer = PostSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # serializer = PostSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def create_post(request):
+    """
+    Create a new Post
+    """
+    if request.method == 'POST':
+        serializer = PostSerializer(data=request.data)
+        print("api create post serialized data:    ",serializer)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def index(request):
     return HttpResponse("Hello, world.")

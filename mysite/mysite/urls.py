@@ -22,5 +22,6 @@ urlpatterns = [
     path('',views.index),
     path('myprofile/',views.my_profile),
     path('mypost/',views.my_post),
+    path('mypost/create/',views.create_post, name='createpost'),
     path('admin/', admin.site.urls),
 ]
