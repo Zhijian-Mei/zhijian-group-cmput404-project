@@ -7,5 +7,5 @@ urlpatterns = [
     path('login/',views.login),
     path('myPostPage/',views.myPostPage),
     path('myProfile/',views.myProfile),
-    path('createPost/',views.create_post),
+    path('post/',views.post_list),
 ]

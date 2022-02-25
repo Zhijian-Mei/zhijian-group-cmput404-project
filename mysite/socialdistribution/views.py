@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 @api_view(['GET', 'POST'])
-def create_post(request):
+def post_list(request):
     """
     List all code snippets, or create a new snippet.
     """
