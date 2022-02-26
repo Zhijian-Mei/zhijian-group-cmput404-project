@@ -42,7 +42,7 @@
         <input id="id" type="text" name="id" value="{{UUID}}">
     </div>
     <div class="mb-3">
-        <input id="author_id" type="hidden" name="author_id" value={{user.authormodel.id}}>
+        <input id="author" type="text" name="author" value={{user.authormodel.id}}>
     </div> 
     <div class="mb-3">
         <input id="source" type="hidden" name="source" value={{user.authormodel.host|add:'posts/'|add:UUID}}>

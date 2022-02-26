@@ -60,9 +60,13 @@ def create_post(request):
     """
     if request.method == 'POST':
         serializer = PostSerializer(data=request.data)
-        print("api create post serialized data:    ",serializer)
+        print("api received request data:    ",request.data)
+        # print("\n\nauthor type/id type:   ",type(request.data['author']),type(request.data['id']))
         #TODO add author inside, how???
         if serializer.is_valid(raise_exception=True):
+            # TODO, this Hard code way, try to change serializer
+            author_object = AuthorModel.objects.get(id=request.data['author'])
+            serializer.author = author_object
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

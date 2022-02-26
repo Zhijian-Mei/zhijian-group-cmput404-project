@@ -7,7 +7,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['id', 'host', 'displayName', 'github', 'profileImage']
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    author = AuthorSerializer(many=True, read_only=True)
     class Meta:
         # TODO commentsSrc
         model = PostModel
