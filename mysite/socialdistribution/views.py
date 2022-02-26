@@ -14,13 +14,27 @@ def get_authors(request):
     GET and return all authors
     """
     if request.method == 'GET':
-        print(22222222222221111111111111)
         authors = AuthorModel.objects.all()
         serializer = AuthorSerializer(authors, many=True)
         data = {"type": "authors",
         "items":serializer.data
         }
         return Response(data)
+
+@api_view(['GET'])
+def get_author(request, author_id):
+    """
+    GET and return specific author
+    """
+    if request.method == 'GET':
+        try:
+            author = AuthorModel.objects.get(id=author_id)
+            serializer = AuthorSerializer(author)
+            return Response(serializer.data)
+        # TODO polish error message
+        except Exception as e:
+            data = {'error': str(e)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'POST'])
 def post_list(request):
