@@ -8,6 +8,20 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+@api_view(['GET'])
+def get_authors(request):
+    """
+    GET and return all authors
+    """
+    if request.method == 'GET':
+        print(22222222222221111111111111)
+        authors = AuthorModel.objects.all()
+        serializer = AuthorSerializer(authors, many=True)
+        data = {"type": "authors",
+        "items":serializer.data
+        }
+        return Response(data)
+
 @api_view(['GET', 'POST'])
 def post_list(request):
     """
