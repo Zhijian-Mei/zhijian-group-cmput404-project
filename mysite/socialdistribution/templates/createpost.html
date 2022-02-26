@@ -38,9 +38,9 @@
     <div>
         <input id="id" type="text" name="id" value="{{UUID}}">
     </div>
-    {% comment %} <div>
-        <input id="author_id" type="hidden" name="author_id" value="1">
-    </div> {% endcomment %}
+    <div>
+        <input id="author_id" type="hidden" name="author_id" value={{user.authormodel.id}}>
+    </div> 
     <div>
     <input type="submit" value="Submit">
     </div>
