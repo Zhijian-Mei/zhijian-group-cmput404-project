@@ -9,4 +9,5 @@ urlpatterns = [
     path('myProfile/',views.myProfile),
     path('post/',views.post_list),
     path('createpost/',views.create_post,name='api_createpost'),
+    path('authors/',views.get_authors),
 ]
