@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,redirect
 import json
 import uuid, random
@@ -28,16 +28,17 @@ def create_post(request):
     Create a new Post
     """
     if request.method == "GET":
-        #TODO generate id for post, need to change later
-        UUID = uuid.uuid1(random.randint(0, 281474976710655))
+        #TODO generate id for post, may change later
+        UUID = str(uuid.uuid4())
         return render(request, "createpost.html", {'UUID': UUID})
     if request.method == "POST":
         result = views.create_post(request)
         print('error--------------',result)
         if(result.status_code!=201):
-            #TODO redirect to GET
+            #TODO redirect to GET response
             print('error--------------',result.data)
         else:
             #TODO success message
             print('SUCCESS!!!! successfully added the post')
-        return render(request, "createpost.html")
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
