@@ -1,14 +1,18 @@
 from django.db import models
-
+from django.conf import settings
+import uuid
+from django.contrib.auth.models import User
 
 class AuthorModel(models.Model):
     # type = models.CharField(max_length=200, default='author')
-    id = models.CharField(max_length=200, primary_key=True)
-    host = models.CharField(max_length=200)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    host = models.CharField(max_length=200, default=settings.HOST_URL)
     displayName = models.CharField(max_length=200)
-    url = models.CharField(max_length=200)
     github = models.CharField(max_length=200)
     profileImage = models.CharField(max_length=200)
+
+    
 
 class FollowersModel(models.Model):
     # type = models.CharField(max_length=200, default='followers')

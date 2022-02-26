@@ -33,6 +33,7 @@ def create_post(request):
     if request.method == 'POST':
         serializer = PostSerializer(data=request.data)
         print("api create post serialized data:    ",serializer)
+        #TODO add author inside, how???
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

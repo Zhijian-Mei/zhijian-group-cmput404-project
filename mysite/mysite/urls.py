@@ -20,6 +20,7 @@ from . import views
 urlpatterns = [
     path('service/', include('socialdistribution.urls')),
     path('',views.index),
+    path('',include("django.contrib.auth.urls")),
     path('myprofile/',views.my_profile),
     path('mypost/',views.my_post),
     path('mypost/create/',views.create_post, name='createpost'),

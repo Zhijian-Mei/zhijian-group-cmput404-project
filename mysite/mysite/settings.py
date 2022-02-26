@@ -125,6 +125,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-URL = os.environ["REQUEST_URI"] 
-URL_PARSE = urlparse(URL)
-HOST_URL = URL_PARSE.scheme + '://' + URL_PARSE.netloc + '/'
+HOST_URL = 'http://127.0.0.1:8000/'
+
+LOGIN_REDIRECT_URL = "/"

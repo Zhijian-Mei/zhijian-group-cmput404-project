@@ -4,5 +4,6 @@
 
 {% block content %}
 <div>My Post</div>
+{{user.authormodel.github}}
 <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Create Post</button>
 {% endblock %}
