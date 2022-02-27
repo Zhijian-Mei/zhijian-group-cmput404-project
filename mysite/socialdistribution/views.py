@@ -42,7 +42,7 @@ def post_list(request):
     List all Posts
     """
     if request.method == 'GET':
-        posts = PostModel.objects.all()
+        posts = PostModel.objects.order_by('-published')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 

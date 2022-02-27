@@ -41,6 +41,9 @@ class PostModel(models.Model):
     visibility = models.CharField(max_length=200)
     unlisted = models.BooleanField()
 
+    class Mate:
+        ordering = ['-published']
+
 class CommentsSrcModel(models.Model):
     id = models.CharField(max_length=200, primary_key=True)
     post = models.CharField(max_length=200)

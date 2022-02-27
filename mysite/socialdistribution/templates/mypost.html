@@ -4,6 +4,6 @@
 
 {% block content %}
 <div>My Post</div>
-{{user.authormodel.id}}
+My ID: {{user.authormodel.id}}
 <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Create Post</button>
 {% endblock %}
