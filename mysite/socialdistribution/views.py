@@ -1,3 +1,4 @@
+from logging import exception
 from django.shortcuts import render
 
 from django.http import HttpResponse
@@ -59,17 +60,32 @@ def create_post(request):
     Create a new Post
     """
     if request.method == 'POST':
-        serializer = PostSerializer(data=request.data)
+        # serializer = PostSerializer(data=request.data)
+        # # print("\n\nauthor type/id type:   ",type(request.data['author']),type(request.data['id']))
+        # #TODO add author inside, how???
+        # if serializer.is_valid(raise_exception=True):
+        #     # TODO, this Hard code way, try to change serializer
+        #     author_object = AuthorModel.objects.get(id=request.data['author'])
+        #     serializer.author = author_object
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         print("api received request data:    ",request.data)
-        # print("\n\nauthor type/id type:   ",type(request.data['author']),type(request.data['id']))
-        #TODO add author inside, how???
-        if serializer.is_valid(raise_exception=True):
-            # TODO, this Hard code way, try to change serializer
-            author_object = AuthorModel.objects.get(id=request.data['author'])
-            serializer.author = author_object
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        data = request.data
+        author_object = AuthorModel.objects.get(id=data['author'])
+        unlisted = False
+        if 'unlisted' in data.keys():
+            unlisted = True
+        try:
+            PostModel.objects.create(title=data['title'], id=data['id'], source=data['source'], origin=data['origin'],
+            description=data['description'], contentType=data['contentType'], content = data['content'], author=author_object,
+            categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
+            message = {'message:', 'successfully created post'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 
 def index(request):
     return HttpResponse("Hello, world.")
