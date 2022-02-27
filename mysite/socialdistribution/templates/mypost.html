@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block title %} My Post {% endblock %}
-
-{% block content %}
-<div>My Post</div>
-{{user.authormodel.id}}
-<button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Create Post</button>
-{% endblock %}
