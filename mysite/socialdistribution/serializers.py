@@ -1,5 +1,6 @@
 from socialdistribution.models import *
 from rest_framework import serializers
+import uuid
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -7,7 +8,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['id', 'host', 'displayName', 'github', 'profileImage']
 
 class PostSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer(many=True, read_only=True)
+    author = AuthorModel.id
     class Meta:
         # TODO commentsSrc
         model = PostModel

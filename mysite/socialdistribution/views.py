@@ -1,13 +1,15 @@
 from logging import exception
 from django.shortcuts import render
+from django.db.models import Q
 
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .models import *
 from .serializers import *
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
 
 @api_view(['GET'])
 def get_authors(request):
@@ -18,9 +20,10 @@ def get_authors(request):
         authors = AuthorModel.objects.all()
         serializer = AuthorSerializer(authors, many=True)
         data = {"type": "authors",
-        "items":serializer.data
-        }
+                "items": serializer.data
+                }
         return Response(data)
+
 
 @api_view(['GET'])
 def get_author(request, author_id):
@@ -37,6 +40,7 @@ def get_author(request, author_id):
             data = {'error': str(e)}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET', 'POST'])
 def post_list(request):
     """
@@ -48,11 +52,24 @@ def post_list(request):
         return Response(serializer.data)
 
     # elif request.method == 'POST':
-        # serializer = PostSerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # serializer = PostSerializer(data=request.data)
+    # if serializer.is_valid():
+    #     serializer.save()
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+def mypost_list(request):
+    """
+    List all Posts
+    """
+    if request.method == 'GET':
+        posts = PostModel.objects.order_by('-published')
+        posts = posts.filter(author=request.user.authormodel)
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
 
 @api_view(['POST'])
 def create_post(request):
@@ -70,7 +87,7 @@ def create_post(request):
         #     serializer.save()
         #     return Response(serializer.data, status=status.HTTP_201_CREATED)
         # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        print("api received request data:    ",request.data)
+        print("api received request data:    ", request.data)
         data = request.data
         author_object = AuthorModel.objects.get(id=data['author'])
         unlisted = False
@@ -78,8 +95,9 @@ def create_post(request):
             unlisted = True
         try:
             PostModel.objects.create(title=data['title'], id=data['id'], source=data['source'], origin=data['origin'],
-            description=data['description'], contentType=data['contentType'], content = data['content'], author=author_object,
-            categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
+                                     description=data['description'], contentType=data['contentType'],
+                                     content=data['content'], author=author_object,
+                                     categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully created post'}
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -90,9 +108,10 @@ def create_post(request):
 def index(request):
     return HttpResponse("Hello, world.")
 
+
 def login(request):
     if request.method == "GET":
-        return render(request,"service/login.html")
+        return render(request, "service/login.html")
     username = request.POST.get('user')
     password = request.POST.get('pwd')
     try:
@@ -100,10 +119,9 @@ def login(request):
     except:
         record = None
     if record is None:
-        return render(request,"service/login.html",{'error_msg' : 'Incorrect Username or Password!'})
+        return render(request, "service/login.html", {'error_msg': 'Incorrect Username or Password!'})
     if password == record.password:
         id = record.id
-
 
         return redirect('http://127.0.0.1:8000/service/myProfile/?id={}'.format(id))
     else:
@@ -113,10 +131,10 @@ def login(request):
 def myPostPage(request):
     id = request.GET.get('id')
     displayName = AuthorModel.objects.get(id=id).displayName
-    return render(request,"service/myPostPage.html",{'id':id,'displayName':displayName})
+    return render(request, "service/myPostPage.html", {'id': id, 'displayName': displayName})
 
 
 def myProfile(request):
     id = request.GET.get('id')
-    displayName = AuthorModel.objects.get(id = id).displayName
-    return render(request,"service/myProfile.html", {'id':id,'displayName':displayName})
+    displayName = AuthorModel.objects.get(id=id).displayName
+    return render(request, "service/myProfile.html", {'id': id, 'displayName': displayName})

@@ -7,17 +7,28 @@ import uuid, random
 
 from socialdistribution import views
 
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj,uuid.UUID):
+            return str(obj)
+        return json.JSONEncoder.default(self,obj)
+
+
 def index(request):
     if request.method == "GET":
         posts = views.post_list(request)
-        posts_list = json.loads(json.dumps(posts.data))
+        posts_list = json.loads(json.dumps(posts.data,cls=MyEncoder))
         print('posts list::::::',posts_list)
         data = {'posts_list': posts_list}
         return render(request, "home.html", data)
 
 def my_post(request):
     if request.method == "GET":
-        return render(request, "mypost.html")
+        posts = views.mypost_list(request)
+        posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
+        print('posts list::::::', posts_list)
+        data = {'posts_list': posts_list}
+        return render(request, "mypost.html",data)
 
 def my_profile(request):
     if request.method == "GET":
