@@ -3,11 +3,28 @@
 {% block title %} My Post {% endblock %}
 
 {% block content %}
-<div>My Post</div>
-My ID: {{user.authormodel.id}}<br><br>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/mypost.css' %}">
+
 {% for post in posts_list %}
-        <td>id:{{ post }}</td><br><br>
+        <div class="post-container">
+            <h2> {{post.author}} </h2>
+            <h1> {{post.title}} </h1>
+            <p> <span id= "syschar"> {{post.content}} </span> </p>
+            <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Like</button>
+            <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Follow</button>
+            <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Share</button>
+            <button type="button" class="btn btn-success" onClick=redirect()>View</button>
+            </div>
 {% endfor %}
 <br>
 <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Create Post</button>
+
+<script type="text/javascript">
+    function redirect() {
+        window.location.href = "http://127.0.0.1:8000/textpost";
+    }
+</script>
+
 {% endblock %}
