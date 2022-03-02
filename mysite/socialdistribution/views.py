@@ -138,3 +138,7 @@ def myProfile(request):
     id = request.GET.get('id')
     displayName = AuthorModel.objects.get(id=id).displayName
     return render(request, "service/myProfile.html", {'id': id, 'displayName': displayName})
+
+def view_post(request):
+    if request.method == "GET":
+        return render(request, "textpost.html")

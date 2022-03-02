@@ -11,4 +11,5 @@ urlpatterns = [
     path('createpost/',views.create_post,name='api_createpost'),
     path('authors/',views.get_authors),
     path('authors/<str:author_id>',views.get_author),
+    path('viewpost/',views.view_post),
 ]

@@ -15,7 +15,15 @@
             <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Like</button>
             <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Follow</button>
             <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Share</button>
-            <button type="button" class="btn btn-success" onClick=redirect()>View</button>
+            <button type="button" class="btn btn-success" onClick="redirect()">View</button>
+            <form action="/html/tags/html_form_tag_action.cfm" method="post">
+                <div>
+                    <textarea name="comments" id="comments" style="font-family:sans-serif;font-size:1em;">
+                        Leave a comment
+                    </textarea>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
             </div>
 {% endfor %}
 <br>
@@ -23,7 +31,8 @@
 
 <script type="text/javascript">
     function redirect() {
-        window.location.href = "http://127.0.0.1:8000/textpost";
+        window.location.href = '{% url 'viewpost' %}' ;
+        localStorage.setItem( 'objectToPass', post);
     }
 </script>
 

@@ -53,3 +53,7 @@ def create_post(request):
             print('SUCCESS!!!! successfully added the post')
         next = request.POST.get('next', '/')
         return HttpResponseRedirect(next)
+
+def view_post(request):
+    if request.method == "GET":
+        return render(request, "textpost.html")
