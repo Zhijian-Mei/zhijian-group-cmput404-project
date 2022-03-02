@@ -29,6 +29,16 @@ def my_post(request):
         print('posts list::::::', posts_list)
         data = {'posts_list': posts_list}
         return render(request, "mypost.html",data)
+    if request.method == "POST":
+        result = views.comment_post(request)
+        print('error--------------',result)
+        if(result.status_code!=201):
+            #TODO redirect to GET response
+            print('error--------------',result.data)
+        else:
+            #TODO success message
+            print('SUCCESS!!!! successfully commented the post')
+            return HttpResponseRedirect(request.path_info)
 
 def my_profile(request):
     if request.method == "GET":

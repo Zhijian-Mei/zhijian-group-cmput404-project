@@ -12,7 +12,7 @@ class AuthorModel(models.Model):
     github = models.CharField(max_length=200)
     profileImage = models.CharField(max_length=200)
 
-    
+
 
 class FollowersModel(models.Model):
     # type = models.CharField(max_length=200, default='followers')
@@ -44,15 +44,11 @@ class PostModel(models.Model):
     class Mate:
         ordering = ['-published']
 
-class CommentsSrcModel(models.Model):
-    id = models.CharField(max_length=200, primary_key=True)
-    post = models.CharField(max_length=200)
-
 class CommentModel(models.Model):
     # type = models.CharField(max_length=200, default='comment')
     id = models.CharField(max_length=200, primary_key=True)
     author = models.ForeignKey(AuthorModel, related_name=("comment"), on_delete=models.CASCADE)
-    commentsSrc = models.ForeignKey(CommentsSrcModel, related_name=("comments"), on_delete=models.CASCADE)
+    post = models.CharField(max_length=200, default='SOME STRING')
     comment = models.CharField(max_length=2000)
     contentType = models.CharField(max_length=200)
     published = models.CharField(max_length=200)
@@ -75,5 +71,3 @@ class LoginInformationModel(models.Model):
 
     class Meta:
         db_table = 'LoginInformation'
-
-

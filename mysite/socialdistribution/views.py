@@ -10,6 +10,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+import uuid, random
+from datetime import datetime
 
 @api_view(['GET'])
 def get_authors(request):
@@ -99,6 +101,25 @@ def create_post(request):
                                      content=data['content'], author=author_object,
                                      categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully created post'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def comment_post(request):
+    """
+    Comment a Post
+    """
+    if request.method == 'POST':
+        print("api received request data:    ", request.data)
+        data = request.data
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+        try:
+            CommentModel.objects.create(comment=data['comment'], post=data['postID'], author_id=request.user.authormodel.id, published=dt_string,
+                                        id=uuid.uuid4())
+            message = {'message:', 'successfully commented post'}
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
             message = {'error:', e}

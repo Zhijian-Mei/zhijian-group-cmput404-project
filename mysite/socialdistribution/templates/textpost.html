@@ -3,11 +3,25 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/textpost.css' %}">
 
-<h1>Hello World!</h1>
-
 
 <script type="text/javascript">
-        var post = localStorage['objectToPass'];
-        document.write("<h1> {{post.title}} </h1>");
-    </script>
+    var URL = window.location.href;
+    var postID = URL.split("id=")[1];
+    document.write(postID);
+
+    let db = new sqlite3.Database('/../../db.sqlite3');
+    let sql = 'SELECT title FROM socialdistribution_postmodel';
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        rows.forEach((row) => {
+            document.write(row.name);
+        });
+    });
+    db.close();
+
+</script>
+
 {% endblock %}
