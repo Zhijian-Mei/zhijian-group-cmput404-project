@@ -10,7 +10,7 @@ class AuthorModel(models.Model):
     host = models.CharField(max_length=200, default=settings.HOST_URL)
     displayName = models.CharField(max_length=200)
     github = models.CharField(max_length=200)
-    profileImage = models.CharField(max_length=200)
+    profileImage = models.ImageField(verbose_name='profile_image',upload_to='',null=True)
 
 
 

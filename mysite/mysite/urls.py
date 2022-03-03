@@ -31,4 +31,5 @@ urlpatterns = [
     path('follow', views.follow, name='follow'),
     path('share', views.share, name='share'),
     path('mypost/delete', views.delete, name='delete'),
+    path('mypost/<str:image_url>', views.show_image, name='image'),
 ]

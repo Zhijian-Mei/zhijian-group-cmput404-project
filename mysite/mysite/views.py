@@ -4,8 +4,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,redirect
 import json
 import uuid, random
+from pathlib import Path
+import os
 
 from socialdistribution import views
+
+from mysite.settings import BASE_DIR
+
 
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -37,13 +42,15 @@ def index(request):
 
 def my_post(request):
     if request.method == "GET":
+        image = str(request.user.authormodel.profileImage)
+        print(1235134513451234,image)
         posts = views.mypost_list(request)
         posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
         #print('posts list::::::', posts_list)
         comments = views.mycomment_list(request)
         comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
         #print('comments list::::::', comments_list)
-        data = {'posts_list': posts_list, 'comments_list': comments_list}
+        data = {'posts_list': posts_list, 'comments_list': comments_list,'image':image}
         return render(request, "mypost.html",data)
     if request.method == "POST":
         result = views.comment_post(request)
@@ -131,3 +138,9 @@ def delete(request):
             print('SUCCESS!!!! successfully send the request!')
             return redirect('./')
 
+def show_image(request,image_url):
+    print(request,image_url)
+    path = os.path.join(BASE_DIR,'mysite/img/',image_url)
+    print('path: ',path)
+    image = open(path,"rb")
+    return HttpResponse(image.read(),content_type='image/jpg')
