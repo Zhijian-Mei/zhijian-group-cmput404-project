@@ -72,6 +72,16 @@ def mypost_list(request):
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
+@api_view(['GET', 'POST'])
+def mycomment_list(request):
+    """
+    List all Comments
+    """
+    if request.method == 'GET':
+        comments = CommentModel.objects.order_by('-published')
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+
 
 @api_view(['POST'])
 def create_post(request):
@@ -117,7 +127,8 @@ def comment_post(request):
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         try:
-            CommentModel.objects.create(comment=data['comment'], post=data['postID'], author_id=request.user.authormodel.id, published=dt_string,
+            print('::::',data['postID'])
+            CommentModel.objects.create(comment=data['comment'], post_id=data['postID'], author_id=request.user.authormodel.id, published=dt_string,
                                         id=uuid.uuid4())
             message = {'message:', 'successfully commented post'}
             return Response(message, status=status.HTTP_201_CREATED)

@@ -47,8 +47,8 @@ class PostModel(models.Model):
 class CommentModel(models.Model):
     # type = models.CharField(max_length=200, default='comment')
     id = models.CharField(max_length=200, primary_key=True)
-    author = models.ForeignKey(AuthorModel, related_name=("comment"), on_delete=models.CASCADE)
-    post = models.CharField(max_length=200, default='SOME STRING')
+    author = models.ForeignKey(AuthorModel, related_name=("comment_name"), on_delete=models.CASCADE)
+    post = models.ForeignKey(PostModel, related_name=("comments_set"), on_delete=models.CASCADE)
     comment = models.CharField(max_length=2000)
     contentType = models.CharField(max_length=200)
     published = models.CharField(max_length=200)

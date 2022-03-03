@@ -26,7 +26,19 @@
                 </div>
                 <input type="submit" value="Submit">
             </form>
-            </div>
+            <h2> Comments... </h2>
+            {% for comment in comments_list %}
+            <span id= "syschar">
+                {%if comment.post == post.id %}
+                    {{comment.author}} - {{comment.published}}
+                    <strong>
+                        {{comment.comment}}
+                    </strong>
+                    <br>
+                {% endif %}
+            {% endfor %}
+            </span>
+        </div>
 {% endfor %}
 <br>
 <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Create Post</button>

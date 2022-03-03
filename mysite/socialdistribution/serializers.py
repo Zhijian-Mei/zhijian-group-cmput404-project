@@ -13,3 +13,9 @@ class PostSerializer(serializers.ModelSerializer):
         # TODO commentsSrc
         model = PostModel
         fields = ['title', 'id', 'source', 'origin', 'description', 'contentType','content','author','categories','count','comments','published','visibility','unlisted']
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        # TODO commentsSrc
+        model = CommentModel
+        fields = ['id', 'author', 'post', 'comment', 'contentType', 'published']

@@ -27,7 +27,10 @@ def my_post(request):
         posts = views.mypost_list(request)
         posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
         print('posts list::::::', posts_list)
-        data = {'posts_list': posts_list}
+        comments = views.mycomment_list(request)
+        comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
+        print('comments list::::::', comments_list)
+        data = {'posts_list': posts_list, 'comments_list': comments_list}
         return render(request, "mypost.html",data)
     if request.method == "POST":
         result = views.comment_post(request)
