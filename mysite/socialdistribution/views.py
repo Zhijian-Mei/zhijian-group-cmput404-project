@@ -229,6 +229,10 @@ def like_post(request):
             LikeModel.objects.create(summary="{0} likes {1}'s post".format(actor.displayName,object.displayName),
                                               actor=actor,author=object,object=post_url,at_context='content'
                                               )
+            post = PostModel.objects.get(id=data['object'])
+            like_count = post.like_count
+            post.like_count = like_count + 1
+            post.save()
             message = {'message:', 'successfully like this post'}
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:

@@ -36,11 +36,13 @@ class PostModel(models.Model):
     content = models.CharField(max_length=2000)
     author = models.ForeignKey(AuthorModel, related_name=("post"), on_delete=models.CASCADE, null=True)
     categories = models.CharField(max_length=200)
-    count = models.IntegerField(blank=True, null=True)
+    like_count = models.IntegerField(default=0)
     comments = models.CharField(max_length=200, blank=True)
     published = models.DateTimeField(auto_now=True)
     visibility = models.CharField(max_length=200)
     unlisted = models.BooleanField()
+
+
 
     class Mate:
         ordering = ['-published']
