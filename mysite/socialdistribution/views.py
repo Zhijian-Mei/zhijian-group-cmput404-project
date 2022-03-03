@@ -9,6 +9,7 @@ from .serializers import *
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 
 @api_view(['GET'])
@@ -135,9 +136,24 @@ def myPostPage(request):
 
 
 def myProfile(request):
-    id = request.GET.get('id')
-    displayName = AuthorModel.objects.get(id=id).displayName
-    return render(request, "service/myProfile.html", {'id': id, 'displayName': displayName})
+    if request.method == 'Post':
+        u_form = UserUpdateForm(request.Post, instance=request.user)
+        p_form = ProfileUpdateForm(request.Post, request.FILES, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated ')
+            return redirect('myProfile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    content = {
+        'u-form': u_form,
+        'p-form': p_form
+    }
+    return render(request, "service/myProfile.html", content)
+
 
 def view_post(request):
     if request.method == "GET":

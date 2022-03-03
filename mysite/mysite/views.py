@@ -57,3 +57,5 @@ def create_post(request):
 def view_post(request):
     if request.method == "GET":
         return render(request, "textpost.html")
+
+

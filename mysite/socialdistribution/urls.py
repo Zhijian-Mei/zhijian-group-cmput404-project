@@ -13,3 +13,5 @@ urlpatterns = [
     path('authors/<str:author_id>',views.get_author),
     path('viewpost/',views.view_post),
 ]
+
+
