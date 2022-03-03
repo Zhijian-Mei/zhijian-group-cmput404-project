@@ -1,9 +1,7 @@
 from django.shortcuts import render
 
 from django.http import HttpResponse
-<<<<<<< Updated upstream
-from django.shortcuts import render,redirect
-from .models import LoginInformationModel,AuthorModel
+
 
 from django.shortcuts import render, redirect
 from .models import *
@@ -185,52 +183,13 @@ def comment_post(request):
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
->>>>>>> Stashed changes
+
 
 
 
 def index(request):
     return HttpResponse("Hello, world.")
 
-<<<<<<< Updated upstream
-def login(request):
-    if request.method == "GET":
-        return render(request,"service/login.html")
-    username = request.POST.get('user')
-    password = request.POST.get('pwd')
-    try:
-        record = LoginInformationModel.objects.get(username=username)
-    except:
-        record = None
-    if record is None:
-        return render(request,"service/login.html",{'error_msg' : 'Incorrect Username or Password!'})
-    if password == record.password:
-        id = record.id
-
-
-        return redirect('http://127.0.0.1:8000/service/myProfile/?id={}'.format(id))
-    else:
-        return render(request, "service/login.html", {'error_msg': 'Incorrect Username or Password!'})
-=======
-
-
->>>>>>> Stashed changes
-
-
-def myPostPage(request):
-    id = request.GET.get('id')
-    displayName = AuthorModel.objects.get(id=id).displayName
-    return render(request,"service/myPostPage.html",{'id':id,'displayName':displayName})
-
-
-def myProfile(request):
-    id = request.GET.get('id')
-<<<<<<< Updated upstream
-    displayName = AuthorModel.objects.get(id = id).displayName
-    return render(request,"service/myProfile.html", {'id':id,'displayName':displayName})
-=======
-    displayName = AuthorModel.objects.get(id=id).displayName
-    return render(request, "service/myProfile.html", {'id': id, 'displayName': displayName})
 
 def view_post(request):
     if request.method == "GET":
@@ -241,4 +200,3 @@ def get_comments(request):
         comments = CommentModel.objects.filter(post=request.GET['id'])
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
->>>>>>> Stashed changes

@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from mysite.mysite import views
+
 urlpatterns = [
     path('service/', include('socialdistribution.urls')),
-<<<<<<< Updated upstream
+
     path('admin/', admin.site.urls),
-=======
+
     path('',views.index),
     path('',include("django.contrib.auth.urls")),
     path('myprofile/',views.my_profile),
@@ -32,5 +34,4 @@ urlpatterns = [
     path('like',views.like,name='like'),
     path('follow',views.follow,name='follow'),
     path('share',views.share,name='share'),
->>>>>>> Stashed changes
 ]

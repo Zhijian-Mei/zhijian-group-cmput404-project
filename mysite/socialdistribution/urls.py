@@ -4,12 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('myPostPage/',views.myPostPage),
-<<<<<<< Updated upstream
-    path('myProfile/',views.myProfile)
-]
-=======
-    path('myProfile/',views.myProfile),
     path('post/',views.post_list),
     path('createpost/',views.create_post,name='api_createpost'),
     path('authors/',views.get_authors),
@@ -17,4 +11,4 @@ urlpatterns = [
     path('viewpost/',views.view_post),
     path('authors/<str:author_id>/posts/<str:post_id>',views.get_post)
 ]
->>>>>>> Stashed changes
+
