@@ -4,7 +4,7 @@ from django.http import HttpResponse
 <<<<<<< Updated upstream
 from django.shortcuts import render,redirect
 from .models import LoginInformationModel,AuthorModel
-=======
+
 from django.shortcuts import render, redirect
 from .models import *
 from .serializers import *
