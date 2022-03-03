@@ -32,4 +32,4 @@ urlpatterns = [
 
 urlpatterns = [
 
-]+ static(settings.Media_URL, document_root = settings.Media_Root)
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
