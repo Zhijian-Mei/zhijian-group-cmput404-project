@@ -25,5 +25,9 @@ urlpatterns = [
     path('mypost/',views.my_post),
     path('mypost/create/',views.create_post, name='createpost'),
     path('admin/', admin.site.urls),
+    path('view/',views.view_post, name='viewpost'),
     path('mypost/view/',views.view_post, name='viewpost'),
+    path('like', views.like, name='like'),
+    path('follow', views.follow, name='follow'),
+    path('share', views.share, name='share'),
 ]

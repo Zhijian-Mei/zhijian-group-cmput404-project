@@ -174,3 +174,62 @@ def myProfile(request):
 def view_post(request):
     if request.method == "GET":
         return render(request, "textpost.html")
+
+@api_view(['POST'])
+def followFriendRequest(request):
+    """
+    Send a new request for being friends or just follow
+    """
+    if request.method == 'POST':
+        #print("api received request data:    ", request.data)
+        data = request.data
+        try:
+            FollowRequest = FollowRequestModel.objects.filter(object_id = data['authorID'])
+            FollowRequest = FollowRequest.filter(actor_id = request.user.authormodel.id)
+            if FollowRequest:
+                return Response('Cannot resend follow request!!!!', status=status.HTTP_400_BAD_REQUEST)
+        except:
+            pass
+
+        object = AuthorModel.objects.get(id=data['authorID'])
+        actor = AuthorModel.objects.get(id=request.user.authormodel.id)
+        if actor == object:
+            return Response('Cannot follow yourself!!!!', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            FollowRequestModel.objects.create(summary='{0} wants to follow {1}'.format(actor.displayName,object.displayName),
+                                              actor=actor,object=object
+                                              )
+            message = {'message:', 'successfully send request'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def like_post(request):
+    """
+    Send a new like object to author's post
+    """
+    if request.method == 'POST':
+        #print("api received request data:    ", request.data)
+        data = request.data
+        author = AuthorModel.objects.get(id=data['authorID'])
+        post_url = author.host + 'service/authors/' + str(author.id) + '/posts/' + request.POST['object']
+        try:
+            like_object = LikeModel.objects.filter(actor_id = request.user.authormodel.id)
+            like_object = like_object.filter(object=post_url)
+            if like_object:
+                return Response('Cannot re-like same post !!!!', status=status.HTTP_400_BAD_REQUEST)
+        except:
+            pass
+        object = AuthorModel.objects.get(id=data['authorID'])
+        actor = AuthorModel.objects.get(id=request.user.authormodel.id)
+        try:
+            LikeModel.objects.create(summary="{0} likes {1}'s post".format(actor.displayName,object.displayName),
+                                              actor=actor,author=object,object=post_url,at_context='content'
+                                              )
+            message = {'message:', 'successfully like this post'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)

@@ -21,7 +21,7 @@ class FollowersModel(models.Model):
 class FollowRequestModel(models.Model):
     # type = models.CharField(max_length=200, default='Follow')
     summary = models.CharField(max_length=200)
-    actor = models.ForeignKey(FollowersModel, related_name=("follower"), on_delete=models.CASCADE)
+    actor = models.ForeignKey(AuthorModel, related_name=("follower"), on_delete=models.CASCADE)
     object = models.ForeignKey(AuthorModel, related_name=("followee"), on_delete=models.CASCADE)
 
 class PostModel(models.Model):
@@ -54,11 +54,12 @@ class CommentModel(models.Model):
     published = models.CharField(max_length=200)
 
 
-class LikedModel(models.Model):
+class LikeModel(models.Model):
     at_context = models.CharField(max_length=200)
-    summary = models.CharField(max_length=200)
-    author = models.ForeignKey(AuthorModel, related_name=("liked"), on_delete=models.CASCADE)
+    author = models.ForeignKey(AuthorModel, related_name=("author"), on_delete=models.CASCADE)
+    actor = models.ForeignKey(AuthorModel, related_name=("actor"), on_delete=models.CASCADE)
     object = models.CharField(max_length=200)   # linked to an author's post
+    summary = models.CharField(max_length=200)
 
 class InboxModel(models.Model):
     author = models.CharField(max_length=200)
