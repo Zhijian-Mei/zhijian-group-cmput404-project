@@ -18,5 +18,19 @@ from django.urls import path, include
 
 urlpatterns = [
     path('service/', include('socialdistribution.urls')),
+<<<<<<< Updated upstream
     path('admin/', admin.site.urls),
+=======
+    path('',views.index),
+    path('',include("django.contrib.auth.urls")),
+    path('myprofile/',views.my_profile),
+    path('mypost/',views.my_posts,name='mypost'),
+    path('mypost/create/',views.create_post, name='createpost'),
+    path('admin/', admin.site.urls),
+    path('view/',views.view_post, name='viewpost'),
+    path('mypost/view/',views.view_post, name='viewpost'),
+    path('like',views.like,name='like'),
+    path('follow',views.follow,name='follow'),
+    path('share',views.share,name='share'),
+>>>>>>> Stashed changes
 ]

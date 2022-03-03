@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/mypost.css' %}">
+{% for post in posts_list %}
+        <div class="post-container">
+            <h2> {{post.author}} </h2>
+            <h1> {{post.title}} </h1>
+            <p> <span id= "syschar"> {{post.content}} </span> </p>
+            <form style="display: inline" action="like" method="post">{% csrf_token %}
+                <input type = "hidden" name = "authorID" value = {{post.author}}>
+                <input type = "hidden" name = "object" value = {{post.id}}>
+            <input type="submit" value="Like" />
+            </form>
+            <form style="display: inline" action="follow" method="post">{% csrf_token %}
+                <input type = "hidden" name = "authorID" value = {{post.author}}>
+            <input type="submit" value="Follow" />
+            </form>
+            <form style="display: inline" action="share" method="post">{% csrf_token %}
+            <input type="submit" value="Share" />
+            </form>
+            <button type="button" class="btn btn-success" onClick="location.href='view/?id={{post.id}}'">View</button>
+            <form method="post"> {% csrf_token %}
+                <div>
+                    <textarea name="comment" id="comment" style="font-family:sans-serif;font-size:1em;">
+                        Leave a comment
+                    </textarea>
+                    <input type = "hidden" name = "authorID" value = {{post.author}}>
+                    <input type = "hidden" name = "postID" value = {{post.id}}>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+            </div>
+{% endfor %}
+{% endblock %}

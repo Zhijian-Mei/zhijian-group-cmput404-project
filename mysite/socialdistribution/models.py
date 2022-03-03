@@ -10,15 +10,30 @@ class AuthorModel(models.Model):
     github = models.CharField(max_length=200)
     profileImage = models.CharField(max_length=200)
 
+<<<<<<< Updated upstream
 class FollowersModel(models.Model):
     # type = models.CharField(max_length=200, default='followers')
     items = models.ManyToManyField(AuthorModel)
+=======
+
+
+# class FollowersModel(models.Model):
+#     # type = models.CharField(max_length=200, default='followers')
+#     items = models.ManyToManyField(AuthorModel)
+>>>>>>> Stashed changes
 
 class FollowRequestModel(models.Model):
     # type = models.CharField(max_length=200, default='Follow')
     summary = models.CharField(max_length=200)
+<<<<<<< Updated upstream
     actor = models.ForeignKey(FollowersModel, verbose_name=("follower"), on_delete=models.CASCADE)
     object = models.ForeignKey(AuthorModel, verbose_name=("followee"), on_delete=models.CASCADE)
+=======
+    actor = models.ForeignKey(AuthorModel, related_name=("follower"), on_delete=models.CASCADE)
+    object = models.ForeignKey(AuthorModel, related_name=("followee"), on_delete=models.CASCADE)
+    accept = models.BooleanField(default=False)
+
+>>>>>>> Stashed changes
 
 class PostModel(models.Model):
     # type = models.CharField(max_length=200, default='post')
@@ -47,26 +62,30 @@ class CommentModel(models.Model):
     author = models.ForeignKey(AuthorModel, verbose_name=("comment"), on_delete=models.CASCADE)
     commentsSrc = models.ForeignKey(CommentsSrcModel, verbose_name=("comments"), on_delete=models.CASCADE)
     comment = models.CharField(max_length=2000)
-    contentType = models.CharField(max_length=200)
+    contentType = models.CharField(max_length=200,default='text/markdown')
     published = models.CharField(max_length=200)
 
 
-class LikedModel(models.Model):
+class LikeModel(models.Model):
     at_context = models.CharField(max_length=200)
     summary = models.CharField(max_length=200)
+<<<<<<< Updated upstream
     author = models.ForeignKey(AuthorModel, verbose_name=("liked"), on_delete=models.CASCADE)
+=======
+    author = models.ForeignKey(AuthorModel, related_name=("author"), on_delete=models.CASCADE)
+    actor = models.ForeignKey(AuthorModel, related_name=("actor"), on_delete=models.CASCADE)
+>>>>>>> Stashed changes
     object = models.CharField(max_length=200)   # linked to an author's post
 
 class InboxModel(models.Model):
     author = models.CharField(max_length=200)
     models.ForeignKey(PostModel, verbose_name=("inbox"), on_delete=models.CASCADE)
 
-class LoginInformationModel(models.Model):
-    username = models.CharField(max_length=30, verbose_name='username')
-    password = models.CharField(max_length=30, verbose_name='password')
-    id = models.CharField(max_length=300,verbose_name='id',primary_key=True)
 
+<<<<<<< Updated upstream
     class Meta:
         db_table = 'LoginInformation'
 
 
+=======
+>>>>>>> Stashed changes

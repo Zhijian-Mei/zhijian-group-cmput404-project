@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %} My Post {% endblock %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/mypost.css' %}">
+My id: {{user.authormodel.id}}
+{% for post in posts_list %}
+        <div class="post-container">
+            <h2> {{post.author}} </h2>
+            <h1> {{post.title}} </h1>
+            <p> <span id= "syschar"> {{post.content}} </span> </p>
+            <button type="button" class="btn btn-success" onClick="location.href='view/?id={{post.id}}'">View</button>
+            <form  method="post"> {% csrf_token %}
+                <div>
+                    <textarea name="comment" id="comment" style="font-family:sans-serif;font-size:1em;">
+                        Leave a comment
+                    </textarea>
+                    <input type = "hidden" name = "authorID" value = {{post.author}}>
+                    <input type = "hidden" name = "postID" value = {{post.id}}>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+            </div>
+{% endfor %}
+<br>
+<button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Create Post</button>
+
+<script type="text/javascript">
+    function redirect() {
+        window.location.href = '{% url 'viewpost' %}' ;
+        localStorage.setItem( 'objectToPass', post);
+    }
+</script>
+
+{% endblock %}
