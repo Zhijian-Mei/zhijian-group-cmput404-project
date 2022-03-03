@@ -116,3 +116,18 @@ def share(request):
     if request.method == "POST":
         print(33333333, request.POST)
         return redirect('./')
+
+def delete(request):
+    if request.method == "POST":
+        print(33333333, request.POST)
+        result = views.delete_post(request)
+        print('error--------------', result)
+        if (result.status_code != 201):
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+            return redirect('./')
+        else:
+            # TODO success message
+            print('SUCCESS!!!! successfully send the request!')
+            return redirect('./')
+

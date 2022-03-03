@@ -30,4 +30,5 @@ urlpatterns = [
     path('like', views.like, name='like'),
     path('follow', views.follow, name='follow'),
     path('share', views.share, name='share'),
+    path('mypost/delete', views.delete, name='delete'),
 ]

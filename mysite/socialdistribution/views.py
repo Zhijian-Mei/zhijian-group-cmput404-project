@@ -234,3 +234,15 @@ def like_post(request):
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+def delete_post(request):
+    if request.method == 'POST':
+        #print("api received request data:    ", request.data)
+        post_id = request.POST['post_id']
+        try:
+            PostModel.objects.get(id=post_id).delete()
+            message = {'message:', 'successfully delete this post'}
+            return Response(message, status=status.HTTP_200_OK)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
