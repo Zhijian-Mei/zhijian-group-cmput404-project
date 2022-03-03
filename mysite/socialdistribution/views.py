@@ -50,6 +50,7 @@ def post_list(request):
     """
     if request.method == 'GET':
         posts = PostModel.objects.order_by('-published')
+        posts = posts.filter(visibility='PUBLIC')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -68,7 +69,7 @@ def mypost_list(request):
     """
     if request.method == 'GET':
         posts = PostModel.objects.order_by('-published')
-        posts = posts.filter(author=request.user.authormodel)
+        posts = posts.filter(author=request.user.authormodel,visibility='PUBLIC')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
