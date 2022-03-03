@@ -23,6 +23,7 @@ class FollowRequestModel(models.Model):
     summary = models.CharField(max_length=200)
     actor = models.ForeignKey(AuthorModel, related_name=("follower"), on_delete=models.CASCADE)
     object = models.ForeignKey(AuthorModel, related_name=("followee"), on_delete=models.CASCADE)
+    accept = models.BooleanField(default=False)
 
 class PostModel(models.Model):
     # type = models.CharField(max_length=200, default='post')
