@@ -28,11 +28,5 @@ urlpatterns = [
     path('mypost/create/',views.create_post, name='createpost'),
     path('admin/', admin.site.urls),
     path('mypost/view/',views.view_post, name='viewpost'),
-]
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
-
-'''
-urlpatterns = [
-
-]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-'''
