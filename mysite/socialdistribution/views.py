@@ -12,6 +12,7 @@ from rest_framework.response import Response
 
 import uuid, random
 from datetime import datetime
+from .forms import UserUpdateForm, ProfileUpdateForm
 
 @api_view(['GET'])
 def get_authors(request):
@@ -275,9 +276,25 @@ def myPostPage(request):
 
 
 def myProfile(request):
-    id = request.GET.get('id')
-    displayName = AuthorModel.objects.get(id=id).displayName
-    return render(request, "service/myProfile.html", {'id': id, 'displayName': displayName})
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.authormodel)
+        p_form = ProfileUpdateForm(request.authormodel
+                                   )
+
+        if not u_form.is_valid() or not p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated ')
+            return redirect('myProfile')
+    else:
+        u_form = UserUpdateForm(request.authormodel)
+        p_form = ProfileUpdateForm(request.authormodel)
+
+    content = {
+        'u-form': u_form,
+        'p-form': p_form
+    }
+    return render(request, "service/myProfile.html", content)
 
 def view_post(request):
     if request.method == "GET":

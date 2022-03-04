@@ -134,4 +134,5 @@ HOST_URL = 'http://127.0.0.1:8000/'
 LOGIN_REDIRECT_URL = "/"
 
 MEDIA_ROOT = os.path.join('mysite/img')
+MEDIA_URL = '/mysite/img/'
 
