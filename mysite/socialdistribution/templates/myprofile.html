@@ -1,5 +1,4 @@
-{% extend "blog/base.html" %}
-{% load crispy_forms_tags %}
+{% extends 'base.html' %}
 {% block title %} My Profile {% endblock %}
 {% block content %}
     <div class = "content-section">
@@ -10,20 +9,18 @@
                 <p class = "text-secondary">{{ user.email }}</p>
             </div>
         </div>
-    </div>
-
-    <div>
     <form method="POST", enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset class = "form-group">
-        <legend class = "border-bottom mb-4">Join Today</legend>
-        {{ u_form|crispy }}
-        {{ p_form|crispy }}
+        <legend class = "border-bottom mb-4">Profile Info</legend>
+        {{ u_form }}
+        {{ p_form }}
     </fieldset>
         <div class="form-group">
-            <button class ="btn btn-outline-infe" type="submit">Sign Up</button>
+            <button class ="btn btn-outline-info" type="submit">Update</button>
         </div>
-    </form>
+        </form>
     </div>
+
 
 {% endblock content %}

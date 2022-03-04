@@ -30,6 +30,9 @@ urlpatterns = [
     path('mypost/view/',views.view_post, name='viewpost'),
 ]
 
+
+'''
 urlpatterns = [
 
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+'''
