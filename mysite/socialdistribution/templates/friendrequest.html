@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Friend Request{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/request.css' %}">
+{% for request in requests_list %}
+    {% for author in authors_list %}
+        {%if request.actor_id == author.id %}
+        <strong>
+            {{author.displayName}} wants to follow you!
+        </strong>
+        <form action="befriend" method="post"> {% csrf_token %}
+                <input type = "hidden" name = "actor_id" value = {{author.id}}>
+                <input type = "hidden" name = "object_id" value = {{request.object_id}}>
+            <input type="submit" value="Follow {{author.displayName}}">
+        </form>
+        <br>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+{% endblock %}

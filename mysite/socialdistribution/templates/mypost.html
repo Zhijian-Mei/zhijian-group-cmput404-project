@@ -7,16 +7,26 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/mypost.css' %}">
 
+<img src="{{image}}" width="200" height="200" >
+
 {% for post in posts_list %}
         <div class="post-container">
-            <h2> {{post.author}} </h2>
+            <h2> {{displayName}} </h2>
             <h1> {{post.title}} </h1>
+            <form action="delete" method="post"> {% csrf_token %}
+                <div>
+                    <input type = "hidden" name = "post_id" value = {{post.id}}>
+                </div>
+                <input type="submit" value="DELETE POST">
+            </form>
             <p> <span id= "syschar"> {{post.content}} </span> </p>
+
             <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Like</button>
             <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Follow</button>
             <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Share</button>
             <button type="button" class="btn btn-success" onClick="location.href='view/?id={{post.id}}'">View</button>
             <button type="button" class="btn btn-primay" onclick="location.href='edit/{{post.id}}'">Edit</button>
+
             <form  method="post"> {% csrf_token %}
                 <div>
                     <textarea name="comment" id="comment" style="font-family:sans-serif;font-size:1em;">
@@ -31,7 +41,11 @@
             {% for comment in comments_list %}
             <span id= "syschar">
                 {%if comment.post == post.id %}
-                    {{comment.author}} - {{comment.published}}
+                    {% for author in authors_list %}
+                        {% if comment.author == author.id %}
+                            {{author.displayName}} - {{comment.published}}
+                        {% endif %}
+                    {% endfor %}
                     <strong>
                         {{comment.comment}}
                     </strong>

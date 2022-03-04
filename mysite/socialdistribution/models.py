@@ -10,7 +10,7 @@ class AuthorModel(models.Model):
     host = models.CharField(max_length=200, default=settings.HOST_URL)
     displayName = models.CharField(max_length=200)
     github = models.CharField(max_length=200)
-    profileImage = models.CharField(max_length=200)
+    profileImage = models.ImageField(verbose_name='profile_image',upload_to='',null=True)
 
 
 
@@ -21,8 +21,9 @@ class FollowersModel(models.Model):
 class FollowRequestModel(models.Model):
     # type = models.CharField(max_length=200, default='Follow')
     summary = models.CharField(max_length=200)
-    actor = models.ForeignKey(FollowersModel, related_name=("follower"), on_delete=models.CASCADE)
+    actor = models.ForeignKey(AuthorModel, related_name=("follower"), on_delete=models.CASCADE)
     object = models.ForeignKey(AuthorModel, related_name=("followee"), on_delete=models.CASCADE)
+    accept = models.BooleanField(default=False)
 
 class PostModel(models.Model):
     # type = models.CharField(max_length=200, default='post')
@@ -35,11 +36,13 @@ class PostModel(models.Model):
     content = models.CharField(max_length=2000)
     author = models.ForeignKey(AuthorModel, related_name=("post"), on_delete=models.CASCADE, null=True)
     categories = models.CharField(max_length=200)
-    count = models.IntegerField(blank=True, null=True)
+    like_count = models.IntegerField(default=0)
     comments = models.CharField(max_length=200, blank=True)
     published = models.DateTimeField(auto_now=True)
     visibility = models.CharField(max_length=200)
     unlisted = models.BooleanField()
+
+
 
     class Mate:
         ordering = ['-published']
@@ -54,11 +57,12 @@ class CommentModel(models.Model):
     published = models.CharField(max_length=200)
 
 
-class LikedModel(models.Model):
+class LikeModel(models.Model):
     at_context = models.CharField(max_length=200)
-    summary = models.CharField(max_length=200)
-    author = models.ForeignKey(AuthorModel, related_name=("liked"), on_delete=models.CASCADE)
+    author = models.ForeignKey(AuthorModel, related_name=("author"), on_delete=models.CASCADE)
+    actor = models.ForeignKey(AuthorModel, related_name=("actor"), on_delete=models.CASCADE)
     object = models.CharField(max_length=200)   # linked to an author's post
+    summary = models.CharField(max_length=200)
 
 class InboxModel(models.Model):
     author = models.CharField(max_length=200)
