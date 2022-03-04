@@ -23,11 +23,14 @@ def index(request):
     if request.method == "GET":
         posts = views.post_list(request)
         posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
-        #print('posts list::::::', posts_list)
+        print('posts list::::::', posts_list)
         comments = views.mycomment_list(request)
         comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
         #print('comments list::::::', comments_list)
-        data = {'posts_list': posts_list, 'comments_list': comments_list}
+        authors = views.author_list(request)
+        authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
+        print('authors list::::::', authors_list)
+        data = {'posts_list': posts_list, 'comments_list': comments_list, 'authors_list': authors_list}
         return render(request, "home.html",data)
     if request.method == "POST":
         result = views.comment_post(request)
@@ -50,7 +53,8 @@ def my_post(request):
         comments = views.mycomment_list(request)
         comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
         #print('comments list::::::', comments_list)
-        data = {'posts_list': posts_list, 'comments_list': comments_list,'image':image}
+        displayName = request.user.authormodel.displayName
+        data = {'posts_list': posts_list, 'comments_list': comments_list,'image':image, 'displayName': displayName}
         return render(request, "mypost.html",data)
     if request.method == "POST":
         result = views.comment_post(request)

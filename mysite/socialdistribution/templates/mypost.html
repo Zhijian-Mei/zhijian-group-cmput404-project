@@ -11,7 +11,7 @@
 
 {% for post in posts_list %}
         <div class="post-container">
-            <h2> {{post.author}} </h2>
+            <h2> {{displayName}} </h2>
             <h1> {{post.title}} </h1>
             <form action="delete" method="post"> {% csrf_token %}
                 <div>

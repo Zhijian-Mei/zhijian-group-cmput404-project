@@ -60,6 +60,16 @@ def post_list(request):
     #     serializer.save()
     #     return Response(serializer.data, status=status.HTTP_201_CREATED)
     # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #
+@api_view(['GET', 'POST'])
+def author_list(request):
+    """
+    List all Authors
+    """
+    if request.method == 'GET':
+        authors = AuthorModel.objects.order_by('-displayName')
+        serializer = AuthorSerializer(authors, many=True)
+        return Response(serializer.data)
 
 
 @api_view(['GET', 'POST'])
