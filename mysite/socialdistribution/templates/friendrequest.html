@@ -5,7 +5,7 @@
 {% block content %}
 
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/textpost.css' %}">
+<link rel="stylesheet" href="{% static 'css/request.css' %}">
 {% for request in requests_list %}
     {% for author in authors_list %}
         {%if request.actor_id == author.id %}

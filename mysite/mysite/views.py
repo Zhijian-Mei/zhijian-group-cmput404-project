@@ -43,6 +43,15 @@ def index(request):
             print('SUCCESS!!!! successfully commented the post')
             return HttpResponseRedirect(request.path_info)
 
+def like_and_share(request):
+    return render(request, "new.html")
+
+def my_subsribe(request):
+    return render(request, "new.html")
+
+def friend_only(request):
+    return render(request, "new.html")
+
 def my_post(request):
     if request.method == "GET":
         image = str(request.user.authormodel.profileImage)

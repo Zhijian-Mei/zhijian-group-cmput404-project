@@ -34,4 +34,7 @@ urlpatterns = [
     path('mypost/<str:image_url>', views.show_image, name='image'),
     path('myrequest/', views.my_request),
     path('myrequest/befriend', views.befriend, name='befriend'),
+    path('mysubscribe/', views.my_subsribe),
+    path('friendonly/', views.friend_only),
+    path('inbox/', views.like_and_share),
 ]
