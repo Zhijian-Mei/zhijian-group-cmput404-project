@@ -141,22 +141,24 @@ def myPostPage(request):
 @login_required
 def myProfile(request):
     if request.method == 'POST':
-        u_form = UserUpdateForm(request.Post, instance=request.user)
-        p_form = ProfileUpdateForm(request.Post, request.FILES, instance=request.user.profile)
-        if u_form.is_valid() and p_form.is_valid():
+        u_form = UserUpdateForm(request.authormodel)
+        p_form = ProfileUpdateForm(request.authormodel
+                                  )
+
+        if not u_form.is_valid() or not p_form.is_valid():
             u_form.save()
             p_form.save()
             messages.success(request, f'Your account has been updated ')
             return redirect('myProfile')
     else:
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
+        u_form = UserUpdateForm(request.authormodel)
+        p_form = ProfileUpdateForm(request.authormodel)
 
     content = {
         'u-form': u_form,
         'p-form': p_form
     }
-    return render(request, "service/myProfile.html", content)
+    return render(request, "service/myprofile.html", content)
 
 
 def view_post(request):
