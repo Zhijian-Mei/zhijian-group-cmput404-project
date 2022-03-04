@@ -62,8 +62,9 @@ def my_post(request):
         comments = views.mycomment_list(request)
         comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
         #print('comments list::::::', comments_list)
-        displayName = request.user.authormodel.displayName
-        data = {'posts_list': posts_list, 'comments_list': comments_list,'image':image, 'displayName': displayName}
+        authors = views.author_list(request)
+        authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
+        data = {'posts_list': posts_list, 'comments_list': comments_list,'image':image, 'authors_list': authors_list}
         return render(request, "mypost.html",data)
     if request.method == "POST":
         result = views.comment_post(request)

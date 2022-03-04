@@ -34,7 +34,11 @@
             {% for comment in comments_list %}
             <span id= "syschar">
                 {%if comment.post == post.id %}
-                    {{comment.author}} - {{comment.published}}
+                    {% for author in authors_list %}
+                        {% if comment.author == author.id %}
+                            {{author.displayName}} - {{comment.published}}
+                        {% endif %}
+                    {% endfor %}
                     <strong>
                         {{comment.comment}}
                     </strong>
