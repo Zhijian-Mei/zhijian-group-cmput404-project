@@ -101,6 +101,7 @@ def myrequest_list(request):
     if request.method == 'GET':
         followers = FollowRequestModel.objects.order_by('-summary')
         followers = followers.filter(object_id=request.user.authormodel)
+        followers = followers.filter(accept=0)
         serializer = FollowerSerializer(followers, many=True)
         return Response(serializer.data)
 
