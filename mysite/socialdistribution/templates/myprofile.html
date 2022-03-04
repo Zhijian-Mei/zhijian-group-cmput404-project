@@ -3,24 +3,35 @@
 
 {% block content %}
     <div class = "content-section">
+        {{path_info}}
         <div class = "media-body">profileImage:
             <img class = "rounded- circle article-img" src=" {{ user.authormodel.profileImage.url }}">
             <div class = "media-body"> displayname:
                 <h2 class = "account-heading"> {{ user.authormodel.displayName }}</h2>
             </div>
         </div>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
+
+
         {% csrf_token %}
         <fieldset class = "form-group">
             <legend class = "border-bottom mb-4">Profile Info</legend>
-            {{ u_form }}
-            {{ p_form }}
+            <div class="mb-3">
+                <label for="displayName">displayName: </label>
+                <input id="displayName" type="text" name="displayName" value="{{ displayName }}">
+            </div>
+            <div class="mb-3">
+                <label for="profileImage">proflieImage: </label>
+                <input id="profileImage" type="image" name="profileImage" value="{{ profileImage }}">
+            </div>
         </fieldset>
         <div class="form-group">
             <button class ="btn btn-outline-info" type="submit">Update</button>
         </div>
     <form>
     <div>
+
+
 
 
 {% endblock  %}

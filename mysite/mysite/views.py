@@ -124,6 +124,16 @@ def my_post(request):
 def my_profile(request):
     if request.method == "GET":
         return render(request, "myprofile.html")
+    if request.method == "POST":
+        result = views.myProfile(request)
+        print('EError--------',result)
+        if(result.status_code!=201):
+            #TODO redirect to GET response
+            print('error--------------',result.data)
+        else:
+            #TODO success message
+            print('SUCCESS!!!! successfully commented the post')
+            return HttpResponseRedirect(request.path_info)
 
 def my_request(request):
     if request.method == "GET":

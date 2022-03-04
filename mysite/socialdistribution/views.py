@@ -276,25 +276,18 @@ def myPostPage(request):
 
 
 def myProfile(request):
+
     if request.method == 'POST':
-        u_form = UserUpdateForm(request.authormodel)
-        p_form = ProfileUpdateForm(request.authormodel
-                                   )
 
-        if not u_form.is_valid() or not p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            messages.success(request, f'Your account has been updated ')
-            return redirect('myProfile')
-    else:
-        u_form = UserUpdateForm(request.authormodel)
-        p_form = ProfileUpdateForm(request.authormodel)
+        print("api received request data:    ", request.POST)
+        try:
+            AuthorModel.objects.filter(id=request.user.authormodel.id).update(displayName = request.POST['displayName'])
+            message = {'message:', 'successfully updated post'}
+            return Response(message, status=status.HTTP_200_OK)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-    content = {
-        'u-form': u_form,
-        'p-form': p_form
-    }
-    return render(request, "service/myProfile.html", content)
 
 def view_post(request):
     if request.method == "GET":
