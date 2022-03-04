@@ -43,13 +43,34 @@ def index(request):
             print('SUCCESS!!!! successfully commented the post')
             return HttpResponseRedirect(request.path_info)
 
-def like_and_share(request):
-    return render(request, "new.html")
-
-def my_subsribe(request):
-    return render(request, "new.html")
+def my_subscriptions(request):
+    if request.method == "GET":
+        posts = views.subscribes_list(request)
+        posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
+        print('subsribes list::::::', posts_list)
+        comments = views.mycomment_list(request)
+        comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
+        #print('comments list::::::', comments_list)
+        authors = views.author_list(request)
+        authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
+        #print('authors list::::::', authors_list)
+        data = {'posts_list': posts_list, 'comments_list': comments_list, 'authors_list': authors_list}
+        return render(request, "mysubscriptions.html",data)
+    if request.method == "POST":
+        result = views.comment_post(request)
+        print('error--------------',result)
+        if(result.status_code!=201):
+            #TODO redirect to GET response
+            print('error--------------',result.data)
+        else:
+            #TODO success message
+            print('SUCCESS!!!! successfully commented the post')
+            return HttpResponseRedirect(request.path_info)
 
 def friend_only(request):
+    return render(request, "new.html")
+
+def like_and_share(request):
     return render(request, "new.html")
 
 def my_post(request):

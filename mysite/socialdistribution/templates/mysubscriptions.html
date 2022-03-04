@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %} My Subscriptions {% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/mypost.css' %}">
+{% for post in posts_list %}
+        <div class="post-container">
+            {% for author in authors_list %}
+                {% if post.author == author.id %}
+                        <h1>{{author.displayName}}</h1>
+                {% endif %}
+            {% endfor %}
+            <h1> {{post.title}} </h1>
+            <p> <span id= "syschar"> {{post.content}} </span> </p>
+            <form style="display: inline" action="like" method="post">{% csrf_token %}
+                <input type = "hidden" name = "authorID" value = {{post.author}}>
+                <input type = "hidden" name = "object" value = {{post.id}}>
+            <input type="submit" value="Like" />
+            </form>
+            <form style="display: inline" action="follow" method="post">{% csrf_token %}
+                <input type = "hidden" name = "authorID" value = {{post.author}}>
+            <input type="submit" value="Follow" />
+            </form>
+            <form style="display: inline" action="share" method="post">{% csrf_token %}
+            <input type="submit" value="Share" />
+            </form>
+
+            <form method="post"> {% csrf_token %}
+                <div>
+                    <textarea name="comment" id="comment" style="font-family:sans-serif;font-size:1em;">
+                        Leave a comment
+                    </textarea>
+                    <input type = "hidden" name = "authorID" value = {{post.author}}>
+                    <input type = "hidden" name = "postID" value = {{post.id}}>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+            <h2> Comments... </h2>
+            {% for comment in comments_list %}
+            <span id= "syschar">
+                {%if comment.post == post.id %}
+                    {% for author in authors_list %}
+                        {% if comment.author == author.id %}
+                            {{author.displayName}} - {{comment.published}}
+                        {% endif %}
+                    {% endfor %}
+                    <strong>
+                        {{comment.comment}}
+                    </strong>
+                    <br>
+                {% endif %}
+            {% endfor %}
+            </span>
+            </div>
+{% endfor %}
+{% endblock %}

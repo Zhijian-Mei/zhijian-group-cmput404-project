@@ -84,6 +84,20 @@ def mypost_list(request):
         return Response(serializer.data)
 
 @api_view(['GET', 'POST'])
+def subscribes_list(request):
+    """
+    List all Subscriptions
+    """
+    if request.method == 'GET':
+        subscriptions = FollowRequestModel.objects.order_by('-summary')
+        subscriptions = subscriptions.filter(actor_id=request.user.authormodel, accept=0)
+        subscribers_id = set(subscription.object_id for subscription in subscriptions)
+        posts = PostModel.objects.order_by('-published')
+        posts = posts.filter(author__in=subscribers_id,visibility='PUBLIC')
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
 def mycomment_list(request):
     """
     List all Comments
