@@ -79,7 +79,7 @@ def mypost_list(request):
     """
     if request.method == 'GET':
         posts = PostModel.objects.order_by('-published')
-        posts = posts.filter(author=request.user.authormodel,visibility='PUBLIC')
+        posts = posts.filter(author=request.user.authormodel)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -113,7 +113,7 @@ def friends_posts_list(request):
         friends_id2 = set(friend.actor_id for friend in friends_2)
         #TODO: add friends' public posts
         posts = PostModel.objects.order_by('-published')
-        posts = posts.filter((Q(author__in=friends_id1) | Q(author__in=friends_id2)) ,visibility='PUBLIC')
+        posts = posts.filter((Q(author__in=friends_id1) | Q(author__in=friends_id2)) ,visibility='FRIEND')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
