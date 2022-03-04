@@ -20,11 +20,7 @@
                 <input type="submit" value="DELETE POST">
             </form>
             <p> <span id= "syschar"> {{post.content}} </span> </p>
-
-            <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Like</button>
-            <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Follow</button>
-            <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Share</button>
-            <button type="button" class="btn btn-success" onClick="location.href='view/?id={{post.id}}'">View</button>
+            
             <button type="button" class="btn btn-primay" onclick="location.href='edit/{{post.id}}'">Edit</button>
 
             <form  method="post"> {% csrf_token %}

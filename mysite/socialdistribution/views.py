@@ -9,7 +9,6 @@ from .serializers import *
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.core import serializers
 
 import uuid, random
 from datetime import datetime
@@ -91,13 +90,33 @@ def subscribes_list(request):
     """
     if request.method == 'GET':
         subscriptions = FollowRequestModel.objects.order_by('-summary')
-        subscriptions = subscriptions.filter(actor_id=request.user.authormodel, accept=0)
-        subscribers_id = set(subscription.object_id for subscription in subscriptions)
+        subscriptions_1 = subscriptions.filter(actor_id=request.user.authormodel)
+        subscriptions_2 = subscriptions.filter(object_id=request.user.authormodel, accept=1)
+        subscribers_id1 = set(subscription.object_id for subscription in subscriptions_1)
+        subscribers_id2 = set(subscription.actor_id for subscription in subscriptions_2)
         #TODO: add friends' public posts
         posts = PostModel.objects.order_by('-published')
-        posts = posts.filter(author__in=subscribers_id,visibility='PUBLIC')
+        posts = posts.filter((Q(author__in=subscribers_id1) | Q(author__in=subscribers_id2)) ,visibility='PUBLIC')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def friends_posts_list(request):
+    """
+    List all Friends' Posts
+    """
+    if request.method == 'GET':
+        friends = FollowRequestModel.objects.order_by('-summary')
+        friends_1 = friends.filter(actor_id=request.user.authormodel, accept=1)
+        friends_2 = friends.filter(object_id=request.user.authormodel, accept=1)
+        friends_id1 = set(friend.object_id for friend in friends_1)
+        friends_id2 = set(friend.actor_id for friend in friends_2)
+        #TODO: add friends' public posts
+        posts = PostModel.objects.order_by('-published')
+        posts = posts.filter((Q(author__in=friends_id1) | Q(author__in=friends_id2)) ,visibility='PUBLIC')
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
 
 @api_view(['GET', 'POST'])
 def mycomment_list(request):
@@ -169,7 +188,6 @@ def create_post(request):
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET','POST'])
 def edit_post(request,id):
     """
