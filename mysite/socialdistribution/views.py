@@ -9,6 +9,7 @@ from .serializers import *
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.core import serializers
 
 import uuid, random
 from datetime import datetime
@@ -112,6 +113,42 @@ def create_post(request):
                                      categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully created post'}
             return Response(message, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','POST'])
+def edit_post(request,id):
+    """
+    Create a new Post
+    """
+    if request.method == 'GET':
+        try:
+            post_object = PostModel.objects.get(id=id)
+            post = {
+                'title':post_object.title,
+                'description':post_object.description,
+                'contentType':post_object.contentType,
+                'content':post_object.content,
+                'categories':post_object.categories,
+                'visibility':post_object.visibility,
+                'unlisted':post_object.unlisted,
+            }
+            return Response(post, status=status.HTTP_200_OK)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'POST':
+        print("api received request data:    ", request.data)
+        data = request.data
+        unlisted = False
+        if 'unlisted' in data.keys():
+            unlisted = True
+        try:
+            PostModel.objects.filter(id=id).update(title=data['title'], description=data['description'], contentType=data['contentType'],
+                    content=data['content'], categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
+            message = {'message:', 'successfully updated post'}
+            return Response(message, status=status.HTTP_200_OK)
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)

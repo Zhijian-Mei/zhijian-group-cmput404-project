@@ -67,6 +67,27 @@ def create_post(request):
         next = request.POST.get('next', '/')
         return HttpResponseRedirect(next)
 
+def edit_post(request, id):
+    """
+    Edit an existing post
+    """
+    if request.method == "GET":
+        data = views.edit_post(request,id).data
+        # print('data-------------',data)
+        #TODO solve the error if there's no such post
+        return render(request, "editpost.html", {'post': data})
+    if request.method == "POST":
+        result = views.edit_post(request,id)
+        print('error--------------',result)
+        if(result.status_code!=201):
+            #TODO redirect to GET response
+            print('error--------------',result.data)
+        else:
+            #TODO success message
+            print('SUCCESS!!!! successfully added the post')
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
+
 def view_post(request):
     if request.method == "GET":
         return render(request, "textpost.html")
