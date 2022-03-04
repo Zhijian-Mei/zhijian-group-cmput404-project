@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
     'socialdistribution.apps.SocialdistributionConfig',
 ]
 
@@ -131,4 +130,3 @@ HOST_URL = 'http://127.0.0.1:8000/'
 
 LOGIN_REDIRECT_URL = "/"
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
