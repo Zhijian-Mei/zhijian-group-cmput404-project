@@ -1,6 +1,7 @@
 from logging import exception
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.db.models import Q
 
@@ -11,7 +12,7 @@ from .serializers import *
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .forms import UserUpdateForm, ProfileUpdateForm
 
 
 @api_view(['GET'])
@@ -137,6 +138,7 @@ def myPostPage(request):
     return render(request, "service/myPostPage.html", {'id': id, 'displayName': displayName})
 
 
+@login_required
 def myProfile(request):
     if request.method == 'Post':
         u_form = UserUpdateForm(request.Post, instance=request.user)
