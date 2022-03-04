@@ -140,7 +140,7 @@ def myPostPage(request):
 
 @login_required
 def myProfile(request):
-    if request.method == 'Post':
+    if request.method == 'POST':
         u_form = UserUpdateForm(request.Post, instance=request.user)
         p_form = ProfileUpdateForm(request.Post, request.FILES, instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
