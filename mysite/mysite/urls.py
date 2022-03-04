@@ -24,6 +24,7 @@ urlpatterns = [
     path('myprofile/',views.my_profile),
     path('mypost/',views.my_post),
     path('mypost/create/',views.create_post, name='createpost'),
+    path('mypost/edit/<str:id>',views.edit_post),
     path('admin/', admin.site.urls),
     path('view/',views.view_post, name='viewpost'),
     path('mypost/view/',views.view_post, name='viewpost'),
