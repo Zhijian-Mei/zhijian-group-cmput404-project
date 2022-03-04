@@ -92,6 +92,7 @@ def subscribes_list(request):
         subscriptions = FollowRequestModel.objects.order_by('-summary')
         subscriptions = subscriptions.filter(actor_id=request.user.authormodel, accept=0)
         subscribers_id = set(subscription.object_id for subscription in subscriptions)
+        #TODO: add friends' public posts
         posts = PostModel.objects.order_by('-published')
         posts = posts.filter(author__in=subscribers_id,visibility='PUBLIC')
         serializer = PostSerializer(posts, many=True)
