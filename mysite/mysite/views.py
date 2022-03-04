@@ -29,7 +29,7 @@ def index(request):
         #print('comments list::::::', comments_list)
         authors = views.author_list(request)
         authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
-        print('authors list::::::', authors_list)
+        #print('authors list::::::', authors_list)
         data = {'posts_list': posts_list, 'comments_list': comments_list, 'authors_list': authors_list}
         return render(request, "home.html",data)
     if request.method == "POST":
@@ -70,6 +70,31 @@ def my_post(request):
 def my_profile(request):
     if request.method == "GET":
         return render(request, "myprofile.html")
+
+def my_request(request):
+    if request.method == "GET":
+        requests = views.myrequest_list(request)
+        requests_list = json.loads(json.dumps(requests.data, cls=MyEncoder))
+        #print('requests list::::::', requests_list)
+        authors = views.author_list(request)
+        authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
+        data = {'requests_list': requests_list, 'authors_list': authors_list}
+        return render(request, "friendrequest.html", data)
+
+def befriend(request):
+    if request.method == "POST":
+        print(33333333, request.POST)
+        result = views.beFriend(request)
+        print('error--------------', result)
+        if (result.status_code != 201):
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+            return redirect('./')
+        else:
+            # TODO success message
+            print('SUCCESS!!!! successfully be friend!')
+            return redirect('./')
+
 
 def create_post(request):
     """

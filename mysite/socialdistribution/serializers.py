@@ -19,3 +19,9 @@ class CommentSerializer(serializers.ModelSerializer):
         # TODO commentsSrc
         model = CommentModel
         fields = ['id', 'author', 'post', 'comment', 'contentType', 'published']
+
+class FollowerSerializer(serializers.ModelSerializer):
+    class Meta:
+        # TODO commentsSrc
+        model = FollowRequestModel
+        fields = ['summary', 'accept', 'actor_id', 'object_id']

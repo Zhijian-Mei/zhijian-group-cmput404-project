@@ -93,6 +93,32 @@ def mycomment_list(request):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+@api_view(['GET', 'POST'])
+def myrequest_list(request):
+    """
+    List all Comments
+    """
+    if request.method == 'GET':
+        followers = FollowRequestModel.objects.order_by('-summary')
+        followers = followers.filter(object_id=request.user.authormodel)
+        serializer = FollowerSerializer(followers, many=True)
+        return Response(serializer.data)
+
+@api_view(['POST'])
+def beFriend(request):
+    if request.method == 'POST':
+        actor_id = request.POST['actor_id']
+        object_id = request.POST['object_id']
+        try:
+            request = FollowRequestModel.objects.get(object_id=object_id, actor_id=actor_id)
+            request.accept = 1
+            request.save()
+            message = {'message:', 'successfully be friend'}
+            return Response(message, status=status.HTTP_200_OK)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def create_post(request):
