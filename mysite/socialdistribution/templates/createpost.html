@@ -1,13 +1,64 @@
 {% extends 'base.html' %}
 
-{% block title %} Create Post {% endblock %}
+{% block title %} create-post {% endblock %}
 
 {% block content %}
-<div class="card" style="margin:10px">
-    <h2 style="margin: 10px 10px 0">Create A New Post</h2>
+{% load static %}
+
+
+
+
+<div class="card" style="margin:10px; text-align: center;">
+    <!-- <h2 style="margin: 10px 10px 0">Create A New Post</h2>
     1:{{user.authormodel.host|add:UUID}}</br>
-    UUID:{{UUID}}
-    <form  method="post" id="post_form">
+    UUID:{{UUID}} -->
+    <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">What's on your mind, {{ user.authormodel.displayName }}?</h2>
+    <form class="create-post" method="post" id="post_form">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input id="title" type="text" name="title" value="{{ title }}" placeholder="Title" >
+        </div>
+        <div class="mb-3">
+            <input id="description" type="text" name="description" value="{{ description }}" placeholder="Description" >
+        </div>    
+        <div class="mb-3">
+            <input id="contentType" type="text" name="contentType" value="{{ contentType }}" placeholder="ContentType" >
+        </div>    
+        <div class="mb-3" >
+            <input id="content" type="text" name="content" form="post_form" value="{{ content }}" placeholder="content" >
+        </div>
+        <div class="mb-3" >
+            <input id="categories" type="text" name="categories" value="{{ categories }}" placeholder="Categories" >
+        </div>
+        <div class="mb-3">
+            <label for="visibility">Visibility: </label>
+            <input id="visibility" type="radio" name="visibility" value="PUBLIC">PUBLIC
+            <input id="visibility" type="radio" name="visibility" value="FRIEND">FRIEND ONLY
+        </div>
+        <div class="mb-3">
+            <label for="unlisted">Unlisted: </label>
+            <input id="unlisted" type="checkbox" name="unlisted">
+        </div>
+            <input id="id" type="hidden"name="id" value="{{UUID}}">
+
+            <input id="author" type="hidden" name="author" value={{user.authormodel.id}}>
+
+
+            <input id="source" type="hidden" name="source" value={{user.authormodel.host|add:'posts/'|add:UUID}}>
+
+
+            <input id="origin" type="hidden" name="origin" value={{user.authormodel.host|add:'posts/'|add:UUID}}>
+
+        <input type="hidden" name="next" value="{{ request.path }}">    
+        <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 1.7em; margin-top: 0.7em; text-align:center;">
+    </form>
+    
+</div>
+{% endblock %}
+
+<!-- 
+
+<form  method="post" id="post_form">
     {% csrf_token %}
     <div class="mb-3">
     <label for="title">Title: </label>
@@ -39,10 +90,10 @@
     <input id="unlisted" type="checkbox" name="unlisted">
     </div>
     <div class="mb-3">
-        <input id="id" type="text" name="id" value="{{UUID}}">
+        <input id="id" type="hidden"name="id" value="{{UUID}}">
     </div>
     <div class="mb-3">
-        <input id="author" type="text" name="author" value={{user.authormodel.id}}>
+        <input id="author" type="hidden" name="author" value={{user.authormodel.id}}>
     </div>
     <div class="mb-3">
         <input id="source" type="hidden" name="source" value={{user.authormodel.host|add:'posts/'|add:UUID}}>
@@ -52,8 +103,6 @@
     </div>
     <input type="hidden" name="next" value="{{ request.path }}">
     <div class="mb-3">
-    <input type="submit" value="Submit">
+    <input type="submit" class="btn btn-primary" value="Submit">
     </div>
-    </form>
-</div>
-{% endblock %}
+    </form> -->

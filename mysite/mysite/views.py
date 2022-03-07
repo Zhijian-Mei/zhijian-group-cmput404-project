@@ -135,6 +135,7 @@ def my_request(request):
         data = {'requests_list': requests_list, 'authors_list': authors_list}
         return render(request, "friendrequest.html", data)
 
+
 def befriend(request):
     if request.method == "POST":
         print(33333333, request.POST)

@@ -5,21 +5,34 @@
 {% block content %}
 
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/request.css' %}">
-{% for request in requests_list %}
-    {% for author in authors_list %}
-        {%if request.actor_id == author.id %}
-        <strong>
-            {{author.displayName}} wants to follow you!
-        </strong>
-        <form action="befriend" method="post"> {% csrf_token %}
-                <input type = "hidden" name = "actor_id" value = {{author.id}}>
-                <input type = "hidden" name = "object_id" value = {{request.object_id}}>
-            <input type="submit" value="Follow {{author.displayName}}">
-        </form>
-        <br>
-        {% endif %}
-    {% endfor %}
-{% endfor %}
-
+<div class="friend-requests">
+    <h4 class="head">Requests</h4>
+    <!----- REQUEST 1----->
+    <div class="request">
+        {% for request in requests_list %}
+            {% for author in authors_list %}
+                {%if request.actor_id == author.id %}
+                <div class="info">
+                    <div class="profile-photo">
+                        <img src="./images/profile-8.jpg">
+                    </div>
+                    <div>
+                        <h5>{{author.displayName}}</h5>
+                        <p class="text-muted">0 mutual friends</p>
+                    </div>
+                </div>
+                <div class="action">
+                    <form action="befriend" method="post"> {% csrf_token %}
+                        <input type = "hidden" name = "actor_id" value = {{author.id}}>
+                        <input type = "hidden" name = "object_id" value = {{request.object_id}}>
+                        <button type="submit" value="Follow {{author.displayName}}" class="btn btn-primary">Accept</button>
+                        <button class="btn">Decline</button>
+                    </form>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
+

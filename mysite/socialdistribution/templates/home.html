@@ -4,39 +4,56 @@
 
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/mypost.css' %}">
-{% for post in posts_list %}
-        <div class="post-container">
-            {% for author in authors_list %}
-                {% if post.author == author.id %}
-                        <h1>{{author.displayName}}</h1>
-                {% endif %}
-            {% endfor %}
-            <h1> {{post.title}} </h1>
-            <p> <span id= "syschar"> {{post.content}} </span> </p>
-            <form style="display: inline" action="like" method="post">{% csrf_token %}
-                <input type = "hidden" name = "authorID" value = {{post.author}}>
-                <input type = "hidden" name = "object" value = {{post.id}}>
-            <input type="submit" value="Like" />
-            </form>
-            <form style="display: inline" action="follow" method="post">{% csrf_token %}
-                <input type = "hidden" name = "authorID" value = {{post.author}}>
-            <input type="submit" value="Follow" />
-            </form>
-            <form style="display: inline" action="share" method="post">{% csrf_token %}
-            <input type="submit" value="Share" />
-            </form>
 
-            <form method="post"> {% csrf_token %}
-                <div>
-                    <textarea name="comment" id="comment" style="font-family:sans-serif;font-size:1em;">
-                        Leave a comment
-                    </textarea>
-                    <input type = "hidden" name = "authorID" value = {{post.author}}>
-                    <input type = "hidden" name = "postID" value = {{post.id}}>
+<div class="feeds">
+    {% for post in posts_list %}
+    <!------------------- FEED 1 --------------------->
+    <div class="feed">
+        <div class="head">
+            <div class="user">
+                <div class="ingo">
+                    {% for author in authors_list %}
+                    {% if post.author == author.id %}
+                        <h1>{{author.displayName}}</h1>
+                    {% endif %}
+                     {% endfor %}
+                    <h1>{{post.title}}</h1>
                 </div>
-                <input type="submit" value="Submit">
-            </form>
+            </div>
+        </div>
+
+        <div class="photo">
+            <h3> <span id= "syschar"> {{post.content}} </span> </h3>
+        </div>
+
+        <div class="action-buttons">
+            <div class="interaction-buttons">
+                <form style="display: inline" action="like" method="post">{% csrf_token %}
+                    <input type = "hidden" name = "authorID" value = {{post.author}}>
+                    <input type = "hidden" name = "object" value = {{post.id}}>
+                <button style="font-size: 1em;" type="submit" value="Like" ><span><i class="uil uil-heart"></i></span>
+                </button>
+                </form>
+                <form style="display: inline" action="share" method="post">{% csrf_token %}
+                <button style="font-size: 1em;" type="submit" value="Share" ><span><i class="uil uil-share-alt"></i></span></button>
+                </form>
+            </div>
+            <div class="bookmark">
+                <form style="display: inline" action="follow" method="post">{% csrf_token %}
+                    <input type = "hidden" name = "authorID" value = {{post.author}}>
+                <button style="font-size: 1em;" type="submit" value="Follow" >                <span><i class="uil uil-bookmark-full"></i></span>
+                </button>
+                </form>            
+            </div>
+        </div>
+        <form  class="create-post" method="post"> {% csrf_token %}
+            <div>
+                <input name="comment" id="comment" style="font-family:sans-serif;font-size:1em;" placeholder="Leave a comment" >
+                <input type = "hidden" name = "authorID" value = {{post.author}}>
+                <input type = "hidden" name = "postID" value = {{post.id}}>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit" style="margin-top:1em; font-size:0.8em;">
+        </form>
             <h2> Comments... </h2>
             {% for comment in comments_list %}
             <span id= "syschar">
@@ -53,6 +70,9 @@
                 {% endif %}
             {% endfor %}
             </span>
-            </div>
+    </div>
 {% endfor %}
+</div>
 {% endblock %}
+
+
