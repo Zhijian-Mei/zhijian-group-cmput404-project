@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% comment %} reference https://docs.djangoproject.com/en/4.0/topics/auth/default/ {% endcomment %}
 
 
@@ -22,16 +24,18 @@
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
-<div class="mb-3" style="margin:10px">
-    <p>{{ form.username.label_tag }}</p>
-    <p>{{ form.username }}</p>
+<div class="login" style="text-align: center;margin-top: 3em;">
+<div class="mb-3">
+    <h3>{{ form.username.label_tag }}</h3>
+    <h3>{{ form.username }}</h3>
 </div>
-<div class="mb-3" style="margin:10px">
-    <p>{{ form.password.label_tag }}</p>
-    <p>{{ form.password }}</p>
+<div class="mb-3">
+    <h3>{{ form.password.label_tag }}</h3>
+    <h3>{{ form.password }}</h3>
 </div>
-<input type="submit" value="login" style="margin:10px">
-<input type="hidden" name="next" value="{{ next }}">
+    <input class="btn btn-primary" type="submit" value="login"  style="margin:10px">
+    <input type="hidden" name="next" value="{{ next }}">
 </form>
+</div>
 
 {% endblock %}
