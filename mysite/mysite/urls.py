@@ -14,24 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
-
-from mysite.mysite import views
+from . import views
 
 urlpatterns = [
     path('service/', include('socialdistribution.urls')),
-
-    path('admin/', admin.site.urls),
-
     path('',views.index),
     path('',include("django.contrib.auth.urls")),
     path('myprofile/',views.my_profile),
-    path('mypost/',views.my_posts,name='mypost'),
+    path('mypost/',views.my_post),
     path('mypost/create/',views.create_post, name='createpost'),
+    path('mypost/edit/<str:id>',views.edit_post),
     path('admin/', admin.site.urls),
     path('view/',views.view_post, name='viewpost'),
     path('mypost/view/',views.view_post, name='viewpost'),
-    path('like',views.like,name='like'),
-    path('follow',views.follow,name='follow'),
-    path('share',views.share,name='share'),
-]
+    path('like', views.like, name='like'),
+    path('follow', views.follow, name='follow'),
+    path('share', views.share, name='share'),
+    path('mypost/delete', views.delete, name='delete'),
+    path('mypost/<str:image_url>', views.show_image, name='image'),
+    path('myrequest/', views.my_request),
+    path('myrequest/befriend', views.befriend, name='befriend'),
+    path('mysubscriptions/', views.my_subscriptions),
+    path('friendonly/', views.friend_only),
+    path('inbox/', views.like_and_share),
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

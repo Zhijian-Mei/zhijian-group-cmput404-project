@@ -5,25 +5,112 @@
 {% block content %}
 
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/mypost.css' %}">
-My id: {{user.authormodel.id}}
+
+<!-- <img src="{{image}}" width="200" height=auto > -->
+<div class="feeds">
+    {% for post in posts_list %}
+    <!------------------- FEED 1 --------------------->
+    <div class="feed">
+        <div class="head">
+            <div class="user">
+                <div class="ingo">
+                    <h2>{{displayName}}</h2>
+                    <h1>{{post.title}}</h1>
+                </div>
+            </div>
+            <form action="delete" method="post"> {% csrf_token %}
+                <div>
+                    <input type = "hidden" name = "post_id" value = {{post.id}}>
+                </div>
+                <input style="background-color: hsl(0, 95%, 65%); font-size:0.8em;" class="btn btn-primary" type="submit" value="DELETE POST">
+            </form>
+            
+        </div>
+
+        <div class="photo">
+            <h3> <span id= "syschar"> {{post.content}} </span> </h3>
+        </div>
+        <button type="button" style="font-size: 0.8em;" class="btn btn-primary" onclick="location.href='edit/{{post.id}}'">Edit</button>
+
+        <!-- <div class="action-buttons">
+            <div class="interaction-buttons">
+                <span><i class="uil uil-heart"></i></span>
+                <span><i class="uil uil-share-alt"></i></span>
+            </div>
+            <div class="bookmark">
+                <span><i class="uil uil-bookmark-full"></i></span>
+            </div>
+        </div> -->
+        <form  class="create-post" method="post"> {% csrf_token %}
+            <div>
+                <input name="comment" id="comment" style="font-family:sans-serif;font-size:1em;" placeholder="Leave a comment" >
+                <input type = "hidden" name = "authorID" value = {{post.author}}>
+                <input type = "hidden" name = "postID" value = {{post.id}}>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit" style="margin-top:1em; font-size:0.8em;">
+        </form>
+            <h2> Comments... </h2>
+            {% for comment in comments_list %}
+            <span id= "syschar">
+                {%if comment.post == post.id %}
+                    {% for author in authors_list %}
+                        {% if comment.author == author.id %}
+                            {{author.displayName}} - {{comment.published}}
+                        {% endif %}
+                    {% endfor %}
+                    <strong>
+                        {{comment.comment}}
+                    </strong>
+                    <br>
+                {% endif %}
+            {% endfor %}
+            </span>
+    </div>
+{% endfor %}
+</div>
+
+
+{% endblock %}
+<!-- 
 {% for post in posts_list %}
         <div class="post-container">
-            <h2> {{post.author}} </h2>
+            <h2> {{displayName}} </h2>
             <h1> {{post.title}} </h1>
+            <form action="delete" method="post"> {% csrf_token %}
+                <div>
+                    <input type = "hidden" name = "post_id" value = {{post.id}}>
+                </div>
+                <input type="submit" class="btn btn-primary" value="DELETE POST">
+            </form>
             <p> <span id= "syschar"> {{post.content}} </span> </p>
-            <button type="button" class="btn btn-success" onClick="location.href='view/?id={{post.id}}'">View</button>
+            
+            <button type="button" class="btn btn-primary" onclick="location.href='edit/{{post.id}}'">Edit</button>
+
             <form  method="post"> {% csrf_token %}
                 <div>
-                    <textarea name="comment" id="comment" style="font-family:sans-serif;font-size:1em;">
-                        Leave a comment
-                    </textarea>
+                    <input name="comment" id="comment" style="font-family:sans-serif;font-size:1em;">
                     <input type = "hidden" name = "authorID" value = {{post.author}}>
                     <input type = "hidden" name = "postID" value = {{post.id}}>
                 </div>
                 <input type="submit" value="Submit">
             </form>
-            </div>
+            <h2> Comments... </h2>
+            {% for comment in comments_list %}
+            <span id= "syschar">
+                {%if comment.post == post.id %}
+                    {% for author in authors_list %}
+                        {% if comment.author == author.id %}
+                            {{author.displayName}} - {{comment.published}}
+                        {% endif %}
+                    {% endfor %}
+                    <strong>
+                        {{comment.comment}}
+                    </strong>
+                    <br>
+                {% endif %}
+            {% endfor %}
+            </span>
+        </div>
 {% endfor %}
 <br>
 <button type="button" class="btn btn-success" onclick="location.href='{% url 'createpost' %}'">Create Post</button>
@@ -33,6 +120,4 @@ My id: {{user.authormodel.id}}
         window.location.href = '{% url 'viewpost' %}' ;
         localStorage.setItem( 'objectToPass', post);
     }
-</script>
-
-{% endblock %}
+</script> -->

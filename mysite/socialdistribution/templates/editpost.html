@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %} edite-post {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+<div class="card" style="margin:10px">
+    <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">Changed your mind, ha?</h2>
+    <form class="create-post" method="post" id="post_form">
+    {% csrf_token %}
+    <div class="mb-3">
+    <label for="title">Title: </label>
+    <input id="title" type="text" name="title" value="{{post.title}}">
+    </div>
+    <div class="mb-3">
+    <label for="description">Description: </label>
+    <input id="description" type="text" name="description" value="{{ post.description }}">
+    </div>
+    <div class="mb-3">
+    <label for="contentType">ContentType: </label>
+    <input id="contentType" type="text" name="contentType" value="{{ post.contentType }}">
+    </div>
+    <div class="mb-3">
+    <label for="content">Content: </label>
+    <textarea style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}">{{post.content}}</textarea>
+    </div>
+    <div class="mb-3">
+    <label for="categories">Categories: </label>
+    <input id="categories" type="text" name="categories" value="{{ post.categories }}">
+    </div>
+    <div class="mb-3">
+    <label for="visibility">Visibility: </label>
+    {% if post.visibility == "PUBLIC" %}
+    <input id="visibility" type="radio" name="visibility" value="PUBLIC" checked>PUBLIC
+    <input id="visibility" type="radio" name="visibility" value="FRIEND">FRIEND ONLY
+    {% endif %}
+    {% if post.visibility == "FRIEND" %}
+    <input id="visibility" type="radio" name="visibility" value="PUBLIC">PUBLIC
+    <input id="visibility" type="radio" name="visibility" value="FRIEND" checked>FRIEND ONLY
+    {% endif %}
+    </div>
+    <div class="mb-3">
+    <label for="unlisted">Unlisted: </label>
+    <input id="unlisted" type="checkbox" name="unlisted">
+    </div>
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 1.7em; margin-top: 0.7em; text-align:center;">
+
+    </form>
+</div>
+{% endblock %}
