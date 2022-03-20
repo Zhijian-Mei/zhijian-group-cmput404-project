@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import django_on_heroku
 from pathlib import Path
 import os
 from urllib.parse import urlparse
@@ -136,3 +136,4 @@ LOGIN_REDIRECT_URL = "/"
 MEDIA_ROOT = os.path.join('mysite/img')
 MEDIA_URL = '/mysite/img/'
 
+django_on_heroku.settings(locals())
