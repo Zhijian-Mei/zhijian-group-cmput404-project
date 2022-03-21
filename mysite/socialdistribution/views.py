@@ -7,8 +7,9 @@ from django.shortcuts import render, redirect
 from .models import *
 from .serializers import *
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 import uuid, random
 from datetime import datetime
@@ -30,6 +31,7 @@ def get_authors(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_author(request, author_id):
     """
     GET and return specific author
@@ -400,6 +402,7 @@ def delete_post(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_author_followers(request, author_id):
     if request.method == 'GET':
         try:
@@ -418,6 +421,7 @@ def get_author_followers(request, author_id):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_author_posts(request,author_id):
     if request.method == 'GET':
         posts = PostModel.objects.order_by('-published')
@@ -427,6 +431,7 @@ def get_author_posts(request,author_id):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_author_post(request,author_id,post_id):
     if request.method == 'GET':
         posts = PostModel.objects.get(id=post_id)
@@ -434,6 +439,7 @@ def get_author_post(request,author_id,post_id):
         return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_post_comments(request,author_id,post_id):
     if request.method == 'GET':
         comments = CommentModel.objects.get(post_id=post_id)
@@ -441,6 +447,7 @@ def get_post_comments(request,author_id,post_id):
         return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_post_likes(request,author_id,post_id):
     if request.method == 'GET':
         likes = LikeModel.objects.all()
@@ -450,6 +457,7 @@ def get_post_likes(request,author_id,post_id):
         return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_author_liked(request,author_id):
     if request.method == 'GET':
         likes = LikeModel.objects.all()
