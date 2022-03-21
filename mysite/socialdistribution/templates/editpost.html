@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %} edite-post {% endblock %}
+{% block title %} edit-post {% endblock %}
 
 {% block content %}
 {% load static %}
 
 
-<div class="card" style="margin:10px">
+<div class="card" style="margin:10px" onload="loadSelection(post.contentType)">
     <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">Changed your mind, ha?</h2>
-    <form class="create-post" method="post" id="post_form">
+    <form class="create-post" method="POST" id="post_form" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
     <label for="title">Title: </label>
@@ -20,11 +20,58 @@
     </div>
     <div class="mb-3">
     <label for="contentType">ContentType: </label>
-    <input id="contentType" type="text" name="contentType" value="{{ post.contentType }}">
+    {% comment %} <input id="contentType" type="text" name="contentType" value="{{ post.contentType }}"> {% endcomment %}
+    
+    <select name="contentType" onchange="onSelectChange(value)">
+        {% if post.contentType == "text" %}
+        <option value="text" selected>Text</option>
+        <option value="markdown">Markdown</option>
+        <option value="image">Image (Upload one)</option>
+        <option value="imagesrc">Image (Provide an url)</option>
+        {% endif %}
+        {% if post.contentType == "image" %}
+        <option value="text">Text</option>
+        <option value="markdown">Markdown</option>
+        <option value="image" selected>Image (Upload one)</option>
+        <option value="imagesrc">Image (Provide an url)</option>
+        {% endif %}
+        {% if post.contentType == "imagesrc" %}
+        <option value="text">Text</option>
+        <option value="markdown">Markdown</option>
+        <option value="image">Image (Upload one)</option>
+        <option value="imagesrc" selected>Image (Provide an url)</option>
+        {% endif %}
+        {% if post.contentType == "markdown" %}
+        <option value="text">Text</option>
+        <option value="markdown" selected>Markdown</option>
+        <option value="image">Image (Upload one)</option>
+        <option value="imagesrc">Image (Provide an url)</option>
+        {% endif %}
+        </select>
     </div>
     <div class="mb-3">
-    <label for="content">Content: </label>
+    {% comment %} <label for="content">Content: </label> {% endcomment %}
+    {% if post.contentType == "text" or post.contentType == "markdown"  %}
     <textarea style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}">{{post.content}}</textarea>
+    {% else %}
+    <textarea hidden style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}">{{post.content}}</textarea>
+    {% endif %}
+    </div>
+    <div class="mb-3">
+    {% comment %} <label for="imagesrc">Provide an image link: </label> {% endcomment %}
+    {% if post.contentType == "imagesrc" %}
+    <input id="imagesrc" type="text" name="imagesrc" form="post_form" value="{{ post.imagesrc }}">
+    {% else %}
+    <input hidden id="imagesrc" type="text" name="imagesrc" form="post_form" value="{{ post.imagesrc }}">
+    {% endif %}
+    </div>
+    <div class="mb-3">
+    {% comment %} <label for="image">Upload an image: </label> {% endcomment %}
+    {% if post.contentType == "image" %}
+    <input id="image"  type="file" name="image" form="post_form" value="{{ post.image }}"  >
+    {% else %}
+    <input hidden id="image"  type="file" name="image" form="post_form" value="{{ post.image }}"  >
+    {% endif %}
     </div>
     <div class="mb-3">
     <label for="categories">Categories: </label>
@@ -50,4 +97,26 @@
 
     </form>
 </div>
+
+<script language="javascript" type="text/javascript">
+    {% comment %} function loadSelection(){
+        console.log('loadssssssssssssssssss',post.contentType)
+        document.getElementById('contentType').value=post.contentType;
+    } {% endcomment %}
+    function onSelectChange(value){
+        if (value=='text' || value=='markdown'){
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('image').style.display = 'none';
+            document.getElementById('imagesrc').style.display = 'none';
+        }else if(value=="image"){
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('image').style.display = 'block';
+            document.getElementById('imagesrc').style.display = 'none';
+        }else if(value=="imagesrc"){
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('image').style.display = 'none';
+            document.getElementById('imagesrc').style.display = 'block';
+        }
+    }
+</script> 
 {% endblock %}

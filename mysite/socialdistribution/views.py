@@ -182,13 +182,14 @@ def create_post(request):
         try:
             PostModel.objects.create(title=data['title'], id=data['id'], source=data['source'], origin=data['origin'],
                                      description=data['description'], contentType=data['contentType'],
-                                     content=data['content'], author=author_object,
+                                     content=data['content'], image_src=data['imagesrc'], image=data['image'], author=author_object,
                                      categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully created post'}
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+            
 @api_view(['GET','POST'])
 def edit_post(request,id):
     """
@@ -202,6 +203,8 @@ def edit_post(request,id):
                 'description':post_object.description,
                 'contentType':post_object.contentType,
                 'content':post_object.content,
+                'image':post_object.image,
+                'imagesrc':post_object.image_src,
                 'categories':post_object.categories,
                 'visibility':post_object.visibility,
                 'unlisted':post_object.unlisted,
@@ -218,7 +221,7 @@ def edit_post(request,id):
             unlisted = True
         try:
             PostModel.objects.filter(id=id).update(title=data['title'], description=data['description'], contentType=data['contentType'],
-                    content=data['content'], categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
+                    content=data['content'], image=data['image'], image_src=data['imagesrc'], categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully updated post'}
             return Response(message, status=status.HTTP_200_OK)
         except Exception as e:
