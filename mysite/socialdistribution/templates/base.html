@@ -41,6 +41,8 @@
   <main>
     <div class="container">
       <!--======================== LEFT ==========================-->
+
+  {% if user.is_authenticated %}
       <div class="left">
         <a class="profile" href="/myprofile/">
           <div class="profile-photo">
@@ -54,7 +56,7 @@
           </div>
         </a>
 
-        <!-------------------- SIDEBAR ------------------------->
+        <!-------------------- SIDEBAR ----------------------- -->
         <div class="sidebar">
           <a aria-current="page" href="/"
           class = "
@@ -108,18 +110,27 @@
           <label for="create-post" class="btn btn-primary">Create Post</label>
         </a> 
       </div>
-         
+       
+      {% endif %}
       <!------------------- END OF LEFT -------------------->
       <!--======================== MIDDLE ==========================-->
       <div class="middle">
 
-      {% block content %}
+
+      {% if user.is_authenticated %}
+        {% block content %}
+        {% endblock %}
+      {% else %}
+      <h1 style="color:red">Please Login First</h1>
+      {% block logincontent %}
       {% endblock %}
-      
+      {% endif %}
+
       </div>
       <!--======================== END OF MIDDLE ==========================-->
 
       <!--======================== RIGHT ==========================-->
+      {% if user.is_authenticated %}
       <div class="right">
         <div class="messages">
           <div class="heading">
@@ -183,6 +194,7 @@
         </div>
       </div>
     <!--====================== END OF RIGHT ==========================-->
+    {% endif %}
     </div>
   </main>
 </body>
