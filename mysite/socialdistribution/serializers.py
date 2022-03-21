@@ -25,3 +25,8 @@ class FollowerSerializer(serializers.ModelSerializer):
         # TODO commentsSrc
         model = FollowRequestModel
         fields = ['summary', 'accept', 'actor_id', 'object_id']
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LikeModel
+        fields = ['at_context','object','summary','actor_id','author_id']
