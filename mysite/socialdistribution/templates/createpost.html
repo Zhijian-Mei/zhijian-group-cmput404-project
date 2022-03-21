@@ -13,7 +13,7 @@
     1:{{user.authormodel.host|add:UUID}}</br>
     UUID:{{UUID}} -->
     <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">What's on your mind, {{ user.authormodel.displayName }}?</h2>
-    <form class="create-post" method="post" id="post_form">
+    <form class="create-post" method="POST" id="post_form" enctype=multipart/form-data >
         {% csrf_token %}
         <div class="mb-3">
             <input id="title" type="text" name="title" value="{{ title }}" placeholder="Title" >
@@ -22,10 +22,24 @@
             <input id="description" type="text" name="description" value="{{ description }}" placeholder="Description" >
         </div>    
         <div class="mb-3">
-            <input id="contentType" type="text" name="contentType" value="{{ contentType }}" placeholder="ContentType" >
+            {% comment %} <input id="contentType" type="text" name="contentType" value="{{ contentType }}" placeholder="ContentType" > {% endcomment %}
+            contentType
+            <select name="contentType" onchange="onSelectChange(value)">
+            <option value="text" selected>Text</option>
+            <option value="markdown">Markdown</option>
+            <option value="image">Image (Upload one)</option>
+            <option value="imagesrc">Image (Provide an url)</option>
+            </select>
         </div>    
         <div class="mb-3" >
-            <input id="content" type="text" name="content" form="post_form" value="{{ content }}" placeholder="content" >
+            <textarea style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}" placeholder="content"></textarea>
+            {% comment %} <input id="content" type="text" name="content" form="post_form" value="{{ content }}" > {% endcomment %}
+        </div>
+        <div class="mb-3">
+            <input id="imagesrc" hidden type="text" name="imagesrc" form="post_form" value="{{ imagesrc }}" placeholder="The link of Image" >
+        </div>
+        <div class="mb-3">
+            <input id="image" hidden  type="file" name="image" form="post_form" value="{{ image }}"  >
         </div>
         <div class="mb-3" >
             <input id="categories" type="text" name="categories" value="{{ categories }}" placeholder="Categories" >
@@ -39,7 +53,7 @@
             <label for="unlisted">Unlisted: </label>
             <input id="unlisted" type="checkbox" name="unlisted">
         </div>
-            <input id="id" type="hidden"name="id" value="{{UUID}}">
+            <input id="id" type="hidden" name="id" value="{{UUID}}">
 
             <input id="author" type="hidden" name="author" value={{user.authormodel.id}}>
 
@@ -54,8 +68,26 @@
     </form>
     
 </div>
-{% endblock %}
 
+<script language="javascript"  type="text/javascript">
+    function onSelectChange(value){
+        if (value=='text' || value=='markdown'){
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('image').style.display = 'none';
+            document.getElementById('imagesrc').style.display = 'none';
+        }else if(value=="image"){
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('image').style.display = 'block';
+            document.getElementById('imagesrc').style.display = 'none';
+        }else if(value=="imagesrc"){
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('image').style.display = 'none';
+            document.getElementById('imagesrc').style.display = 'block';
+        }
+    }
+</script> 
+
+{% endblock %} 
 <!-- 
 
 <form  method="post" id="post_form">
