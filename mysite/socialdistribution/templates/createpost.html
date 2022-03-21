@@ -31,7 +31,8 @@
             </select>
         </div>    
         <div class="mb-3" >
-            <input id="content" type="text" name="content" form="post_form" value="{{ content }}" placeholder="content" >
+            <textarea style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}" placeholder="content"></textarea>
+            {% comment %} <input id="content" type="text" name="content" form="post_form" value="{{ content }}" > {% endcomment %}
         </div>
         <div class="mb-3">
             <input id="imagesrc" hidden type="text" name="imagesrc" form="post_form" value="{{ imagesrc }}" placeholder="The link of Image" >
@@ -67,7 +68,7 @@
     
 </div>
 
-<script language="javascript">
+<script language="javascript"  type="text/javascript">
     function onSelectChange(value){
         if (value=='text'){
             document.getElementById('content').style.display = 'block';
