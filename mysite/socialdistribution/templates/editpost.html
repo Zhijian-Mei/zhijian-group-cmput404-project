@@ -8,7 +8,7 @@
 
 <div class="card" style="margin:10px" onload="loadSelection(post.contentType)">
     <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">Changed your mind, ha?</h2>
-    <form class="create-post" method="post" id="post_form">
+    <form class="create-post" method="POST" id="post_form" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
     <label for="title">Title: </label>

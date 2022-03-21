@@ -221,7 +221,7 @@ def edit_post(request,id):
             unlisted = True
         try:
             PostModel.objects.filter(id=id).update(title=data['title'], description=data['description'], contentType=data['contentType'],
-                    content=data['content'], categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
+                    content=data['content'], image=data['image'], image_src=data['imagesrc'], categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully updated post'}
             return Response(message, status=status.HTTP_200_OK)
         except Exception as e:
