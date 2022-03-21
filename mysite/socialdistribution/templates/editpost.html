@@ -21,28 +21,37 @@
     <div class="mb-3">
     <label for="contentType">ContentType: </label>
     {% comment %} <input id="contentType" type="text" name="contentType" value="{{ post.contentType }}"> {% endcomment %}
-    {{post.contentType}}
+    
     <select name="contentType" onchange="onSelectChange(value)">
         {% if post.contentType == "text" %}
         <option value="text" selected>Text</option>
+        <option value="markdown">Markdown</option>
         <option value="image">Image (Upload one)</option>
         <option value="imagesrc">Image (Provide an url)</option>
         {% endif %}
         {% if post.contentType == "image" %}
-        <option value="text" selected>Text</option>
+        <option value="text">Text</option>
+        <option value="markdown">Markdown</option>
         <option value="image" selected>Image (Upload one)</option>
         <option value="imagesrc">Image (Provide an url)</option>
         {% endif %}
         {% if post.contentType == "imagesrc" %}
-        <option value="text" selected>Text</option>
+        <option value="text">Text</option>
+        <option value="markdown">Markdown</option>
         <option value="image">Image (Upload one)</option>
         <option value="imagesrc" selected>Image (Provide an url)</option>
+        {% endif %}
+        {% if post.contentType == "markdown" %}
+        <option value="text">Text</option>
+        <option value="markdown" selected>Markdown</option>
+        <option value="image">Image (Upload one)</option>
+        <option value="imagesrc">Image (Provide an url)</option>
         {% endif %}
         </select>
     </div>
     <div class="mb-3">
     {% comment %} <label for="content">Content: </label> {% endcomment %}
-    {% if post.contentType == "text" %}
+    {% if post.contentType == "text" or post.contentType == "markdown"  %}
     <textarea style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}">{{post.content}}</textarea>
     {% else %}
     <textarea hidden style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}">{{post.content}}</textarea>
@@ -95,7 +104,7 @@
         document.getElementById('contentType').value=post.contentType;
     } {% endcomment %}
     function onSelectChange(value){
-        if (value=='text'){
+        if (value=='text' || value=='markdown'){
             document.getElementById('content').style.display = 'block';
             document.getElementById('image').style.display = 'none';
             document.getElementById('imagesrc').style.display = 'none';
