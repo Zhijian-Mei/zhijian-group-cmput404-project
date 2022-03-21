@@ -74,8 +74,9 @@ class LikeModel(models.Model):
     at_context = models.CharField(max_length=200)
     author = models.ForeignKey(AuthorModel, related_name=("author"), on_delete=models.CASCADE)
     actor = models.ForeignKey(AuthorModel, related_name=("actor"), on_delete=models.CASCADE)
-    object = models.CharField(max_length=200)   # linked to an author's post
+    object = models.CharField(max_length=200)   # linked to an author's posts and comments
     summary = models.CharField(max_length=200)
+
 
 class InboxModel(models.Model):
     author = models.CharField(max_length=200)
