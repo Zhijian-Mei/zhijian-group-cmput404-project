@@ -6,10 +6,12 @@
 
 {% load static %}
 
+{% load markdown_extras %}
+
 <!-- <img src="{{image}}" width="200" height=auto > -->
 <div class="feeds">
     {% for post in posts_list %}
-    <!------------------- FEED 1 --------------------->
+    <!------------------- FEED 1 ------------------- -->
     <div class="feed">
         <div class="head">
             <div class="user">
@@ -29,6 +31,9 @@
 
         <div class="photo">
             <h3> <span id= "syschar"> {{post.content}} </span> </h3>
+            {% comment %} an example for markdown posts, use if statenebt
+             <h3> <span id= "syschar"> {{post.content | markdown | safe}} </span> </h3> 
+            {% endcomment %}
         </div>
         <button type="button" style="font-size: 0.8em;" class="btn btn-primary" onclick="location.href='edit/{{post.id}}'">Edit</button>
 
