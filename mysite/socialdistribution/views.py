@@ -436,7 +436,8 @@ def get_author_post(request,author_id,post_id):
 @api_view(['GET'])
 def get_post_comments(request,author_id,post_id):
     if request.method == 'GET':
-        comments = CommentModel.objects.get(post_id=post_id)
+        comments = CommentModel.objects.all()
+        comments = comments.filter(post_id=post_id)
         serializer = CommentSerializer(comments)
         return Response(serializer.data)
 
