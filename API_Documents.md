@@ -166,3 +166,51 @@
 
 ```
 
+**Request URL** 
+- ` https://cmput404-project-t12.herokuapp.com/service/post/ `
+  
+**Request Method**
+- GET 
+
+
+
+**Return Exampl**
+
+``` 
+[
+  {
+    "title": "zhijian1 post",
+    "id": "dc08e5e2-038b-479b-b509-2a6d7b9298ad",
+    "source": "https://cmput404-project-t12.herokuapp.com/posts/dc08e5e2-038b-479b-b509-2a6d7b9298ad",
+    "origin": "https://cmput404-project-t12.herokuapp.com/posts/dc08e5e2-038b-479b-b509-2a6d7b9298ad",
+    "description": "zhijian1 post",
+    "contentType": "text",
+    "content": "zhijian1 post",
+    "author": "32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a",
+    "categories": "undefined",
+    "like_count": 3,
+    "comments": "",
+    "published": "2022-03-21T22:44:16.876579Z",
+    "visibility": "PUBLIC",
+    "unlisted": false
+  },
+  {
+    "title": "zhijian2 post",
+    "id": "43ed971a-4f35-4fae-b161-a5a44f53aa2a",
+    "source": "https://cmput404-project-t12.herokuapp.com/posts/43ed971a-4f35-4fae-b161-a5a44f53aa2a",
+    "origin": "https://cmput404-project-t12.herokuapp.com/posts/43ed971a-4f35-4fae-b161-a5a44f53aa2a",
+    "description": "zhijian2 post",
+    "contentType": "text",
+    "content": "zhijian2 post1",
+    "author": "813c85e3-9c90-4f3e-a626-bf311cacc1a9",
+    "categories": "undefined",
+    "like_count": 2,
+    "comments": "",
+    "published": "2022-03-21T22:44:12.661304Z",
+    "visibility": "PUBLIC",
+    "unlisted": false
+  }
+]
+
+```
+
