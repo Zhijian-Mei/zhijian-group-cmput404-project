@@ -54,4 +54,5 @@ urlpatterns = [
     path('mysubscriptions/', views.my_subscriptions),
     path('friendonly/', views.friend_only),
     path('inbox/', views.like_and_share),
+    path('foreign_posts/',views.get_foreign_posts)
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
