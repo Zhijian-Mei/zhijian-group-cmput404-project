@@ -30,9 +30,15 @@
             <img src=" {{ user.authormodel.profileImage.url }}">
           </div>
         </a>
+        {% if user.is_authenticated %}
         <a href="/logout/">
           <label class="btn btn-primary" for="Logout">Logout</label>
         </a>
+        {% else %}
+        <a href="/login/">
+          <label class="btn btn-primary" for="Login">Login</label>
+        </a>
+        {% endif %}
       </div>
     </div>
   </nav>
