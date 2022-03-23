@@ -172,9 +172,13 @@
 **Request Method**
 - GET 
 
+**Notice**
+- For contentType, we are restrict them to "text","markdown","image",and "imagesrc"
+- if the contentType is text or markdown, the data will be saved into content field,
+- if the contentType is image, the data will be saved into image field,
+- if the contentType is imagesrc, the data will be saved into image_src field,
 
-
-**Return Exampl**
+**Return Example**
 
 ``` 
 [
@@ -186,6 +190,8 @@
     "description": "zhijian1 post",
     "contentType": "text",
     "content": "zhijian1 post",
+    "image":null,
+    "image_src":"",
     "author": "32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a",
     "categories": "undefined",
     "like_count": 3,
@@ -202,6 +208,8 @@
     "description": "zhijian2 post",
     "contentType": "text",
     "content": "zhijian2 post1",
+    "image":null,
+    "image_src":"",
     "author": "813c85e3-9c90-4f3e-a626-bf311cacc1a9",
     "categories": "undefined",
     "like_count": 2,
