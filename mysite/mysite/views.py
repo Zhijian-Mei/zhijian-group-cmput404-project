@@ -252,7 +252,7 @@ def show_image(request,image_url):
     image = open(path,"rb")
     return HttpResponse(image.read(),content_type='image/jpg')
 
-def get_foreign_posts(request):
+def get_foreign_posts_t13(request):
     url = 'https://socialdistribution-t13.herokuapp.com/api/v1/'
     url = url + 'authors/'
     r = requests.get(url,auth=('group_12','ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'))
@@ -264,11 +264,40 @@ def get_foreign_posts(request):
     url_base = url
     posts_list =[]
     for id in author_id_list:
-        url = url + '{}/'.format(id) + 'posts/'
-        r = requests.get(url, auth=('group_12', 'ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'))
-        for post in json.loads(r.content)['items']:
-            posts_list.append(post)
         url = url_base
-    posts_list.sort(key=lambda x:x['published'],reverse=True)
+        url = url + '{}/'.format(id) + 'posts/'
+        try:
+            r = requests.get(url, auth=('group_12', 'ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'),timeout=5)
+            for post in json.loads(r.content)['items']:
+                posts_list.append(post)
+        except Exception as e:
+            pass
+        continue
+    print(1111,posts_list)
+    return posts_list
+
+def get_foreign_posts_t11(request):
+    url = 'https://psdt11.herokuapp.com/authors/'
+    r = requests.get(url, auth=('team12', 'team12'))
+    authors = json.loads(r.content)['items']
+    posts_list = []
+    for author in authors:
+        url = author['url'] + '/posts/'
+        try:
+            r = requests.get(url, auth=('team12', 'team12'),timeout=5)
+            for post in json.loads(r.content)['items']:
+                posts_list.append(post)
+        except Exception as e:
+            pass
+        continue
+    print(22222,posts_list)
+    return posts_list
+
+
+def get_foreign_posts(request):
+    posts_list = []
+    posts_list.extend(get_foreign_posts_t13(request))
+    posts_list.extend(get_foreign_posts_t11(request))
+    posts_list.sort(key=lambda x: x['published'], reverse=True)
     data = {'posts_list': posts_list}
     return render(request, "foreignpost.html", data)
