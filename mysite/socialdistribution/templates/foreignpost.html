@@ -1,12 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Foreign Posts</title>
-</head>
-<body>
-{% for post in posts_list %}
-    {{post}}<br><br>
+{% extends 'base.html' %}
+
+{% block title %} Foreign {% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="feeds">
+    {% for post in posts_list %}
+    <!------------------- FEED 1 --------------------->
+    <div class="feed">
+        <div class="head">
+            <div class="user">
+                <div class="ingo">
+                    {%if post.id is string %}
+                        <h2>{{post.author.display_name}}</h2>
+                    {% else %}
+                        <div class="profile-photo">
+                            <img src="{{ post.author.profileImage }}">
+                        </div>
+                        <h2 style="display: inline" >{{post.author.displayName}}</h2>
+                        <h1>{{post.title}}</h1>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="photo">
+            {%if post.contentType == "text/plain" %}
+                <h3> <span id= "syschar"> {{post.content}} </span> </h3>
+            {% endif %}
+            {%if post.contentType == "image/jpeg;base64" %}
+                <img src="{{ post.content }}">
+            {% endif %}
+        </div>
+    </div>
 {% endfor %}
-</body>
-</html>
+</div>
+{% endblock %}

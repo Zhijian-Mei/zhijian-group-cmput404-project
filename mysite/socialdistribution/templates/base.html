@@ -66,57 +66,66 @@
         <div class="sidebar">
           <a aria-current="page" href="/"
           class = "
-          {% if request.path == '/'%} 
-          menu-item active 
-          {% else %} 
-          menu-item 
+          {% if request.path == '/'%}
+          menu-item active
+          {% else %}
+          menu-item
           {% endif %}"
           >
           <span><i class="uil uil-home"></i></span><h3>Home</h3>
           </a>
           <a href="/myprofile/"
           class = "
-          {% if request.path == '/myprofile/'%} 
-          menu-item active 
-          {% else %} 
-          menu-item 
+          {% if request.path == '/myprofile/'%}
+          menu-item active
+          {% else %}
+          menu-item
           {% endif %}">
           <span><i class="uil uil-user"></i></span><h3>Profile</h3>
           </a>
           <a href="/mypost/"
           class = "
-          {% if request.path == '/mypost/'%} 
-          menu-item active 
-          {% else %} 
-          menu-item 
+          {% if request.path == '/mypost/'%}
+          menu-item active
+          {% else %}
+          menu-item
           {% endif %}">
           <span><i class="uil uil-shutter-alt"></i></span><h3>My Posts</h3>
-          </a>  
+          </a>
           <a href="/friendonly/"
           class = "
-          {% if request.path == '/friendonly/'%} 
-          menu-item active 
-          {% else %} 
-          menu-item 
+          {% if request.path == '/friendonly/'%}
+          menu-item active
+          {% else %}
+          menu-item
           {% endif %}">
           <span><i class="uil uil-users-alt"></i></span><h3>Friends</h3>
           </a>
           <a href="/mysubscriptions/"
           class = "
-          {% if request.path == '/mysubscriptions/'%} 
-          menu-item active 
-          {% else %} 
-          menu-item 
+          {% if request.path == '/mysubscriptions/'%}
+          menu-item active
+          {% else %}
+          menu-item
           {% endif %}">
           <span><i class="uil uil-bookmark"></i></span><h3>Subscrips</h3>
-          </a>              
+          </a>
+          <a href="/foreign_posts/"
+          class = "
+          {% if request.path == '/foreign_posts/'%}
+          menu-item active
+          {% else %}
+          menu-item
+          {% endif %}">
+          <span><i class="uil uil-arrow-right"></i></span><h3>Foreign</h3>
+          </a>
         </div>
         <!------------------- END OF SIDEBAR -------------------->
-        <a  href="/mypost/create/">  
+        <a  href="/mypost/create/">
           <label for="create-post" class="btn btn-primary">Create Post</label>
-        </a> 
+        </a>
       </div>
-       
+
       {% endif %}
       <!------------------- END OF LEFT -------------------->
       <!--======================== MIDDLE ==========================-->
@@ -205,5 +214,3 @@
   </main>
 </body>
 </html>
-
-
