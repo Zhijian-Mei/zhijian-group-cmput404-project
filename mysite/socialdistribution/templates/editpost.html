@@ -56,16 +56,14 @@
     {% else %}
     <textarea hidden style="height: 5em;" id="content" type="text" name="content" form="post_form" value="{{ post.content }}">{{post.content}}</textarea>
     {% endif %}
-    </div>
-    <div class="mb-3">
+
     {% comment %} <label for="imagesrc">Provide an image link: </label> {% endcomment %}
     {% if post.contentType == "imagesrc" %}
     <input id="imagesrc" type="text" name="imagesrc" form="post_form" value="{{ post.imagesrc }}">
     {% else %}
     <input hidden id="imagesrc" type="text" name="imagesrc" form="post_form" value="{{ post.imagesrc }}">
     {% endif %}
-    </div>
-    <div class="mb-3">
+    
     {% comment %} <label for="image">Upload an image: </label> {% endcomment %}
     {% if post.contentType == "image" %}
     <input id="image"  type="file" name="image" form="post_form" value="{{ post.image }}"  >
