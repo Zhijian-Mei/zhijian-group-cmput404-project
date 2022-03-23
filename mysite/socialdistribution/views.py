@@ -444,7 +444,7 @@ def get_post_comments(request,author_id,post_id):
     if request.method == 'GET':
         comments = CommentModel.objects.all()
         comments = comments.filter(post_id=post_id)
-        serializer = CommentSerializer(comments)
+        serializer = CommentSerializer(comments,many=True)
         return Response(serializer.data)
 
 @api_view(['GET'])
@@ -466,3 +466,4 @@ def get_author_liked(request,author_id):
         serializer = LikeSerializer(likes, many=True)
         print(12312312,serializer.data)
         return Response(serializer.data)
+

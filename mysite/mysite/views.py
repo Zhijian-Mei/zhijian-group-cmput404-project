@@ -6,6 +6,8 @@ import json
 import uuid, random
 from pathlib import Path
 import os
+import requests
+import json
 
 from socialdistribution import views
 
@@ -249,3 +251,24 @@ def show_image(request,image_url):
     print('path: ',path)
     image = open(path,"rb")
     return HttpResponse(image.read(),content_type='image/jpg')
+
+def get_foreign_posts(request):
+    url = 'https://socialdistribution-t13.herokuapp.com/api/v1/'
+    url = url + 'authors/'
+    r = requests.get(url,auth=('group_12','ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'))
+    authors = json.loads(r.content)['items']
+    author_number = len(authors)
+    author_id_list = []
+    for i in range(author_number):
+        author_id_list.append(authors[i]['id'])
+    url_base = url
+    posts_list =[]
+    for id in author_id_list:
+        url = url + '{}/'.format(id) + 'posts/'
+        r = requests.get(url, auth=('group_12', 'ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'))
+        for post in json.loads(r.content)['items']:
+            posts_list.append(post)
+        url = url_base
+    posts_list.sort(key=lambda x:x['published'],reverse=True)
+    data = {'posts_list': posts_list}
+    return render(request, "foreignpost.html", data)
