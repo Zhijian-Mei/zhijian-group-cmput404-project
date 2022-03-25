@@ -64,14 +64,6 @@
     "contentType": "text",
     "content": "zhijian1 post",
     "author": "32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a",
-    "author_object": {
-        "id": "32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a",
-        "host": "http://127.0.0.1:8000/",
-        "displayName": "1",
-        "github": "1",
-        "profileImage": "/mysite/img/img_RFvSJcr.webp",
-        "user": 2
-    },
     "categories": "undefined",
     "like_count": 2,
     "comments": "",
