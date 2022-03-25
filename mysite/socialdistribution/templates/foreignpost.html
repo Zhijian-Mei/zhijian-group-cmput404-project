@@ -6,11 +6,12 @@
 {% load static %}
 <div class="feeds">
     {% for post in posts_list %}
-    <!------------------- FEED 1 --------------------->
+    <!------------------- FEED 1 ------------------- -->
     <div class="feed">
         <div class="head">
             <div class="user">
                 <div class="ingo">
+                    <span>This is a post from {{post.from}}</span>
                     {%if post.id is string %}
                         <h2>{{post.author.display_name}}</h2>
                     {% else %}
