@@ -103,7 +103,6 @@ def my_post(request):
         image = str(request.user.authormodel.profileImage)
         print(1235134513451234,image)
         posts = views.mypost_list(request)
-        print('posts.data:',posts.data)
         posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
         # print('posts list::::::', posts_list)
         comments = views.mycomment_list(request)
@@ -112,7 +111,6 @@ def my_post(request):
         authors = views.author_list(request)
         authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
         data = {'posts_list': posts_list, 'comments_list': comments_list,'image':image, 'authors_list': authors_list}
-        print('data:',data)
         return render(request, "mypost.html",data)
     if request.method == "POST":
         result = views.comment_post(request)
