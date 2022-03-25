@@ -1,3 +1,4 @@
+##Author
 **Request URL**
 - ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a `
 
@@ -19,6 +20,7 @@
 
 ```
 
+##Followers
 **Request URL**
 - ` https://cmput404-project-t12.herokuapp.com/service/authors/813c85e3-9c90-4f3e-a626-bf311cacc1a9/followers `
 
@@ -42,7 +44,7 @@
 
 ```
 
-
+##Posts
 **Request URL**
 - ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a/posts `
 
@@ -75,7 +77,7 @@
 
 ```
 
-
+##Post
 **Request URL**
 - ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a/posts/dc08e5e2-038b-479b-b509-2a6d7b9298ad `
 
@@ -106,7 +108,7 @@
 
 ```
 
-
+##Like
 **Request URL**
 - ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a/posts/dc08e5e2-038b-479b-b509-2a6d7b9298ad/likes `
 
@@ -143,6 +145,7 @@
 
 ```
 
+##Liked
 **Request URL**
 - ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a/liked `
 
@@ -166,6 +169,7 @@
 
 ```
 
+##Post_List
 **Request URL** 
 - ` https://cmput404-project-t12.herokuapp.com/service/post/ `
   
