@@ -48,6 +48,7 @@ def get_author(request, author_id):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def post_list(request):
     """
     List all Posts
@@ -425,7 +426,7 @@ def get_author_followers(request, author_id):
 def get_author_posts(request,author_id):
     if request.method == 'GET':
         posts = PostModel.objects.order_by('-published')
-        posts = posts.filter(author_id=author_id)
+        posts = posts.filter(author=author_id)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
