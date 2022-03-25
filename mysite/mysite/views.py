@@ -104,7 +104,7 @@ def my_post(request):
         print(1235134513451234,image)
         posts = views.mypost_list(request)
         posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
-        #print('posts list::::::', posts_list)
+        # print('posts list::::::', posts_list)
         comments = views.mycomment_list(request)
         comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
         #print('comments list::::::', comments_list)
