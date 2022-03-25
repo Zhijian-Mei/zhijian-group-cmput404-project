@@ -12,15 +12,11 @@
             <div class="user">
                 <div class="ingo">
                     <span>This is a post from {{post.from}}</span>
-                    {%if post.id is string %}
-                        <h2>{{post.author.display_name}}</h2>
-                    {% else %}
                         <div class="profile-photo">
                             <img src="{{ post.author.profileImage }}">
                         </div>
                         <h2 style="display: inline" >{{post.author.displayName}}</h2>
                         <h1>{{post.title}}</h1>
-                    {% endif %}
                 </div>
             </div>
         </div>
