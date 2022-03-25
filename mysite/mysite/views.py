@@ -312,7 +312,50 @@ def team13_contentType_adaptor(data):
     if data=="text/plain":
         return "text"
 
-    
+def get_foreign_posts_t5(request):
+    url = 'https://cmput404-w22-project-backend.herokuapp.com/service/'
+    url = url + 'authors/'
+    r = requests.get(url,auth=('proxy','proxy123!'))
+    authors = json.loads(r.content)['items']
+    author_number = len(authors)
+    author_id_list = []
+    for i in range(author_number):
+        id = authors[i]['id'].split("/")[4]
+        #print(id)
+        author_id_list.append(id)
+    url_base = url
+    posts_list =[]
+    for id in author_id_list:
+        url = url_base
+        url = url + id + '/posts/'
+        r = requests.get(url,auth=('proxy','proxy123!'))
+        for post in json.loads(r.content)['items']:
+            author = post['author']
+            author['host']='https://cmput404-w22-project-backend.herokuapp.com/'
+            data={
+                "from":"TEAM05",
+                "type":"post",
+                "title":post['title'],
+                "id":str(post['id']),
+                "source":'',
+                "origin":'',
+                "description":post['description'],
+                "contentType":team13_contentType_adaptor(post['contentType']),
+                "content":post['content'],
+                "author":author,
+                "categories":post['categories'],
+                "count":post['count'],
+                "likecount":post['likeCount'],
+                "comments":post['comments'],
+                "commentsSrc":post['commentsSrc'],
+                "published":post['published'],
+                "visibility":post['visibility'],
+                "unlisted":post['unlisted'],
+            }
+            #print(data)
+            posts_list.append(data)
+    # print('\n\n\n\n\n111111\n\n\n\n',posts_list)
+    return posts_list
 
 def get_foreign_posts_t11(request):
     url = 'https://psdt11.herokuapp.com/authors/'
@@ -394,6 +437,7 @@ def get_foreign_posts(request):
     posts_list.extend(get_foreign_posts_t13(request))
     posts_list.extend(get_foreign_posts_t11(request))
     posts_list.extend(get_foreign_posts_t6(request))
+    posts_list.extend(get_foreign_posts_t5(request))
     posts_list.sort(key=lambda x: x['published'], reverse=True)
     data = {'posts_list': posts_list}
     return render(request, "foreignpost.html", data)
