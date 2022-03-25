@@ -324,7 +324,25 @@ def get_foreign_posts_t11(request):
         try:
             r = requests.get(url, auth=('team12', 'team12'),timeout=5)
             for post in json.loads(r.content)['items']:
-                posts_list.append(post)
+                posts_list.append({
+                    "from": "TEAM11",
+                    "type": "post",
+                    "title": post['title'],
+                    "id": str(post['id']),
+                    "source": '',
+                    "origin": '',
+                    "description": post['description'],
+                    "contentType": team11_contentType_adaptor(post['content_type']),
+                    "content": post['content'],
+                    "author": post['author'],
+                    "categories": '',
+                    "count": post['count'],
+                    "comments": post['comments'],
+                    "commentsSrc": post['comment_src'],
+                    "published": post['published'],
+                    "visibility": post['visibility'],
+                    "unlisted": post['unlisted'],
+                })
         except Exception as e:
             pass
         continue
