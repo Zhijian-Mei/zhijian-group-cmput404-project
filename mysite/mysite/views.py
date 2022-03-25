@@ -271,12 +271,48 @@ def get_foreign_posts_t13(request):
         try:
             r = requests.get(url, auth=('group_12', 'ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'),timeout=5)
             for post in json.loads(r.content)['items']:
-                posts_list.append(post)
+                author = post['author']
+                author['host']='https://socialdistribution-t13.herokuapp.com/'
+                data={
+                    "from":"TEAM13",
+                    "type":"post",
+                    "title":post['title'],
+                    "id":str(post['id']),
+                    "source":post['source'],
+                    "origin":post['origin'],
+                    "description":post['description'],
+                    "contentType":team13_contentType_adaptor(post['contentType']),
+                    "content":post['content'],
+                    "author":author,
+                    "categories":post['categories'],
+                    "count":post['count'],
+                    "comments":'',
+                    "commentsSrc":{
+                        "type":"comments",
+                        "page":0,
+                        'size':0,
+                        'post':'',
+                        'id':'',
+                        'comments':[]
+                    },
+                    "published":post['published'],
+                    "visibility":post['visibility'],
+                    "unlisted":post['unlisted'],
+                }
+                posts_list.append(data)
         except Exception as e:
             pass
         continue
-    print(1111,posts_list)
+    # print('\n\n\n\n\n111111\n\n\n\n',posts_list)
     return posts_list
+
+def team13_contentType_adaptor(data):
+    if data=="image/jpeg;base64":
+        return "image"
+    if data=="text/plain":
+        return "text"
+
+    
 
 def get_foreign_posts_t11(request):
     url = 'https://psdt11.herokuapp.com/authors/'
@@ -292,7 +328,7 @@ def get_foreign_posts_t11(request):
         except Exception as e:
             pass
         continue
-    print(22222,posts_list)
+    # print(22222,posts_list)
     return posts_list
 
 def get_foreign_posts_t6(request):
@@ -320,7 +356,7 @@ def get_foreign_posts_t6(request):
             "visibility":post['visibility'],
             "unlisted":post['unlisted'],
         })
-    print('\n\n\nt6\n\n\n\n',posts_list)
+    # print('\n\n\nt6\n\n\n\n',posts_list)
     return posts_list
 
 def get_foreign_posts(request):
