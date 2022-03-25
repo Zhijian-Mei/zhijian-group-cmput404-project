@@ -26,10 +26,10 @@
         </div>
 
         <div class="photo">
-            {%if post.contentType == "text/plain" %}
+            {%if post.contentType == "text" %}
                 <h3> <span id= "syschar"> {{post.content}} </span> </h3>
             {% endif %}
-            {%if post.contentType == "image/jpeg;base64" %}
+            {%if post.contentType == "image" %}
                 <img src="{{ post.content }}">
             {% endif %}
         </div>
