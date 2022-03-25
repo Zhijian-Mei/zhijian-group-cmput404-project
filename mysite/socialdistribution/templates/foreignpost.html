@@ -33,6 +33,17 @@
                 <img src="{{ post.content }}">
             {% endif %}
         </div>
+        <h2> Comments... </h2>
+        {% for comment in post.commentsSrc %}
+        <span id= "syschar">
+            {{comment.author.displayName}}
+            {{comment.published}}
+            <strong>
+                {{comment.comment}}
+            </strong>
+            <br>
+        {% endfor %}
+        </span>
     </div>
 {% endfor %}
 </div>
