@@ -303,7 +303,7 @@ def get_foreign_posts_t13(request):
         except Exception as e:
             pass
         continue
-    # print('\n\n\n\n\n111111\n\n\n\n',posts_list)
+    print('\n\n\n\n\n111111\n\n\n\n',posts_list)
     return posts_list
 
 def team13_contentType_adaptor(data):
@@ -337,6 +337,13 @@ def get_foreign_posts_t6(request):
     posts = json.loads(r.content)['items']
     posts_list = []
     for post in posts:
+        contentType = post['content']
+        if contentType=="text/plain":
+            contentType="text"
+        commentSrc = post['commentsSrc']
+        commentSrc['type']='comments'
+        commentSrc['id']=''
+        commentSrc['post']=''
         posts_list.append({
             "from":"TEAM6",
             "type":"post",
@@ -345,13 +352,13 @@ def get_foreign_posts_t6(request):
             "source":post['source'],
             "origin":post['origin'],
             "description":post['description'],
-            "contentType":post['contentType'],
+            "contentType":contentType,
             "content":post['content'],
             "author":post['author'],
             "categories":post['categories'],
             "count":post['count'],
             "comments":post['comments'],
-            "commentsSrc":post['commentsSrc'],
+            "commentsSrc":commentSrc,
             "published":post['published'],
             "visibility":post['visibility'],
             "unlisted":post['unlisted'],
