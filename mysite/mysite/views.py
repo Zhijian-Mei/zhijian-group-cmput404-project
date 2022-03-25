@@ -303,7 +303,7 @@ def get_foreign_posts_t13(request):
         except Exception as e:
             pass
         continue
-    # print('\n\n\n\n\n111111\n\n\n\n',posts_list)
+    print('\n\n\n\n\n111111\n\n\n\n',posts_list)
     return posts_list
 
 def team13_contentType_adaptor(data):
@@ -324,12 +324,35 @@ def get_foreign_posts_t11(request):
         try:
             r = requests.get(url, auth=('team12', 'team12'),timeout=5)
             for post in json.loads(r.content)['items']:
-                posts_list.append(post)
+                posts_list.append({
+                    "from": "TEAM11",
+                    "type": "post",
+                    "title": post['title'],
+                    "id": str(post['id']),
+                    "source": '',
+                    "origin": '',
+                    "description": post['description'],
+                    "contentType": team11_contentType_adaptor(post['content_type']),
+                    "content": post['content'],
+                    "author": post['author'],
+                    "categories": '',
+                    "count": post['count'],
+                    "comments": post['comments'],
+                    "commentsSrc": post['comment_src'],
+                    "published": post['published'],
+                    "visibility": post['visibility'],
+                    "unlisted": post['unlisted'],
+                })
         except Exception as e:
             pass
         continue
     # print(22222,posts_list)
     return posts_list
+
+
+def team11_contentType_adaptor(data):
+    if data=="text/plain":
+        return "text"
 
 def get_foreign_posts_t6(request):
     url = 'http://team06-backend-social-dist.herokuapp.com/posts/'
@@ -337,6 +360,13 @@ def get_foreign_posts_t6(request):
     posts = json.loads(r.content)['items']
     posts_list = []
     for post in posts:
+        contentType = post['content']
+        if contentType=="text/plain":
+            contentType="text"
+        commentSrc = post['commentsSrc']
+        commentSrc['type']='comments'
+        commentSrc['id']=''
+        commentSrc['post']=''
         posts_list.append({
             "from":"TEAM6",
             "type":"post",
@@ -345,13 +375,13 @@ def get_foreign_posts_t6(request):
             "source":post['source'],
             "origin":post['origin'],
             "description":post['description'],
-            "contentType":post['contentType'],
+            "contentType":contentType,
             "content":post['content'],
             "author":post['author'],
             "categories":post['categories'],
             "count":post['count'],
             "comments":post['comments'],
-            "commentsSrc":post['commentsSrc'],
+            "commentsSrc":commentSrc,
             "published":post['published'],
             "visibility":post['visibility'],
             "unlisted":post['unlisted'],
