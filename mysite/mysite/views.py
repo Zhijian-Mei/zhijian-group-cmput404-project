@@ -295,11 +295,39 @@ def get_foreign_posts_t11(request):
     print(22222,posts_list)
     return posts_list
 
+def get_foreign_posts_t6(request):
+    url = 'http://team06-backend-social-dist.herokuapp.com/posts/'
+    r = requests.get(url, auth=('team12', 'cmput404'))
+    posts = json.loads(r.content)['items']
+    posts_list = []
+    for post in posts:
+        posts_list.append({
+            "from":"TEAM6",
+            "type":"post",
+            "title":post['title'],
+            "id":post['id'],
+            "source":post['source'],
+            "origin":post['origin'],
+            "description":post['description'],
+            "contentType":post['contentType'],
+            "content":post['content'],
+            "author":post['author'],
+            "categories":post['categories'],
+            "count":post['count'],
+            "comments":post['comments'],
+            "commentsSrc":post['commentsSrc'],
+            "published":post['published'],
+            "visibility":post['visibility'],
+            "unlisted":post['unlisted'],
+        })
+    print('\n\n\nt6\n\n\n\n',posts_list)
+    return posts_list
 
 def get_foreign_posts(request):
     posts_list = []
     posts_list.extend(get_foreign_posts_t13(request))
     posts_list.extend(get_foreign_posts_t11(request))
+    posts_list.extend(get_foreign_posts_t6(request))
     posts_list.sort(key=lambda x: x['published'], reverse=True)
     data = {'posts_list': posts_list}
     return render(request, "foreignpost.html", data)
