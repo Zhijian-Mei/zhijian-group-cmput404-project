@@ -48,6 +48,7 @@ def get_author(request, author_id):
 
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def post_list(request):
     """
     List all Posts
