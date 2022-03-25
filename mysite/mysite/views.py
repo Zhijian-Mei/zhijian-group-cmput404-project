@@ -349,6 +349,11 @@ def get_foreign_posts_t11(request):
     # print(22222,posts_list)
     return posts_list
 
+
+def team11_contentType_adaptor(data):
+    if data=="text/plain":
+        return "text"
+
 def get_foreign_posts_t6(request):
     url = 'http://team06-backend-social-dist.herokuapp.com/posts/'
     r = requests.get(url, auth=('team12', 'cmput404'))
