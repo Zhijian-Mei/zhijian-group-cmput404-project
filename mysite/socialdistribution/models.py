@@ -48,6 +48,7 @@ class PostModel(models.Model):
     image = models.ImageField(verbose_name='post_image',upload_to='',null=True)
     image_src = models.CharField(max_length=2000, blank=True)
     author = models.ForeignKey(AuthorModel, related_name=("post"), on_delete=models.CASCADE, null=True)
+    author_object = models.ForeignKey(AuthorModel, related_name=("post_obj"), on_delete=models.CASCADE, null=True)
     categories = models.CharField(max_length=200)
     like_count = models.IntegerField(default=0)
     comments = models.CharField(max_length=200, blank=True)
