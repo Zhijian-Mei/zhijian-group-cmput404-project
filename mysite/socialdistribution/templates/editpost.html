@@ -94,6 +94,13 @@
     <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 1.7em; margin-top: 0.7em; text-align:center;">
 
     </form>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </div>
 
 <script language="javascript" type="text/javascript">

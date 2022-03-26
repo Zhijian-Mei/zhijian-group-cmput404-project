@@ -1,6 +1,7 @@
 from logging import exception
 from django.shortcuts import render
 from django.db.models import Q
+from django.contrib import messages
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -196,9 +197,11 @@ def create_post(request):
                                      author=author_object,author_object=author_object,
                                      categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully created post'}
+            messages.success(request, 'Post is created successfully!')
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
             message = {'error:', e}
+            messages.error(request, 'Failed to create the post, ERROR: '+str(e))
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -238,9 +241,11 @@ def edit_post(request, id):
                                                    image_src=data['imagesrc'], categories=data['categories'],
                                                    visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully updated post'}
+            messages.success(request, 'Post is changed successfully!')
             return Response(message, status=status.HTTP_200_OK)
         except Exception as e:
             message = {'error:', e}
+            messages.error(request, 'Failed to change the post, ERROR: '+str(e))
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
