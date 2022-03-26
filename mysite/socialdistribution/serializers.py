@@ -9,10 +9,11 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorModel.id
+    author_object = AuthorSerializer()
     class Meta:
         # TODO commentsSrc
         model = PostModel
-        fields = ['title', 'id', 'source', 'origin', 'description', 'contentType','content','image','image_src','author','categories','like_count','comments','published','visibility','unlisted']
+        fields = ['title', 'id', 'source', 'origin', 'description', 'contentType','content','image','image_src','author','author_object','categories','like_count','comments','published','visibility','unlisted']
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

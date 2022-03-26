@@ -5,9 +5,11 @@
 {% block content %}
 {% load static %}
 
+{% load markdown_extras %}
+
 <div class="feeds">
     {% for post in posts_list %}
-    <!------------------- FEED 1 --------------------->
+    <!------------------- FEED 1 ------------------- -->
     <div class="feed">
         <div class="head">
             <div class="user">
@@ -23,7 +25,15 @@
         </div>
 
         <div class="photo">
+            {% if post.contentType == 'text' %}
             <h3> <span id= "syschar"> {{post.content}} </span> </h3>
+            {% elif post.contentType == 'markdown' %}
+             <h3> <span id= "syschar"> {{post.content | markdown | safe}} </span> </h3> 
+            {% elif post.contentType == 'imagesrc' %}
+            <span> <image src="{{post.image_src}}" alt="image load failed"> </span>
+            {% elif post.contentType == 'image' %}
+                <span> <image src="{{post.image}}" alt="image load failed"> </span>
+            {% endif %}
         </div>
 
         <div class="action-buttons">

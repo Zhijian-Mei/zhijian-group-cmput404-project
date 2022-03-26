@@ -193,7 +193,7 @@ def create_post(request):
             PostModel.objects.create(title=data['title'], id=data['id'], source=data['source'], origin=data['origin'],
                                      description=data['description'], contentType=data['contentType'],
                                      content=data['content'], image_src=data['imagesrc'], image=data['image'],
-                                     author=author_object,
+                                     author=author_object,author_object=author_object,
                                      categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully created post'}
             return Response(message, status=status.HTTP_201_CREATED)

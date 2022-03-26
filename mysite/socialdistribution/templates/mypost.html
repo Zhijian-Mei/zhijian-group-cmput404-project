@@ -30,10 +30,15 @@
         </div>
 
         <div class="photo">
+            {% if post.contentType == 'text' %}
             <h3> <span id= "syschar"> {{post.content}} </span> </h3>
-            {% comment %} an example for markdown posts, use if statenebt
+            {% elif post.contentType == 'markdown' %}
              <h3> <span id= "syschar"> {{post.content | markdown | safe}} </span> </h3> 
-            {% endcomment %}
+            {% elif post.contentType == 'imagesrc' %}
+            <span> <image src="{{post.image_src}}" alt="image load failed"> </span>
+            {% elif post.contentType == 'image' %}
+                <span> <image src="{{post.image}}" alt="image load failed"> </span>
+            {% endif %}
         </div>
         <button type="button" style="font-size: 0.8em;" class="btn btn-primary" onclick="location.href='edit/{{post.id}}'">Edit</button>
 
