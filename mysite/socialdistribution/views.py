@@ -47,6 +47,21 @@ def get_author(request, author_id):
             data = {'error': str(e)}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def my_author(request):
+    """
+    GET and return specific author
+    """
+    if request.method == 'GET':
+        try:
+            author = AuthorModel.objects.get(id=request.user.authormodel.id)
+            serializer = AuthorSerializer(author)
+            return Response(serializer.data)
+        # TODO polish error message
+        except Exception as e:
+            data = {'error': str(e)}
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -138,6 +153,17 @@ def mycomment_list(request):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+@api_view(['GET', 'POST'])
+def myfriend_list(request):
+    """
+    List all Friends
+    """
+    if request.method == 'GET':
+        friends = FollowRequestModel.objects.order_by('-summary')
+        friends = friends.filter((Q(actor_id=request.user.authormodel) | Q(object_id=request.user.authormodel)), accept=1)
+        serializer = FollowerSerializer(friends, many=True)
+        return Response(serializer.data)
+
 
 @api_view(['GET', 'POST'])
 def myrequest_list(request):
@@ -166,6 +192,43 @@ def beFriend(request):
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def unFriend(request):
+    if request.method == 'POST':
+        actor_id = request.POST['actor_id']
+        object_id = request.POST['object_id']
+        my_id = request.POST['my_id']
+        my_name = request.POST['my_name']
+        other_name = request.POST['other_name']
+        #print(actor_id)
+        #print(object_id)
+        #actor = AuthorModel.objects.get(id=request.user.authormodel.id)
+        if(object_id == my_id):
+            try:
+                request = FollowRequestModel.objects.get(object_id=object_id, actor_id=actor_id)
+                request.accept = 0
+                request.save()
+                message = {'message:', 'successfully unfriend'}
+                return Response(message, status=status.HTTP_200_OK)
+            except Exception as e:
+                message = {'error:', e}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            try:
+                instance = FollowRequestModel.objects.get(object_id=object_id, actor_id=actor_id)
+                actor = AuthorModel.objects.get(id=actor_id)
+                object = AuthorModel.objects.get(id=object_id)
+                instance.delete()
+                FollowRequestModel.objects.create(
+                    summary='{0} wants to follow {1}'.format(other_name, my_name),
+                    actor=object, object=actor
+                    )
+                message = {'message:', 'successfully unfriend'}
+                return Response(message, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                message = {'error:', e}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -472,4 +535,3 @@ def get_author_liked(request,author_id):
         serializer = LikeSerializer(likes, many=True)
         print(12312312,serializer.data)
         return Response(serializer.data)
-

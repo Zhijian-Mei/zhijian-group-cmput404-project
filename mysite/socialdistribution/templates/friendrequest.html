@@ -14,11 +14,10 @@
                 {%if request.actor_id == author.id %}
                 <div class="info">
                     <div class="profile-photo">
-                        <img src="./images/profile-8.jpg">
+                        <img src="{{ author.profileImage }}">
                     </div>
                     <div>
                         <h5>{{author.displayName}}</h5>
-                        <p class="text-muted">0 mutual friends</p>
                     </div>
                 </div>
                 <div class="action">
@@ -26,13 +25,63 @@
                         <input type = "hidden" name = "actor_id" value = {{author.id}}>
                         <input type = "hidden" name = "object_id" value = {{request.object_id}}>
                         <button type="submit" value="Follow {{author.displayName}}" class="btn btn-primary">Accept</button>
-                        <button class="btn">Decline</button>
                     </form>
                 </div>
                 {% endif %}
             {% endfor %}
         {% endfor %}
+        <h4 class="head">Friends</h4>
+        {% for friend in friends_list %}
+            {%if friend.actor_id == my.id %}
+                {% for author in authors_list %}
+                    {%if friend.object_id == author.id %}
+                    <div class="info">
+                        <div class="profile-photo">
+                            <img src="{{ author.profileImage }}">
+                        </div>
+                        <div>
+                            <h5>{{author.displayName}}</h5>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <form action="unfriend" method="post"> {% csrf_token %}
+                            <input type = "hidden" name = "object_id" value = {{author.id}}>
+                            <input type = "hidden" name = "actor_id" value = {{my.id}}>
+                            <input type = "hidden" name = "my_id" value = {{my.id}}>
+                            <input type = "hidden" name = "my_name" value = {{my.displayName}}>
+                            <input type = "hidden" name = "other_name" value = {{author.displayName}}>
+                            <button type="submit" value="Follow {{author.displayName}}" class="btn btn-primary">Unfriend</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {%if friend.object_id == my.id %}
+                {% for author in authors_list %}
+                    {%if friend.actor_id == author.id %}
+                    <div class="info">
+                        <div class="profile-photo">
+                            <img src="{{ author.profileImage }}">
+                        </div>
+                        <div>
+                            <h5>{{author.displayName}}</h5>
+                            <p class="text-muted">0 mutual friends</p>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <form action="unfriend" method="post"> {% csrf_token %}
+                            <input type = "hidden" name = "actor_id" value = {{author.id}}>
+                            <input type = "hidden" name = "object_id" value = {{my.id}}>
+                            <input type = "hidden" name = "my_id" value = {{my.id}}>
+                            <input type = "hidden" name = "my_name" value = {{my.displayName}}>
+                            <input type = "hidden" name = "other_name" value = {{author.displayName}}>
+                            <button type="submit" value="Follow {{author.displayName}}" class="btn btn-primary">Unfriend</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
-

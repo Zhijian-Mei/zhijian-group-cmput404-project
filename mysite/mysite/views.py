@@ -133,12 +133,31 @@ def my_request(request):
     if request.method == "GET":
         requests = views.myrequest_list(request)
         requests_list = json.loads(json.dumps(requests.data, cls=MyEncoder))
-        #print('requests list::::::', requests_list)
+
+        friends = views.myfriend_list(request)
+        friends_list = json.loads(json.dumps(friends.data, cls=MyEncoder))
+
         authors = views.author_list(request)
         authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
-        data = {'requests_list': requests_list, 'authors_list': authors_list}
+        author = views.my_author(request)
+        myauthor = json.loads(json.dumps(author.data, cls=MyEncoder))
+        #print(myauthor)
+        data = {'requests_list': requests_list, 'authors_list': authors_list, 'friends_list': friends_list, 'my': myauthor}
         return render(request, "friendrequest.html", data)
 
+def unfriend(request):
+    if request.method == "POST":
+        print(33333333, request.POST)
+        result = views.unFriend(request)
+        print('error--------------', result)
+        if (result.status_code != 201):
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+            return redirect('./')
+        else:
+            # TODO success message
+            print('SUCCESS!!!! successfully be friend!')
+            return redirect('./')
 
 def befriend(request):
     if request.method == "POST":
