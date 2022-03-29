@@ -25,7 +25,7 @@ def index(request):
     if request.method == "GET":
         posts = views.post_list(request)
         posts_list = json.loads(json.dumps(posts.data, cls=MyEncoder))
-        print('posts list::::::', posts_list)
+        # print('posts list::::::', posts_list)
         comments = views.mycomment_list(request)
         comments_list = json.loads(json.dumps(comments.data, cls=MyEncoder))
         #print('comments list::::::', comments_list)
@@ -33,6 +33,7 @@ def index(request):
         authors_list = json.loads(json.dumps(authors.data, cls=MyEncoder))
         #print('authors list::::::', authors_list)
         data = {'posts_list': posts_list, 'comments_list': comments_list, 'authors_list': authors_list}
+        print({'posts_list': posts_list})
         return render(request, "home.html",data)
     if request.method == "POST":
         result = views.comment_post(request)
@@ -249,8 +250,17 @@ def follow(request):
 
 def share(request):
     if request.method == "POST":
-        print(33333333, request.POST)
-        return redirect('./')
+        result = views.sharePost(request)
+        print('error--------------', result)
+        if result.status_code != 201:
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+            return redirect('./')
+        else:
+            # TODO success message
+            print('SUCCESS!!!! successfully share the post!')
+            return redirect('./')
+
 
 def delete(request):
     if request.method == "POST":
@@ -460,3 +470,42 @@ def get_foreign_posts(request):
     posts_list.sort(key=lambda x: x['published'], reverse=True)
     data = {'posts_list': posts_list}
     return render(request, "foreignpost.html", data)
+
+
+def sharedPost_from_friend(request):
+    if request.method == 'GET':
+        result = views.get_friend_share_post(request)
+        print('error--------------', result)
+        # print(result.data['share_objects'])
+        # print(result.data['post_objects'])
+        # print(len(result.data['post_objects']))
+        if (result.status_code != 200):
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+            return redirect('../')
+        else:
+            # TODO success message
+            share_objects = result.data['share_objects']
+            for i in range(len(share_objects)):
+                share_objects[i]['post'] = result.data['post_objects'][i]
+            share_objects = json.loads(json.dumps(share_objects, cls=MyEncoder))
+            data = {'share_objects':share_objects}
+            # print(data)
+            print('SUCCESS!!!! successfully get these posts')
+            return render(request,'sharedpost.html',data)
+
+
+def get_likes(request):
+    if request.method == 'GET':
+        result = views.get_likes(request)
+        print('error--------------', result)
+        if (result.status_code != 200):
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+            return redirect('../')
+        else:
+            # TODO success message
+            like_objects = json.loads(json.dumps(result.data, cls=MyEncoder))
+            print('\n\n\n\n',like_objects,'\n\n\n\n')
+            print('SUCCESS!!!! successfully get these posts')
+            return render(request,'likereceived.html',like_objects)

@@ -15,6 +15,10 @@ class PostSerializer(serializers.ModelSerializer):
         model = PostModel
         fields = ['title', 'id', 'source', 'origin', 'description', 'contentType','content','image','image_src','author','author_object','categories','like_count','comments','published','visibility','unlisted']
 
+class ShareSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShareModel
+        fields = ['author','post','author_name']
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         # TODO commentsSrc

@@ -78,6 +78,10 @@ class LikeModel(models.Model):
     object = models.CharField(max_length=200)   # linked to an author's posts and comments
     summary = models.CharField(max_length=200)
 
+class ShareModel(models.Model):
+    author_name = models.CharField(max_length=200,default='authorName')
+    author = models.ForeignKey(AuthorModel, related_name=('Sharer'),on_delete=models.CASCADE)
+    post = models.ForeignKey(PostModel,related_name=('Shared_post'), on_delete=models.CASCADE)
 
 class InboxModel(models.Model):
     author = models.CharField(max_length=200)
@@ -90,3 +94,4 @@ class LoginInformationModel(models.Model):
 
     class Meta:
         db_table = 'LoginInformation'
+

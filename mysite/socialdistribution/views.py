@@ -1,3 +1,4 @@
+from itertools import chain
 from logging import exception
 from django.shortcuts import render
 from django.db.models import Q
@@ -400,12 +401,15 @@ def followFriendRequest(request):
         data = request.data
         try:
             FollowRequest = FollowRequestModel.objects.filter(object_id=data['authorID'])
-            FollowRequest = FollowRequest.filter(actor_id=request.user.authormodel.id)
+            FollowRequest = FollowRequest.filter(actor_id=request.user.authormodel.id,accept=0)
             if FollowRequest:
                 return Response('Cannot resend follow request!!!!', status=status.HTTP_400_BAD_REQUEST)
+            friend = FollowRequestModel.objects.filter((Q(actor_id=request.user.authormodel) | Q(object_id=request.user.authormodel)),
+                                     accept=1)
+            if friend:
+                return Response('You are already friend!',status=status.HTTP_400_BAD_REQUEST)
         except:
             pass
-
         object = AuthorModel.objects.get(id=data['authorID'])
         actor = AuthorModel.objects.get(id=request.user.authormodel.id)
         if actor == object:
@@ -420,6 +424,7 @@ def followFriendRequest(request):
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['POST'])
@@ -443,7 +448,7 @@ def like_post(request):
         actor = AuthorModel.objects.get(id=request.user.authormodel.id)
         post = PostModel.objects.get(id=request.POST['object'])
         try:
-            LikeModel.objects.create(summary="{0} likes {1}'s post".format(actor.displayName, object.displayName),
+            LikeModel.objects.create(summary="{0} likes {1}'s object".format(actor.displayName, object.displayName),
                                      actor=actor, author=object, object=post_url, at_context='content'
                                      )
             post = PostModel.objects.get(id=data['object'])
@@ -456,6 +461,32 @@ def like_post(request):
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+
+def sharePost(request):
+    """
+    Send a new like object to author's post
+    """
+    if request.method == 'POST':
+        # print("api received request data:    ", request.POST['post_id'])
+        post_id = request.POST['post_id']
+        post = PostModel.objects.get(id=post_id)
+
+        try:
+            share_object = ShareModel.objects.filter(author_id=request.user.authormodel.id)
+            share_object = share_object.filter(post_id=post_id)
+            if share_object:
+                return Response('Cannot re-share same post !!!!', status=status.HTTP_400_BAD_REQUEST)
+        except:
+            pass
+        try:
+            ShareModel.objects.create(author=AuthorModel.objects.get(id=request.user.authormodel.id),post=post,
+                                      author_name=request.user.authormodel.displayName
+                                     )
+            message = {'message:', 'successfully share this post'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 def delete_post(request):
     if request.method == 'POST':
@@ -535,3 +566,36 @@ def get_author_liked(request,author_id):
         serializer = LikeSerializer(likes, many=True)
         print(12312312,serializer.data)
         return Response(serializer.data)
+
+def get_friend_share_post(request):
+    if request.method == 'GET':
+        friends = FollowRequestModel.objects.filter(Q(actor_id=request.user.authormodel.id)
+                                                   | Q(object_id=request.user.authormodel.id))
+        friends = friends.filter(accept=1)
+        friends_id = []
+        for friend in friends:
+            if friend.actor_id == request.user.authormodel.id:
+                friends_id.append(friend.object_id)
+            elif friend.object_id == request.user.authormodel.id:
+                friends_id.append(friend.actor_id)
+        share_objects = ShareModel.objects.filter(author_id=0)
+        for friend_id in friends_id:
+            share_objects = share_objects | ShareModel.objects.filter(author_id=friend_id)
+        post_list = PostModel.objects.filter(id=0)
+        for share_object in share_objects:
+            post_list = chain(post_list,PostModel.objects.filter(id=share_object.post_id))
+        post_serializer = PostSerializer(post_list, many=True)
+        share_serializer = ShareSerializer(share_objects,many=True)
+        data = {'share_objects':share_serializer.data,
+                'post_objects':post_serializer.data}
+        # print('\n\n\n\n\\n',data,'\n\n\n\n\\n\n')
+        return Response(data,status=status.HTTP_200_OK)
+
+def get_likes(request):
+    if request.method == 'GET':
+        user = request.user.authormodel
+        like_objects = LikeModel.objects.filter(author_id=user.id)
+        serializer = LikeSerializer(like_objects, many=True)
+        data = {'like_objects': serializer.data}
+        print('\n\n\n\n\\n',data,'\n\n\n\n\\n\n')
+        return Response(data, status=status.HTTP_200_OK)
