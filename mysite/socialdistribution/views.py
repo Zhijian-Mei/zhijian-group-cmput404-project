@@ -282,6 +282,7 @@ def edit_post(request, id):
         try:
             post_object = PostModel.objects.get(id=id)
             post = {
+                'id' : post_object.id,
                 'title': post_object.title,
                 'description': post_object.description,
                 'contentType': post_object.contentType,
@@ -303,16 +304,26 @@ def edit_post(request, id):
         if 'unlisted' in data.keys():
             unlisted = True
         try:
+            if (data['title'] == '' or
+                data['description'] == ''or
+                data['content'] == '' or
+                data['categories'] == ''
+            ):
+                raise Exception('A required field is missing!!')
             PostModel.objects.filter(id=id).update(title=data['title'], description=data['description'],
                                                    contentType=data['contentType'],
                                                    content=data['content'], image=data['image'],
                                                    image_src=data['imagesrc'], categories=data['categories'],
                                                    visibility=data['visibility'], unlisted=unlisted)
-            message = {'message:', 'successfully updated post'}
-            messages.success(request, 'Post is changed successfully!')
+            #message = {'message:', 'successfully updated post'}
+            message={}
+            message['message'] = 'successfully update the post!!'
+            messages.success(request, 'Post is changed successfully!!')
             return Response(message, status=status.HTTP_200_OK)
         except Exception as e:
-            message = {'error:', e}
+            message = {}
+            message['message'] = str(e)
+            #message = {'error:', e}
             messages.error(request, 'Failed to change the post, ERROR: ' + str(e))
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 

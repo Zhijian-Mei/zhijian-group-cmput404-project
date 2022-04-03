@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render,redirect
 import json
 import uuid, random
@@ -10,7 +10,8 @@ import requests
 import json
 
 from socialdistribution import views
-
+from rest_framework import status
+from rest_framework.response import Response
 from mysite.settings import BASE_DIR
 
 
@@ -241,14 +242,16 @@ def edit_post(request, id):
     if request.method == "POST":
         result = views.edit_post(request,id)
         print('error--------------',result)
-        if(result.status_code!=201):
+        if(result.status_code!=200):
             #TODO redirect to GET response
             print('error--------------',result.data)
+            return JsonResponse(result.data,safe=False)
         else:
             #TODO success message
             print('SUCCESS!!!! successfully added the post')
-        next = request.POST.get('next', '/')
-        return HttpResponseRedirect(next)
+            return JsonResponse(result.data,safe=False)
+        #next = request.POST.get('next', '/')
+        #return HttpResponseRedirect(next)
 
 def view_post(request):
     if request.method == "GET":
