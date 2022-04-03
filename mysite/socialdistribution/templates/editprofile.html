@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} edit-post {% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+<div class="card" style="margin:10px" >
+    <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">Changed your mind, ha?</h2>
+    <form class="edit-profile" method="POST" id="post_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="displayName">Title: </label>
+            <input id="displayName" type="text" name="displayName" value="{{profile.displayName}}"> </div>
+        <div class="mb-3">
+            <label for="github">Github: </label>
+            <input id="github" type="text" name="github" value="{{ profile.github }}">
+        </div>
+        <div class="mb-3">
+            <label for="Image">Image: </label>
+            <input id="Image" type="file" name="Image" value="{{ profile.Image }}">
+        </div>
+
+
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 1.7em; margin-top: 0.7em; text-align:center;">
+
+    </form>
+</div>
+
+
+{% endblock %}

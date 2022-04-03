@@ -38,6 +38,7 @@ urlpatterns = [
     path('',views.index),
     path('',include("django.contrib.auth.urls")),
     path('myprofile/',views.my_profile),
+    path('myprofile/edit/<str:id>',views.edit_profile),
     path('mypost/',views.my_post),
     path('mypost/create/',views.create_post, name='createpost'),
     path('mypost/edit/<str:id>',views.edit_post),
