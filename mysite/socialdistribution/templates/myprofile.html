@@ -39,8 +39,9 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
-            <button class ="btn btn-primary" type="submit" onclick="location.href='edit/{{profile.id}'">Update</button>
-
+            <a  href="/myprofile/edit/{{profile.id}}">
+                <button class ="btn btn-primary" type="submit">Update</button>
+            </a>
 
 
         </div>
