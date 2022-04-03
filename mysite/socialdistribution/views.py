@@ -259,16 +259,26 @@ def create_post(request):
         if 'unlisted' in data.keys():
             unlisted = True
         try:
-            PostModel.objects.create(title=data['title'], id=data['id'], source=data['source'], origin=data['origin'],
+            if (data['title'] == '' or
+                data['description'] == ''or
+                data['content'] == '' or
+                data['categories'] == '' or
+                data['visibility'] == ''
+            ):
+                raise Exception('A required field is missing!!')
+            PostModel.objects.create(title=data['title'], id=uuid.uuid4(), source=data['source'], origin=data['origin'],
                                      description=data['description'], contentType=data['contentType'],
                                      content=data['content'], image_src=data['imagesrc'], image=data['image'],
                                      author=author_object, author_object=author_object,
                                      categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
-            message = {'message:', 'successfully created post'}
+            #message = {'message', 'successfully created post'}
+            message = {}
+            message['message'] = 'successfully created the post!!'
             messages.success(request, 'Post is created successfully!')
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
-            message = {'error:', e}
+            message = {}
+            message['message'] = str(e)
             messages.error(request, 'Failed to create the post, ERROR: ' + str(e))
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 

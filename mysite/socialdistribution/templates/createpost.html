@@ -6,7 +6,7 @@
 {% load static %}
 
 
-
+<meta name="csrf-token" content="{{ csrf_token }}" />
 
 <div class="card" style="margin:10px; text-align: center;">
     <!-- <h2 style="margin: 10px 10px 0">Create A New Post</h2>
@@ -24,7 +24,7 @@
         <div class="mb-3">
             {% comment %} <input id="contentType" type="text" name="contentType" value="{{ contentType }}" placeholder="ContentType" > {% endcomment %}
             contentType
-            <select name="contentType" onchange="onSelectChange(value)">
+            <select id='contentType' name="contentType" onchange="onSelectChange(value)">
             <option value="text" selected>Text</option>
             <option value="markdown">Markdown</option>
             <option value="image">Image (Upload one)</option>
@@ -49,7 +49,6 @@
             <label for="unlisted">Unlisted: </label>
             <input id="unlisted" type="checkbox" name="unlisted">
         </div>
-            <input id="id" type="hidden" name="id" value="{{UUID}}">
 
             <input id="author" type="hidden" name="author" value={{user.authormodel.id}}>
 
@@ -60,16 +59,12 @@
             <input id="origin" type="hidden" name="origin" value={{user.authormodel.host|add:'posts/'|add:UUID}}>
 
         <input type="hidden" name="next" value="{{ request.path }}">    
-        <input type="submit" class="btn btn-primary" value="Submit" style="font-size: 1.7em; margin-top: 0.7em; text-align:center;">
+        {% csrf_token %}<button type="button"  onclick="sendJSONXMLHTTPRequest('./',null,function(data){
+       alert(data['message'])
+})" class="btn btn-primary" value="Submit" style="font-size: 1.7em; margin-top: 0.7em; text-align:center;">Create!</button>
     </form>
     
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+
 </div>
 
 <script language="javascript"  type="text/javascript">
@@ -88,6 +83,53 @@
             document.getElementById('imagesrc').style.display = 'block';
         }
     }
+
+function sendJSONXMLHTTPRequest(url, objects, callback) {
+    var token = document.querySelector('meta[name="csrf-token"]').content
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState==4) {
+            try {
+                console.log(xhr.status)
+                if (xhr.status==200) {
+                    //XXX: parse some JSON from the request!
+                    var data = JSON.parse(xhr.responseText);
+                    console.log(xhr.responseText)
+                    //XXX: Pass the data to the callback!
+                    callback(data);
+                }
+            }
+            catch(e) {
+                alert('Error: ' + e.name);
+            }
+        }
+    };
+    //XXX: POST to a URL
+    objects = {}
+
+    objects['title'] = document.querySelector("#title").value
+    objects['description'] = document.querySelector('#description').value
+    objects['contentType'] = document.querySelector('#contentType').value
+    objects['content'] = document.querySelector('#content').value
+    objects['categories'] = document.querySelector('#categories').value
+    objects['visibility'] = document.querySelector('#visibility').value
+    objects['categories'] = document.querySelector('#categories').value
+    objects['unlisted'] = document.querySelector('#unlisted').value
+    objects['image'] = document.querySelector('#image').value
+    objects['imagesrc'] = document.querySelector('#imagesrc').value
+    objects['source'] = document.querySelector('#source').value
+    objects['author'] = document.querySelector('#author').value
+    objects['origin'] = document.querySelector('#origin').value
+    console.log(objects)
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-Type','application/json')
+    xhr.setRequestHeader('X-CSRFToken',token)
+    xhr.send(JSON.stringify(objects));
+    // Remember to use application/json !
+
+
+}
+
 </script> 
 
 {% endblock %} 

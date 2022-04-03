@@ -221,14 +221,15 @@ def create_post(request):
     if request.method == "POST":
         result = views.create_post(request)
         print('error--------------',result)
-        if(result.status_code!=201):
-            #TODO redirect to GET response
-            print('error--------------',result.data)
+        if (result.status_code != 201):
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+            return JsonResponse(result.data, safe=False)
         else:
-            #TODO success message
+            # TODO success message
             print('SUCCESS!!!! successfully added the post')
-        next = request.POST.get('next', '/')
-        return HttpResponseRedirect(next)
+            return JsonResponse(result.data, safe=False)
+
 
 def edit_post(request, id):
     """
