@@ -17,17 +17,18 @@
 
 
                 <script src="https://cdn.rawgit.com/IonicaBizau/github-calendar/gh-pages/dist/github-calendar.min.js"></script>
-                <br>
-                <i class="fa fa-github" style="font-size:36px;"></i>
-                <br>
-                <a style="font-size: 20px;">Github Activity</a>
+                <a style="font-size: 15px;">Github Activity</a>
                 <p>{{ profile.github }}</p>
 
                 <div class="calendar">
 
                     <img src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif" class="spinner"/>
-                    Loading the data just for you. If it doesn't show up, the github URL may be wrong.
+                    Loading the data just for you.
                 </div>
+        <link
+                rel="stylesheet"
+                href="https://unpkg.com/github-calendar@latest/dist/github-calendar-responsive.css"
+        />
 
                 <script>
                     new GitHubCalendar(".calendar", "{{ profile.github }}");
