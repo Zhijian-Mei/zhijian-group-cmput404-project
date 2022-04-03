@@ -48,6 +48,7 @@ def get_author(request, author_id):
             data = {'error': str(e)}
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET'])
 def my_author(request):
     """
@@ -154,6 +155,7 @@ def mycomment_list(request):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+
 @api_view(['GET', 'POST'])
 def myfriend_list(request):
     """
@@ -161,7 +163,8 @@ def myfriend_list(request):
     """
     if request.method == 'GET':
         friends = FollowRequestModel.objects.order_by('-summary')
-        friends = friends.filter((Q(actor_id=request.user.authormodel) | Q(object_id=request.user.authormodel)), accept=1)
+        friends = friends.filter((Q(actor_id=request.user.authormodel) | Q(object_id=request.user.authormodel)),
+                                 accept=1)
         serializer = FollowerSerializer(friends, many=True)
         return Response(serializer.data)
 
@@ -194,6 +197,7 @@ def beFriend(request):
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['POST'])
 def unFriend(request):
     if request.method == 'POST':
@@ -202,10 +206,10 @@ def unFriend(request):
         my_id = request.POST['my_id']
         my_name = request.POST['my_name']
         other_name = request.POST['other_name']
-        #print(actor_id)
-        #print(object_id)
-        #actor = AuthorModel.objects.get(id=request.user.authormodel.id)
-        if(object_id == my_id):
+        # print(actor_id)
+        # print(object_id)
+        # actor = AuthorModel.objects.get(id=request.user.authormodel.id)
+        if (object_id == my_id):
             try:
                 request = FollowRequestModel.objects.get(object_id=object_id, actor_id=actor_id)
                 request.accept = 0
@@ -224,7 +228,7 @@ def unFriend(request):
                 FollowRequestModel.objects.create(
                     summary='{0} wants to follow {1}'.format(other_name, my_name),
                     actor=object, object=actor
-                    )
+                )
                 message = {'message:', 'successfully unfriend'}
                 return Response(message, status=status.HTTP_201_CREATED)
             except Exception as e:
@@ -258,14 +262,14 @@ def create_post(request):
             PostModel.objects.create(title=data['title'], id=data['id'], source=data['source'], origin=data['origin'],
                                      description=data['description'], contentType=data['contentType'],
                                      content=data['content'], image_src=data['imagesrc'], image=data['image'],
-                                     author=author_object,author_object=author_object,
+                                     author=author_object, author_object=author_object,
                                      categories=data['categories'], visibility=data['visibility'], unlisted=unlisted)
             message = {'message:', 'successfully created post'}
             messages.success(request, 'Post is created successfully!')
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
             message = {'error:', e}
-            messages.error(request, 'Failed to create the post, ERROR: '+str(e))
+            messages.error(request, 'Failed to create the post, ERROR: ' + str(e))
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -309,7 +313,7 @@ def edit_post(request, id):
             return Response(message, status=status.HTTP_200_OK)
         except Exception as e:
             message = {'error:', e}
-            messages.error(request, 'Failed to change the post, ERROR: '+str(e))
+            messages.error(request, 'Failed to change the post, ERROR: ' + str(e))
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -363,27 +367,40 @@ def myPostPage(request):
     displayName = AuthorModel.objects.get(id=id).displayName
     return render(request, "service/myPostPage.html", {'id': id, 'displayName': displayName})
 
+@api_view(['GET', 'POST'])
+def myProfile(request, id):
+    if request.method == 'GET':
+        try:
+            author_object = AuthorModel.objects.get(id=id)
+            profile = {
+                'user': author_object.user,
+                'id': id,
+                'host': author_object.host,
+                'displayName': author_object.displayName,
+                'github': author_object.github.split("/")[-1],
+                'profileImage': author_object.profileImage
 
-def myProfile(request):
+            }
+            return Response(profile, status=status.HTTP_200_OK)
+        except Exception as e:
+            message = {'error:', e}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
     if request.method == 'POST':
-        u_form = UserUpdateForm(request.authormodel)
-        p_form = ProfileUpdateForm(request.authormodel
-                                   )
+        print("api received request data:    ", request.data)
+        data = request.data
 
-        if not u_form.is_valid() or not p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            messages.success(request, f'Your account has been updated ')
-            return redirect('myProfile')
-    else:
-        u_form = UserUpdateForm(request.authormodel)
-        p_form = ProfileUpdateForm(request.authormodel)
 
-    content = {
-        'u-form': u_form,
-        'p-form': p_form
-    }
-    return render(request, "service/myProfile.html", content)
+        try:
+            AuthorModel.objects.filter(id=id).update(user=data['user'], id=id, host=data['host'],
+                                                     displayName=data['displayName'], github=data['github'].split("/")[-1],
+                                                     profileImage=data['profileImage'])
+            message = {'message:', 'successfully updated post'}
+            messages.success(request, 'Post is changed successfully!')
+            return Response(message, status=status.HTTP_200_OK)
+        except Exception as e:
+            message = {'error:', e}
+            messages.error(request, 'Failed to change the post, ERROR: ' + str(e))
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 def view_post(request):
@@ -401,13 +418,14 @@ def followFriendRequest(request):
         data = request.data
         try:
             FollowRequest = FollowRequestModel.objects.filter(object_id=data['authorID'])
-            FollowRequest = FollowRequest.filter(actor_id=request.user.authormodel.id,accept=0)
+            FollowRequest = FollowRequest.filter(actor_id=request.user.authormodel.id, accept=0)
             if FollowRequest:
                 return Response('Cannot resend follow request!!!!', status=status.HTTP_400_BAD_REQUEST)
-            friend = FollowRequestModel.objects.filter((Q(actor_id=request.user.authormodel) | Q(object_id=request.user.authormodel)),
-                                     accept=1)
+            friend = FollowRequestModel.objects.filter(
+                (Q(actor_id=request.user.authormodel) | Q(object_id=request.user.authormodel)),
+                accept=1)
             if friend:
-                return Response('You are already friend!',status=status.HTTP_400_BAD_REQUEST)
+                return Response('You are already friend!', status=status.HTTP_400_BAD_REQUEST)
         except:
             pass
         object = AuthorModel.objects.get(id=data['authorID'])
@@ -418,13 +436,12 @@ def followFriendRequest(request):
             FollowRequestModel.objects.create(
                 summary='{0} wants to follow {1}'.format(actor.displayName, object.displayName),
                 actor=actor, object=object
-                )
+            )
             message = {'message:', 'successfully send request'}
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 @api_view(['POST'])
@@ -479,14 +496,15 @@ def sharePost(request):
         except:
             pass
         try:
-            ShareModel.objects.create(author=AuthorModel.objects.get(id=request.user.authormodel.id),post=post,
+            ShareModel.objects.create(author=AuthorModel.objects.get(id=request.user.authormodel.id), post=post,
                                       author_name=request.user.authormodel.displayName
-                                     )
+                                      )
             message = {'message:', 'successfully share this post'}
             return Response(message, status=status.HTTP_201_CREATED)
         except Exception as e:
             message = {'error:', e}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
 
 def delete_post(request):
     if request.method == 'POST':
@@ -522,7 +540,7 @@ def get_author_followers(request, author_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_author_posts(request,author_id):
+def get_author_posts(request, author_id):
     if request.method == 'GET':
         posts = PostModel.objects.order_by('-published')
         posts = posts.filter(author_id=author_id)
@@ -532,45 +550,50 @@ def get_author_posts(request,author_id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_author_post(request,author_id,post_id):
+def get_author_post(request, author_id, post_id):
     if request.method == 'GET':
         posts = PostModel.objects.get(id=post_id)
         serializer = PostSerializer(posts)
         return Response(serializer.data)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_post_comments(request,author_id,post_id):
+def get_post_comments(request, author_id, post_id):
     if request.method == 'GET':
         comments = CommentModel.objects.all()
         comments = comments.filter(post_id=post_id)
-        serializer = CommentSerializer(comments,many=True)
+        serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_post_likes(request,author_id,post_id):
+def get_post_likes(request, author_id, post_id):
     if request.method == 'GET':
         likes = LikeModel.objects.all()
-        object = request.scheme + '://'+request.get_host() + '/service/authors/' + str(author_id) + '/posts/' + post_id
+        object = request.scheme + '://' + request.get_host() + '/service/authors/' + str(
+            author_id) + '/posts/' + post_id
         likes = likes.filter(object=object)
-        serializer = LikeSerializer(likes,many=True)
+        serializer = LikeSerializer(likes, many=True)
         return Response(serializer.data)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_author_liked(request,author_id):
+def get_author_liked(request, author_id):
     if request.method == 'GET':
         likes = LikeModel.objects.all()
         likes = likes.filter(actor_id=author_id)
         serializer = LikeSerializer(likes, many=True)
-        print(12312312,serializer.data)
+        print(12312312, serializer.data)
         return Response(serializer.data)
+
 
 def get_friend_share_post(request):
     if request.method == 'GET':
         friends = FollowRequestModel.objects.filter(Q(actor_id=request.user.authormodel.id)
-                                                   | Q(object_id=request.user.authormodel.id))
+                                                    | Q(object_id=request.user.authormodel.id))
         friends = friends.filter(accept=1)
         friends_id = []
         for friend in friends:
@@ -583,13 +606,14 @@ def get_friend_share_post(request):
             share_objects = share_objects | ShareModel.objects.filter(author_id=friend_id)
         post_list = PostModel.objects.filter(id=0)
         for share_object in share_objects:
-            post_list = chain(post_list,PostModel.objects.filter(id=share_object.post_id))
+            post_list = chain(post_list, PostModel.objects.filter(id=share_object.post_id))
         post_serializer = PostSerializer(post_list, many=True)
-        share_serializer = ShareSerializer(share_objects,many=True)
-        data = {'share_objects':share_serializer.data,
-                'post_objects':post_serializer.data}
+        share_serializer = ShareSerializer(share_objects, many=True)
+        data = {'share_objects': share_serializer.data,
+                'post_objects': post_serializer.data}
         # print('\n\n\n\n\\n',data,'\n\n\n\n\\n\n')
-        return Response(data,status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)
+
 
 def get_likes(request):
     if request.method == 'GET':
@@ -597,5 +621,5 @@ def get_likes(request):
         like_objects = LikeModel.objects.filter(author_id=user.id)
         serializer = LikeSerializer(like_objects, many=True)
         data = {'like_objects': serializer.data}
-        print('\n\n\n\n\\n',data,'\n\n\n\n\\n\n')
+        print('\n\n\n\n\\n', data, '\n\n\n\n\\n\n')
         return Response(data, status=status.HTTP_200_OK)

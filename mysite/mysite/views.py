@@ -126,9 +126,43 @@ def my_post(request):
             print('SUCCESS!!!! successfully commented the post')
             return HttpResponseRedirect(request.path_info)
 
-def my_profile(request):
+def edit_profile(request, id):
     if request.method == "GET":
-        return render(request, "myprofile.html")
+        data = views.myProfile(request, id).data
+        return render(request, "editprofile.html", {'profile': data})
+    if request.method == "POST":
+        result = views.myProfile(request, id)
+        print('error--------------', result)
+        if (result.status_code != 201):
+            # TODO redirect to GET response
+            print('error--------------', result.data)
+        else:
+            # TODO success message
+            print('SUCCESS!!!! successfully added the post')
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
+
+def my_profile(request):
+    if request.method == "GET" :
+        id = str(request.user.authormodel.id)
+        data = views.myProfile(request, id).data
+        return render(request, "myprofile.html",  {'profile': data})
+    if request.method == "POST":
+        id = str(request.user.authormodel.id)
+        result = views.myProfile(request,id)
+        print('error--------------',result)
+        if(result.status_code!=201):
+            #TODO redirect to GET response
+            print('error--------------',result.data)
+        else:
+            #TODO success message
+            print('SUCCESS!!!! successfully commented the post')
+            return HttpResponseRedirect(request.path_info)
+
+
+
+
+
 
 def my_request(request):
     if request.method == "GET":

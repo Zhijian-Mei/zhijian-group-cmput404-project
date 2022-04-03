@@ -3,28 +3,51 @@
 
 {% block content %}
 {% load static %}
+
+
+
 <div class = "content-section">
     <div class = "media-body">
-        <img class = "profile-photo" src=" {{ user.authormodel.profileImage.url }}" style="width :6em">
+
+        <img class = "profile-photo" src=" {{ profile.profileImage.url }}" style="width :6em">
         <div class = "media-body"> 
-            <h1 class = "account-heading"> {{ user.authormodel.displayName }}</h1>
+            <h1 class = "account-heading"> {{ profile.displayName }}</h1>
         </div>
+        <div class="userInfo">Github User: {{ profile.github }}</a></div>
+
+
+                <script src="https://cdn.rawgit.com/IonicaBizau/github-calendar/gh-pages/dist/github-calendar.min.js"></script>
+                <br>
+                <i class="fa fa-github" style="font-size:36px;"></i>
+                <br>
+                <a style="font-size: 20px;">Github Activity</a>
+                <p>{{ profile.github }}</p>
+
+                <div class="calendar">
+
+                    <img src="https://github.githubassets.com/images/spinners/octocat-spinner-128.gif" class="spinner"/>
+                    Loading the data just for you. If it doesn't show up, the github URL may be wrong.
+                </div>
+
+                <script>
+                    new GitHubCalendar(".calendar", "{{ profile.github }}");
+                    var calendar = document.getElementsByClassName("calendar");
+                    calendar[0].style.border = "none";
+                </script>
+
     </div>
     <form method="POST" enctype="multipart/form-data">
-        <!-- {% csrf_token %}
-        <fieldset class = "form-group">
-            <legend class = "border-bottom mb-4">Profile Info</legend>
-            {{ u_form }}
-            {{ p_form }}
-        </fieldset> -->
+        {% csrf_token %}
         <div class="form-group">
-            <button class ="btn btn-primary" type="submit">Update</button>
+            <button class ="btn btn-primary" type="submit" onclick="location.href='edit/{{profile.id}'">Update</button>
+
+
+
         </div>
-        <a href="/login/">
-            <label class="btn btn-primary" for="Login" style="margin-top: 1em;">Switch Account</label>
-        </a>
     </form>
 </div>
+
+
 
 
 {% endblock  %}
