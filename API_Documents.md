@@ -145,7 +145,7 @@
 - ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a/posts/dc08e5e2-038b-479b-b509-2a6d7b9298ad `
 
 **Request Method**
-- GET,   POST
+- GET,  POST
 
 
 
@@ -173,7 +173,8 @@
 
 ## Comments
 **Request URL**
-- ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a/posts/dc08e5e2-038b-479b-b509-2a6d7b9298ad/comments
+- ` https://cmput404-project-t12.herokuapp.com/service/authors/32d6cbd8-3a30-4a78-a4c4-c1d99e208f6a/posts/dc08e5e2-038b-479b-b509-2a6d7b9298ad/comments `
+
 
 **Request Method**
 - GET,  POST
