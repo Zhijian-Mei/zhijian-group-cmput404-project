@@ -6,7 +6,7 @@
 {% load static %}
 <div class="feeds">
     {% for post in posts_list %}
-    <!------------------- FEED 1 --------------------->
+    <!------------------- FEED 1 ------------------- -->
     <div class="feed">
         <div class="head">
             <div class="user">
@@ -22,7 +22,15 @@
         </div>
 
         <div class="photo">
+            {% if post.contentType == 'text' %}
             <h3> <span id= "syschar"> {{post.content}} </span> </h3>
+            {% elif post.contentType == 'markdown' %}
+             <h3> <span id= "syschar"> {{post.content | markdown | safe}} </span> </h3>
+            {% elif post.contentType == 'imagesrc' %}
+            <span> <image src="{{post.image_src}}" alt="image load failed"> </span>
+            {% elif post.contentType == 'image' %}
+                <span> <image src="{{post.image}}" alt="image load failed"> </span>
+            {% endif %}
         </div>
 
         <div class="action-buttons">
@@ -34,6 +42,7 @@
                 </button>
                 </form>
                 <form style="display: inline" action="share" method="post">{% csrf_token %}
+                    <input type = "hidden" name = "post_id" value = {{post.id}}>
                 <button style="font-size: 1em;" type="submit" value="Share" ><span><i class="uil uil-share-alt"></i></span></button>
                 </form>
             </div>
@@ -42,7 +51,7 @@
                     <input type = "hidden" name = "authorID" value = {{post.author}}>
                 <button style="font-size: 1em;" type="submit" value="Follow" >                <span><i class="uil uil-bookmark-full"></i></span>
                 </button>
-                </form>            
+                </form>
             </div>
         </div>
         <form  class="create-post" method="post"> {% csrf_token %}
