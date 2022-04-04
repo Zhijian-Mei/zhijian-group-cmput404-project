@@ -32,7 +32,7 @@
             {% elif post.contentType == 'imagesrc' %}
             <span> <image src="{{post.image_src}}" alt="image load failed"> </span>
             {% elif post.contentType == 'image' %}
-                <span> <image src="{{post.image.url}}" alt="image load failed"> </span>
+                <span> <image src="{{post.image}}" alt="image load failed"> </span>
             {% endif %}
         </div>
 

@@ -42,7 +42,7 @@
         </div>
         <div class="mb-3">
             <label for="visibility">Visibility: </label>
-            <input id="visibility" type="radio" name="visibility" value="PUBLIC">PUBLIC
+            <input id="visibility" type="radio" name="visibility" value="PUBLIC" checked>PUBLIC
             <input id="visibility" type="radio" name="visibility" value="FRIEND">FRIEND ONLY
         </div>
         <div class="mb-3">
@@ -116,7 +116,10 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     objects['visibility'] = document.querySelector('input[name=visibility]:checked').value
     objects['categories'] = document.querySelector('#categories').value
     objects['unlisted'] = document.querySelector('#unlisted').value
-    objects['image'] = document.querySelector('#image').value
+    if (objects['contentType'] === 'image') {
+        objects['image'] = document.querySelector('#image').files[0].name;
+    } else {objects['image'] = document.querySelector('#image').value;
+    }
     objects['imagesrc'] = document.querySelector('#imagesrc').value
     objects['source'] = document.querySelector('#source').value
     objects['author'] = document.querySelector('#author').value
