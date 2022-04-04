@@ -59,7 +59,4 @@ urlpatterns = [
     path('foreign_posts/',views.get_foreign_posts),
     path('shared_post_from_friend/',views.sharedPost_from_friend),
     path('like_received/',views.get_likes),
-    path('foreign_comment/',views.comment_adaptor),
-    path('foreign_like/',views.like_adaptor),
-    path('foreign_share/',views.share_adaptor),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

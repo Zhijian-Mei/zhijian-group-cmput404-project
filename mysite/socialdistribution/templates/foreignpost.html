@@ -3,9 +3,6 @@
 {% block title %} Foreign {% endblock %}
 
 {% block content %}
-
-{% load markdown_extras %}
-
 {% load static %}
 <div class="feeds">
     {% for post in posts_list %}
@@ -30,10 +27,6 @@
             {% endif %}
             {%if post.contentType == "image" %}
                 <img src="{{ post.content }}">
-            {% endif %}
-
-            {%if post.contentType == "markdown" %}
-            <h3> <span id= "syschar"> {{post.content | markdown | safe}} </span> </h3> 
             {% endif %}
         </div>
         <!-- Action buttons incase needed -->
@@ -79,34 +72,6 @@
             <br>
         {% endfor %}
         </span>
-        {% comment %} <form action="/foreign_comment/" method="post">
-            {% csrf_token %}
-            <input id="comment" type="text" name="comment" placeholder="add comment" value="{{ comment }}">
-            <input id="id" type="hidden" name="id" value="{{ post.id }}">
-            <input id="from" type="hidden" name="from" value="{{ post.from }}">
-            <input type="submit" value="OK" style="padding:5px">
-        </form>
-        <form action="/foreign_like/" method="post">
-            {% csrf_token %}
-            <input id="id" type="hidden" name="id" value="{{ post.id }}">
-            <input id="from" type="hidden" name="from" value="{{ post.from }}">
-            <input type="submit" value="like" style="padding:5px;background-color:pink;margin:5px">
-        </form>
-        <form action="/foreign_share/" method="post">
-            {% csrf_token %}
-            <input id="id" type="hidden" name="id" value="{{ post.id }}">
-            <input id="from" type="hidden" name="from" value="{{ post.from }}">
-            <input type="submit" value="share" style="padding:5px;background-color:yellow;margin:5px">
-        </form> {% endcomment %}
-        <div>
-        <input id="comment" type="text" name="comment" placeholder="add comment" value="{{ comment }}">
-        <button style="padding:5px"> OK </button>
-        </div><div>
-        <button  style="padding:5px;background-color:pink;margin:5px"> like </button>
-    </div><div>
-        <button  style="padding:5px;background-color:yellow;margin:5px"> share </button>
-    </div>
-
     </div>
 {% endfor %}
 </div>
