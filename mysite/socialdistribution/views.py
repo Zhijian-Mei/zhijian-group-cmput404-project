@@ -259,13 +259,31 @@ def create_post(request):
         if 'unlisted' in data.keys():
             unlisted = True
         try:
-            if (data['title'] == '' or
+            if data['contentType'] == 'image':
+                if (data['title'] == '' or
                 data['description'] == ''or
                 #data['content'] == '' or
                 data['categories'] == '' or
-                data['visibility'] == ''
+                data['visibility'] == '' or
+                data['image'] == ''
             ):
-                raise Exception('A required field is missing!!')
+                    raise Exception('A required field is missing!!')
+            elif data['contentType'] == 'imagesrc':
+                if (data['title'] == '' or
+                        data['description'] == '' or
+                        # data['content'] == '' or
+                        data['categories'] == '' or
+                        data['visibility'] == '' or
+                        data['imagesrc'] == ''):
+                    raise Exception('A required field is missing!!')
+            else:
+                if (data['title'] == '' or
+                        data['description'] == '' or
+                        data['content'] == '' or
+                        data['categories'] == '' or
+                        data['visibility'] == ''
+                ):
+                    raise Exception('A required field is missing!!')
             PostModel.objects.create(title=data['title'], id=uuid.uuid4(), source=data['source'], origin=data['origin'],
                                      description=data['description'], contentType=data['contentType'],
                                      content=data['content'], image_src=data['imagesrc'], image=data['image'],
@@ -314,12 +332,31 @@ def edit_post(request, id):
         if 'unlisted' in data.keys():
             unlisted = True
         try:
-            if (data['title'] == '' or
-                data['description'] == ''or
-                #data['content'] == '' or
-                data['categories'] == ''
-            ):
-                raise Exception('A required field is missing!!')
+            if data['contentType'] == 'image':
+                if (data['title'] == '' or
+                        data['description'] == '' or
+                        # data['content'] == '' or
+                        data['categories'] == '' or
+                        data['visibility'] == '' or
+                        data['image'] == ''
+                ):
+                    raise Exception('A required field is missing!!')
+            elif data['contentType'] == 'imagesrc':
+                if (data['title'] == '' or
+                        data['description'] == '' or
+                        # data['content'] == '' or
+                        data['categories'] == '' or
+                        data['visibility'] == '' or
+                        data['imagesrc'] == ''):
+                    raise Exception('A required field is missing!!')
+            else:
+                if (data['title'] == '' or
+                        data['description'] == '' or
+                        data['content'] == '' or
+                        data['categories'] == '' or
+                        data['visibility'] == ''
+                ):
+                    raise Exception('A required field is missing!!')
             PostModel.objects.filter(id=id).update(title=data['title'], description=data['description'],
                                                    contentType=data['contentType'],
                                                    content=data['content'], image=data['image'],
@@ -401,7 +438,6 @@ def myProfile(request, id):
                 'displayName': author_object.displayName,
                 'github': author_object.github.split("/")[-1],
                 'profileImage': author_object.profileImage
-
             }
             return Response(profile, status=status.HTTP_200_OK)
         except Exception as e:
@@ -411,6 +447,9 @@ def myProfile(request, id):
         print("api received request data:    ", request.data)
         data = request.data
         try:
+            if data['displayName'] == '' or data['github'] == '' or data['profileImage'] == '':
+                raise Exception('A required field is missing!!')
+
             author_object = AuthorModel.objects.get(id=id)
             author_object.displayName = data['displayName']
             author_object.save()
@@ -422,11 +461,11 @@ def myProfile(request, id):
             author_object.save()
 
             message = {'message:', 'successfully updated post'}
-            messages.success(request, 'Post is changed successfully!')
+            messages.success(request, 'Profile is changed successfully!')
             return Response(message, status=status.HTTP_200_OK)
         except Exception as e:
             message = {'error:', e}
-            messages.error(request, 'Failed to change the post, ERROR: ' + str(e))
+            messages.error(request, 'Failed to change the profile, ERROR: ' + str(e))
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
