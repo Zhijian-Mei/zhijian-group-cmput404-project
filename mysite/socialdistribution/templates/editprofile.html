@@ -8,7 +8,7 @@
 
 
 <div class="card" style="margin:10px" >
-    <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">Changed your mind, ha?</h2>
+    <h2 style="color: hsl(var(--primary-color-hue), 75%, 60%); text-align: center;">Edit Profile</h2>
     <form class="edit-profile" method="POST" id="post_form" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="mb-3">
@@ -20,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="Image">Image: </label>
-            <input id="Image" type="file" name="Image" value="{{ profile.Image }}">
+            <input id="Image" type="file" name="Image" value="{{ profile.profileImage }}">
         </div>
 
 
