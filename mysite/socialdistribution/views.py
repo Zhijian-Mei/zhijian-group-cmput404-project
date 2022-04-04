@@ -316,7 +316,7 @@ def edit_post(request, id):
         try:
             if (data['title'] == '' or
                 data['description'] == ''or
-                data['content'] == '' or
+                #data['content'] == '' or
                 data['categories'] == ''
             ):
                 raise Exception('A required field is missing!!')
