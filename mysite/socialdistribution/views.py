@@ -261,7 +261,7 @@ def create_post(request):
         try:
             if (data['title'] == '' or
                 data['description'] == ''or
-                data['content'] == '' or
+                #data['content'] == '' or
                 data['categories'] == '' or
                 data['visibility'] == ''
             ):
@@ -393,6 +393,7 @@ def myProfile(request, id):
     if request.method == 'GET':
         try:
             author_object = AuthorModel.objects.get(id=id)
+            print(author_object.profileImage)
             profile = {
                 'user': author_object.user,
                 'id': id,
@@ -417,7 +418,7 @@ def myProfile(request, id):
             author_object.github = data['github'].split("/")[-1]
             author_object.save()
             author_object = AuthorModel.objects.get(id=id)
-            author_object.profileImage = data['Image']
+            author_object.profileImage = data['profileImage']
             author_object.save()
 
             message = {'message:', 'successfully updated post'}
@@ -536,7 +537,12 @@ def delete_post(request):
     if request.method == 'POST':
         # print("api received request data:    ", request.data)
         post_id = request.POST['post_id']
+        print("2t43278483647822")
+        print(post_id)
         try:
+            object = PostModel.objects.get(id=post_id)
+            print(object)
+
             PostModel.objects.get(id=post_id).delete()
             message = {'message:', 'successfully delete this post'}
             return Response(message, status=status.HTTP_200_OK)
