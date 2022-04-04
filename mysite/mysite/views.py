@@ -579,10 +579,22 @@ def get_foreign_posts_t6(request):
 
 def get_foreign_posts(request):
     posts_list = []
-    posts_list.extend(get_foreign_posts_t13(request))
-    posts_list.extend(get_foreign_posts_t11(request))
-    posts_list.extend(get_foreign_posts_t6(request))
-    posts_list.extend(get_foreign_posts_t5(request))
+    try:
+        posts_list.extend(get_foreign_posts_t13(request))
+    except:
+        pass
+    try:
+        posts_list.extend(get_foreign_posts_t11(request))
+    except:
+        pass
+    try:
+        posts_list.extend(get_foreign_posts_t6(request))
+    except:
+        pass
+    try:
+        posts_list.extend(get_foreign_posts_t5(request))
+    except:
+        pass
     posts_list.sort(key=lambda x: x['published'], reverse=True)
     data = {'posts_list': posts_list}
     return render(request, "foreignpost.html", data)
