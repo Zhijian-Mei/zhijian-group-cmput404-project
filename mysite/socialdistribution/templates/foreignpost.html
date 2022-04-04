@@ -37,12 +37,12 @@
             {% endif %}
         </div>
         <!-- Action buttons incase needed -->
-        <!-- <div class="action-buttons">
+        <div class="action-buttons">
             <div class="interaction-buttons">
-                <form style="display: inline" action="like" method="post">{% csrf_token %}
+                <form style="display: inline">{% csrf_token %}
                     <input type = "hidden" name = "authorID" value = {{post.author}}>
                     <input type = "hidden" name = "object" value = {{post.id}}>
-                <button style="font-size: 0.8em;" type="submit" value="Like" onclick="likealert()">    
+                <button style="font-size: 0.8em;" onclick="likealert()">    
                     <span class="fa-stack">
                         <i class="fa fa-heart-o" style="font-size:20px;"></i>
                             <strong class="fa-stack-1x">
@@ -51,22 +51,22 @@
                         </span>
                 </button>
                 </form>
-                <form style="display: inline" action="share" method="post">{% csrf_token %}
+                <form style="display: inline">{% csrf_token %}
                     <input type = "hidden" name = "post_id" value = {{post.id}}>
-                <button style="font-size: 0.8em;" type="submit" value="Share" onclick="sharealert()">
+                <button style="font-size: 0.8em;" onclick="sharealert()">
                     <span class="fa-stack"><i class="fa fa-share"></i></span>
                 </button>
                 </form>
             </div>
             <div class="bookmark">
-                <form style="display: inline" action="follow" method="post">{% csrf_token %}
+                <form style="display: inline">{% csrf_token %}
                     <input type = "hidden" name = "authorID" value = {{post.author}}>
-                <button style="font-size: 0.8em;" type="submit" value="Follow" onclick="requestalert()">                
+                <button style="font-size: 0.8em;" onclick="requestalert()">                
                     <span class="fa-stack"><i class="uil uil-bookmark-full"></i></span>
                 </button>
                 </form>            
             </div>
-        </div> -->
+        </div>
 
         <h2> Comments... </h2>
         {% for comment in post.commentsSrc %}
@@ -101,12 +101,12 @@
         <div>
         <input id="comment" type="text" name="comment" placeholder="add comment" value="{{ comment }}">
         <button style="padding:5px"> OK </button>
-        </div><div>
+        </div>
+        <!-- <div>
         <button  style="padding:5px;background-color:pink;margin:5px"> like </button>
-    </div><div>
+        </div><div>
         <button  style="padding:5px;background-color:yellow;margin:5px"> share </button>
-    </div>
-
+        </div> -->
     </div>
 {% endfor %}
 </div>
