@@ -10,7 +10,7 @@
     <div class = "media-body">
 
         <img class = "profile-photo" src=" {{ profile.profileImage.url }}" style="width :6em">
-        <div class = "media-body"> 
+        <div class = "media-body">
             <h1 class = "account-heading"> {{ profile.displayName }}</h1>
         </div>
         <div class="userInfo">Github User: {{ profile.github }}</a></div>
@@ -34,22 +34,10 @@
                 </script>
 
     </div>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <a  href="/myprofile/edit/{{profile.id}}">
-                <button class ="btn btn-primary" type="submit">Update</button>
-            </a>
-
-
-        </div>
-    </form>
+    <button type="button" style="font-size: 0.8em;" class="btn btn-primary" onclick="location.href='edit/{{profile.id}}'">Update</button>
 </div>
 
 
 
 
 {% endblock  %}
-
-
-

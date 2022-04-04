@@ -409,12 +409,17 @@ def myProfile(request, id):
     if request.method == 'POST':
         print("api received request data:    ", request.data)
         data = request.data
-
-
         try:
-            AuthorModel.objects.filter(id=id).update(user=data['user'], id=id, host=data['host'],
-                                                     displayName=data['displayName'], github=data['github'].split("/")[-1],
-                                                     profileImage=data['profileImage'])
+            author_object = AuthorModel.objects.get(id=id)
+            author_object.displayName = data['displayName']
+            author_object.save()
+            author_object = AuthorModel.objects.get(id=id)
+            author_object.github = data['github'].split("/")[-1]
+            author_object.save()
+            author_object = AuthorModel.objects.get(id=id)
+            author_object.profileImage = data['Image']
+            author_object.save()
+
             message = {'message:', 'successfully updated post'}
             messages.success(request, 'Post is changed successfully!')
             return Response(message, status=status.HTTP_200_OK)

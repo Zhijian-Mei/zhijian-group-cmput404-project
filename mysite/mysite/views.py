@@ -158,7 +158,8 @@ def my_profile(request):
         else:
             #TODO success message
             print('SUCCESS!!!! successfully commented the post')
-            return HttpResponseRedirect(request.path_info)
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(request.path_info)
 
 
 
