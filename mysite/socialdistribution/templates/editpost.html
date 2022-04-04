@@ -22,7 +22,7 @@
     <div class="mb-3">
     <label for="contentType">ContentType: </label>
     {% comment %} <input id="contentType" type="text" name="contentType" value="{{ post.contentType }}"> {% endcomment %}
-    
+
     <select id='contentType' name="contentType" onchange="onSelectChange(value)">
         {% if post.contentType == "text" %}
         <option value="text" selected>Text</option>
@@ -64,7 +64,7 @@
     {% else %}
     <input hidden id="imagesrc" type="text" name="imagesrc" form="post_form" value="{{ post.imagesrc }}">
     {% endif %}
-    
+
     {% comment %} <label for="image">Upload an image: </label> {% endcomment %}
     {% if post.contentType == "image" %}
     <input id="image"  type="file" name="image" form="post_form" value="{{ post.image }}"  >
@@ -153,7 +153,7 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     objects['contentType'] = document.querySelector('#contentType').value
     objects['content'] = document.querySelector('#content').value
     objects['categories'] = document.querySelector('#categories').value
-    objects['visibility'] = document.querySelector('#visibility').value
+    objects['visibility'] = document.querySelector('input[name=visibility]:checked').value
     objects['categories'] = document.querySelector('#categories').value
     objects['unlisted'] = document.querySelector('#unlisted').value
     objects['image'] = document.querySelector('#image').value
