@@ -13,15 +13,6 @@ class AuthorModel(models.Model):
     github = models.CharField(max_length=200)
     profileImage = models.ImageField(verbose_name='profile_image',upload_to='',null=True)
 
-    def save(self):
-        super().save()
-
-        img = Image.open (self.profileImage.path)
-
-        if img.height > 30 or img.width > 30:
-            output_size = (100, 100)
-            img.thumbnail(output_size)
-            img.save(self.profileImage.path)
 
 
 
