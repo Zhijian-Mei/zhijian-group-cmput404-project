@@ -335,10 +335,11 @@ def get_foreign_posts_t13(request):
     posts_list =[]
     for id in author_id_list:
         url = url_base
-        url = url + '{}/'.format(id) + 'posts/'
+        url = '{}/'.format(id) + 'posts/'
         try:
-            r = requests.get(url, auth=('group_12', 'ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'),timeout=5)
-            for post in json.loads(r.content)['items']:
+            r = requests.get(url, auth=('group_12', 'ed19a258d40fde6748f2b5635e32fa62a78ec9305b606aabb0ba3810b491972c'))
+            # print('team13 posts url----------------------------------',url)
+            for post in json.loads(r.content.decode("utf-8"))['items']:
                 author = post['author']
                 author['host']='https://socialdistribution-t13.herokuapp.com/'
                 data={
@@ -369,9 +370,9 @@ def get_foreign_posts_t13(request):
                 }
                 posts_list.append(data)
         except Exception as e:
-            pass
+            print('team13 exception----------------------',e)
         continue
-    print('\n\n\n\n\n111111\n\n\n\n',posts_list)
+    # print('\n\n\n\n\n111111\n\n\n\n',posts_list)
     return posts_list
 
 def team13_contentType_adaptor(data):
@@ -379,6 +380,21 @@ def team13_contentType_adaptor(data):
         return "image"
     if data=="text/plain":
         return "text"
+
+# def team13_comment(request, id):
+#     url = 'https://socialdistribution-t13.herokuapp.com/api/v1/authors/'
+    # if request.method == "POST":
+    #     print(33333333, request.POST)
+    #     result = views.delete_post(request)
+    #     print('error--------------', result)
+    #     if (result.status_code != 201):
+    #         # TODO redirect to GET response
+    #         print('error--------------', result.data)
+    #         return redirect('./')
+    #     else:
+    #         # TODO success message
+    #         print('SUCCESS!!!! successfully send the request!')
+    #         return redirect('./')
 
 def get_foreign_posts_t5(request):
     url = 'https://cmput404-w22-project-backend.herokuapp.com/service/'
@@ -435,6 +451,7 @@ def get_foreign_posts_t11(request):
         try:
             r = requests.get(url, auth=('team12', 'team12'),timeout=5)
             for post in json.loads(r.content)['items']:
+                
                 posts_list.append({
                     "from": "TEAM11",
                     "type": "post",
@@ -462,8 +479,68 @@ def get_foreign_posts_t11(request):
 
 
 def team11_contentType_adaptor(data):
+    # print('team11:data',data)
+    return "markdown"
     if data=="text/plain":
         return "text"
+    # elif data==""
+
+def comment_adaptor(request):
+    if request.method == "POST":
+        # print(33333333, request.POST)
+        # print('id---------------',list(request.POST)['id'])
+        data = list(request.POST)
+        return Response('comment', status=status.HTTP_201_CREATED)
+        # result = views.delete_post(request)
+        # print('error--------------', result)
+        # if (result.status_code != 201):
+        #     # TODO redirect to GET response
+        #     print('error--------------', result.data)
+        #     return redirect('./')
+        # else:
+        #     # TODO success message
+        #     print('SUCCESS!!!! successfully send the request!')
+        #     return redirect('./')
+    if request.method == "GET":
+        return Response(data, template_name='foreignpost.html')
+
+def like_adaptor(request):
+    if request.method == "POST":
+        # print(33333333, request.POST)
+        # print('id---------------',list(request.POST)['id'])
+        data = list(request.POST)
+        return Response('like', status=status.HTTP_201_CREATED)
+        # result = views.delete_post(request)
+        # print('error--------------', result)
+        # if (result.status_code != 201):
+        #     # TODO redirect to GET response
+        #     print('error--------------', result.data)
+        #     return redirect('./')
+        # else:
+        #     # TODO success message
+        #     print('SUCCESS!!!! successfully send the request!')
+        #     return redirect('./')def comment_adaptor(request):
+    if request.method == "GET":
+        return redirect('foreign_posts/')
+
+def share_adaptor(request):
+    if request.method == "POST":
+        # print(33333333, request.POST)
+        # print('id---------------',list(request.POST)['id'])
+        data = list(request.POST)
+        return Response('like', status=status.HTTP_201_CREATED)
+        # result = views.delete_post(request)
+        # print('error--------------', result)
+        # if (result.status_code != 201):
+        #     # TODO redirect to GET response
+        #     print('error--------------', result.data)
+        #     return redirect('./')
+        # else:
+        #     # TODO success message
+        #     print('SUCCESS!!!! successfully send the request!')
+        #     return redirect('./')
+    if request.method == "GET":
+        return redirect('foreign_posts/')
 
 def get_foreign_posts_t6(request):
     url = 'http://team06-backend-social-dist.herokuapp.com/posts/'
@@ -504,7 +581,7 @@ def get_foreign_posts(request):
     posts_list = []
     posts_list.extend(get_foreign_posts_t13(request))
     posts_list.extend(get_foreign_posts_t11(request))
-    posts_list.extend(get_foreign_posts_t6(request))
+    # posts_list.extend(get_foreign_posts_t6(request))
     posts_list.extend(get_foreign_posts_t5(request))
     posts_list.sort(key=lambda x: x['published'], reverse=True)
     data = {'posts_list': posts_list}
