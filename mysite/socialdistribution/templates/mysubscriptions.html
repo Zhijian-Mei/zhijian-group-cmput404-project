@@ -40,20 +40,29 @@
                 <form style="display: inline" action="like" method="post">{% csrf_token %}
                     <input type = "hidden" name = "authorID" value = {{post.author}}>
                     <input type = "hidden" name = "object" value = {{post.id}}>
-                <button style="font-size: 1em;" type="submit" value="Like" ><span><i class="uil uil-heart"></i></span>
+                <button style="font-size: 0.8em;" type="submit" value="Like" onclick="likealert()">    
+                    <span class="fa-stack">
+                        <i class="fa fa-heart-o" style="font-size:20px;"></i>
+                            <strong class="fa-stack-1x">
+                                <p style="font-size:10px;"> {{post.like_count}} </p>
+                            </strong>
+                        </span>
                 </button>
                 </form>
                 <form style="display: inline" action="share" method="post">{% csrf_token %}
                     <input type = "hidden" name = "post_id" value = {{post.id}}>
-                <button style="font-size: 1em;" type="submit" value="Share" ><span><i class="uil uil-share-alt"></i></span></button>
+                <button style="font-size: 0.8em;" type="submit" value="Share" onclick="sharealert()">
+                    <span class="fa-stack"><i class="fa fa-share"></i></span>
+                </button>
                 </form>
             </div>
             <div class="bookmark">
                 <form style="display: inline" action="follow" method="post">{% csrf_token %}
                     <input type = "hidden" name = "authorID" value = {{post.author}}>
-                <button style="font-size: 1em;" type="submit" value="Follow" >                <span><i class="uil uil-bookmark-full"></i></span>
+                <button style="font-size: 0.8em;" type="submit" value="Follow" onclick="requestalert()">                
+                    <span class="fa-stack"><i class="uil uil-bookmark-full"></i></span>
                 </button>
-                </form>
+                </form>            
             </div>
         </div>
         <form  class="create-post" method="post"> {% csrf_token %}

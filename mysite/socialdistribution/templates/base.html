@@ -11,7 +11,22 @@
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
   <!-- STYLESHEET -->
   <link rel="stylesheet" href="{% static 'css/mypost.css' %}">
+  <!-- FAFA ICON -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
+<script>
+  function likealert() {
+    alert("Post liked");
+  }
+  function sharealert() {
+    alert("Post Shared");
+  }
+  function requestalert() {
+    alert("Request Sent");
+  }
+</script>
+
 <body>
   <nav>
     <div class="container">
@@ -152,11 +167,38 @@
             <h4>Inbox</h4><i class="uil uil-mobile-vibrate"></i>
           </div>
           <hr>
-          <!------------ MESSAGE -------------->
-          <!----- MESSAGE ----->
-          <div class="message-body">
-            <h5>Hello World!</h5>
-            <p class="text-muted">Hello World!</p>
+          <div class="sidebar">
+            <a href="/like_received/"
+            class = "
+            {% if request.path == '/'%}
+            menu-item active
+            {% else %}
+            menu-item
+            {% endif %}"
+            >
+            <h3>&nbsp&nbsp&nbsp&nbsp</h3>
+            <h3>Likes Received</h3>
+            </a>
+            <a href="/shared_post_from_friend/"
+            class = "
+            {% if request.path == '/myprofile/'%}
+            menu-item active
+            {% else %}
+            menu-item
+            {% endif %}">
+            <h3>&nbsp&nbsp&nbsp&nbsp</h3>
+            <h3>Posts Shared</h3>
+            </a>
+            <a href="/myrequest/"
+            class = "
+            {% if request.path == '/mypost/'%}
+            menu-item active
+            {% else %}
+            menu-item
+            {% endif %}">
+            <h3>&nbsp&nbsp&nbsp&nbsp</h3>
+            <h3>Friend Requests</h3>
+            </a>
           </div>
         </div>
         <!------------ END OF MESSAGES -------------->
@@ -164,7 +206,6 @@
 
         <!------------ FRIEND REQUESTS -------------->
         <div class="friend-requests">
-          <a href="/myrequest/"><h4 class="head">Requests</h4></a>
           <!----- REQUEST 1----->
           {% for request in requests_list %}
           {% for author in authors_list %}

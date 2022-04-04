@@ -1,12 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} like received {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+{% load markdown_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Like received</title>
+    <title>Like Received</title>
 </head>
 <body>
-{% for like in like_objects %}
-        {{like}} <br><br>
+    {% for like in like_objects %}
+    <div class= "noti">
+        <i class="uil uil-mobile-vibrate"></i>
+        <h3>&nbsp&nbsp&nbsp&nbsp</h3>
+        <h3>{{like.summary}}</h3>
+    </div>
     {% endfor %}
 </body>
 </html>
+{% endblock %}
+
