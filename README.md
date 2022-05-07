@@ -18,5 +18,4 @@ zlv: Frontend display of foreign post
 kaixuan3: Adapter for team 5, write the web api document
 gu8: Adapter for team 11,  write the web api document  
 
-# Reference:
-https://github.com/Bloggify/github-calendar
+
